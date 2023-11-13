@@ -6,10 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "node -r dotenv/config ./scripts/seed.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "@vercel/postgres": "^0.5.1",
     "clsx": "^2.0.0",
     "next": "14.0.1",
     "next-auth": "^5.0.0-beta.3",
