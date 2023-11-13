@@ -1,0 +1,63 @@
+.categoryContainer {
+    border: 1px solid var(--foreground-100);
+    border-radius: var(--space-2);
+    background-color: rgb(var(--background-rgb));
+    padding: var(--space-3);
+}
+
+.categories {
+    list-style: none;
+}
+.toggleContent .category {
+    padding-left: var(--space-5);
+}
+
+.toggle {
+    padding: 0 var(--space-3);
+    height: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: height .2s ease;
+}
+.toggleContent {
+    border-radius: var(--space-2);
+    background-color: rgb(var(--background-accent-rgb));
+    padding: 0;
+    /* border-bottom: 1px solid rgb(var(--border-rgb)); */
+}
+.toggleContent .toggle {
+    height: 0;
+    overflow: hidden;
+}
+.toggleContent.open {
+    padding: var(--space-2) 0 var(--space-3);
+}
+/* .toggleContent .toggleContent,
+.category:last-child .toggleContent {
+    border-bottom: none;
+} */
+.toggleContent.open > .categories > .category > .toggle {
+    height: 36px;
+}
+.toggleContent.close .categories .category .toggle {
+    height: 0;
+}
+.toggleContent.close,
+.toggleContent.close .toggleContent {
+    padding: 0;
+}
+
+.toggle button {
+    width: 32px;
+    min-width: initial;
+    height: 24px;
+    padding: 0;
+}
+
+.toggleIcon {
+    transition: transform .3s ease;
+}
+.toggleIcon.toggleUp {
+    transform: rotateX(180deg);
+}

@@ -1,0 +1,64 @@
+.summary {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background-color: rgb(var(--background-accent-rgb));
+    border-radius: var(--space-2);
+}
+
+.summaryCard {
+    background-color: rgb(var(--background-rgb));
+    border-radius: var(--space-2);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 80px minmax(0, 1fr) 40px;
+}
+.summaryCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-4);
+}
+.summaryCardHeader svg {
+    width: 4rem;
+    color: var(--foreground-100);
+}
+.summaryCardHeader span {
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: var(--primary-600);
+}
+.summaryCardTitle {
+    padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--foreground-600);
+}
+.summaryCardFooterSkeleton,
+.summaryCardFooter a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-top: 1px solid rgb(var(--border-rgb));
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--space-4);
+    font-size: .8rem;
+    color: var(--foreground-400);
+}
+.summaryCardFooter a svg {
+    width: 1.4rem;
+    transition: transform .4s ease;
+}
+.summaryCardFooter a:hover svg {
+    transform: translateX(20%);
+}
+
+.summaryCardIconSkeleton {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--foreground-50);
+}

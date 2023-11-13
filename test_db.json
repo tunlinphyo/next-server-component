@@ -1,0 +1,832 @@
+{
+    "users": [
+        {
+            "id": 1699514821966,
+            "name": "Admin",
+            "email": "admin@gmail.com",
+            "password": "password",
+            "isDelete": false
+        }
+    ],
+    "customers": [
+        {
+            "id": 1699591061731,
+            "name": "New Customer Ed",
+            "email": "new@gmail.com",
+            "createDate": "2023-11-10T04:37:41.730Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T07:42:14.280Z"
+        },
+        {
+            "id": 1699590247673,
+            "name": "User 9",
+            "email": "user9@gmail.com",
+            "createDate": "2023-11-10T04:24:07.673Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699590184956,
+            "name": "User 8 Edit",
+            "email": "user8@gmail.com",
+            "createDate": "2023-11-10T04:23:04.956Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T07:15:42.715Z"
+        },
+        {
+            "id": 1699589984899,
+            "name": "User 7",
+            "email": "user7@gmail.com",
+            "createDate": "2023-11-10T04:19:44.899Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699589917162,
+            "name": "User 6",
+            "email": "user6@gmail.com",
+            "createDate": "2023-11-10T04:18:37.162Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699589903525,
+            "name": "User 5",
+            "email": "user5@gmail.com",
+            "createDate": "2023-11-10T04:18:23.525Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699589855918,
+            "name": "Another User",
+            "email": "another@gmail.com",
+            "createDate": "2023-11-10T04:17:35.918Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699589832783,
+            "name": "Hello World",
+            "email": "hello@gmail.com",
+            "createDate": "2023-11-10T04:17:12.783Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699588745505,
+            "name": "New test",
+            "email": "admin2@gmail.com",
+            "createDate": "2023-11-10T03:59:05.505Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699527441808,
+            "name": "Tun Lin Phyo",
+            "email": "tun@gmail.com",
+            "createDate": "2023-11-09T10:57:21.808Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699526747383,
+            "name": "Tun Lin",
+            "email": "admin@gmail.com",
+            "createDate": "2023-11-09T10:45:47.383Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699593900117,
+            "name": "My User",
+            "email": "myuser@gmail.com",
+            "createDate": "2023-11-10T05:25:00.117Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699598656197,
+            "name": "New Customer 2",
+            "email": "new2@gmail.com",
+            "createDate": "2023-11-10T06:44:16.197Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699604252388,
+            "name": "New Customer",
+            "email": "nc@gmail.com",
+            "createDate": "2023-11-10T08:17:32.388Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699607673811,
+            "name": "Hello World 2",
+            "email": "world@gmail.com",
+            "createDate": "2023-11-10T09:14:33.811Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T09:20:05.221Z"
+        }
+    ],
+    "products": [
+        {
+            "id": 1699716351015,
+            "name": "Apple Watch",
+            "description": "test product",
+            "createDate": "2023-11-11T15:25:51.015Z",
+            "isDelete": false,
+            "category_ids": [
+                1699617210548,
+                1699632914038
+            ],
+            "updateDate": "2023-11-13T13:42:39.619Z"
+        },
+        {
+            "id": 1699716564477,
+            "name": "Product One",
+            "description": "this is description",
+            "createDate": "2023-11-11T15:29:24.476Z",
+            "isDelete": false,
+            "category_ids": [
+                1699775450747
+            ],
+            "updateDate": "2023-11-13T12:55:35.993Z"
+        },
+        {
+            "id": 1699775727634,
+            "name": "Chrome book",
+            "description": "this is test product.",
+            "createDate": "2023-11-12T07:55:27.634Z",
+            "isDelete": false,
+            "category_ids": [
+                1699632069657,
+                1699632370873
+            ],
+            "variant_1_id": 1699679275775,
+            "variant_2_id": 0,
+            "updateDate": "2023-11-13T12:56:09.521Z"
+        },
+        {
+            "id": 1699782777245,
+            "name": "iPhone 15 Pro max",
+            "description": "This iPhone 15 Pro max",
+            "createDate": "2023-11-12T09:52:57.245Z",
+            "isDelete": false,
+            "variant_1_id": 1699680676072,
+            "variant_2_id": 1699679275775,
+            "category_ids": [
+                1699617210548,
+                1699632895434
+            ],
+            "updateDate": "2023-11-13T12:36:41.980Z"
+        },
+        {
+            "id": 1699884265581,
+            "name": "IPad Mini 6",
+            "description": "this is iPad mini 6",
+            "category_ids": [
+                1699617210548,
+                1699876021958,
+                1699892068136
+            ],
+            "createDate": "2023-11-13T14:04:25.581Z",
+            "isDelete": false,
+            "variant_1_id": 1699884318983,
+            "variant_2_id": 1699679275775,
+            "updateDate": "2023-11-13T16:18:12.637Z"
+        },
+        {
+            "id": 1699889613813,
+            "name": "Test Product",
+            "description": "This is test product",
+            "category_ids": [
+                1699633688365,
+                1699633725099,
+                1699886045138,
+                1699887501584
+            ],
+            "createDate": "2023-11-13T15:33:33.813Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699891224183,
+            "name": "Magic Keyboard (iPad Pro 12)",
+            "description": "magic keyboard for iPad Pro 12 inches",
+            "category_ids": [
+                1699617210548,
+                1699876021958,
+                1699890309874,
+                1699890396650,
+                1699890494306
+            ],
+            "createDate": "2023-11-13T16:00:24.183Z",
+            "isDelete": false,
+            "variant_1_id": 1699891265320,
+            "variant_2_id": 0,
+            "updateDate": "2023-11-13T16:04:28.492Z"
+        }
+    ],
+    "product_class": [
+        {
+            "id": 1699716351326,
+            "product_id": 1699716351015,
+            "price": 5000,
+            "quantity": 5,
+            "createDate": "2023-11-11T15:25:51.325Z",
+            "isDelete": false,
+            "updateDate": "2023-11-13T13:42:39.632Z"
+        },
+        {
+            "id": 1699716564781,
+            "product_id": 1699716564477,
+            "price": 4000,
+            "quantity": 12,
+            "createDate": "2023-11-11T15:29:24.781Z",
+            "isDelete": false,
+            "updateDate": "2023-11-13T12:55:36.013Z"
+        },
+        {
+            "id": 1699775727942,
+            "product_id": 1699775727634,
+            "price": 2500,
+            "quantity": 10,
+            "createDate": "2023-11-12T07:55:27.941Z",
+            "isDelete": true,
+            "updateDate": "2023-11-13T03:45:37.991Z"
+        },
+        {
+            "id": 1699782777554,
+            "product_id": 1699782777245,
+            "price": 200000,
+            "quantity": 5,
+            "createDate": "2023-11-12T09:52:57.551Z",
+            "isDelete": true,
+            "updateDate": "2023-11-13T12:18:59.046Z"
+        },
+        {
+            "id": 1699847137994,
+            "product_id": 0,
+            "variant_1_id": 1699689433343,
+            "price": 2500,
+            "quantity": 10,
+            "createDate": "2023-11-13T03:45:37.994Z",
+            "isDelete": false,
+            "updateDate": "2023-11-13T12:11:51.056Z"
+        },
+        {
+            "id": 1699847137996,
+            "product_id": 1699775727634,
+            "variant_1_id": 1699689442075,
+            "price": 2500,
+            "quantity": 10,
+            "createDate": "2023-11-13T03:45:37.996Z",
+            "isDelete": true,
+            "updateDate": "2023-11-13T04:55:44.593Z"
+        },
+        {
+            "id": 1699851410104,
+            "product_id": 1699775727634,
+            "variant_1_id": 1699689424058,
+            "price": 3000,
+            "quantity": 5,
+            "isDelete": true,
+            "createDate": "2023-11-13T04:56:50.104Z",
+            "updateDate": "2023-11-13T04:57:06.315Z"
+        },
+        {
+            "id": 1699851426325,
+            "product_id": 1699775727634,
+            "variant_1_id": 1699689442075,
+            "price": 2500,
+            "quantity": 10,
+            "isDelete": false,
+            "createDate": "2023-11-13T04:57:06.325Z",
+            "updateDate": "2023-11-13T12:15:47.026Z"
+        },
+        {
+            "id": 1699877511045,
+            "product_id": 1699775727634,
+            "variant_1_id": 1699689424058,
+            "price": 2000,
+            "quantity": 20,
+            "isDelete": false,
+            "createDate": "2023-11-13T12:11:51.045Z",
+            "updateDate": "2023-11-13T12:15:47.018Z"
+        },
+        {
+            "id": 1699877939056,
+            "product_id": 1699782777245,
+            "variant_1_id": 1699688644417,
+            "variant_2_id": 1699689424058,
+            "price": 3000,
+            "quantity": 10,
+            "isDelete": false,
+            "createDate": "2023-11-13T12:18:59.056Z"
+        },
+        {
+            "id": 1699877939067,
+            "product_id": 1699782777245,
+            "variant_1_id": 1699688644417,
+            "variant_2_id": 1699689433343,
+            "price": 4000,
+            "quantity": 10,
+            "isDelete": false,
+            "createDate": "2023-11-13T12:18:59.067Z"
+        },
+        {
+            "id": 1699877939071,
+            "product_id": 1699782777245,
+            "variant_1_id": 1699688644417,
+            "variant_2_id": 1699689442075,
+            "price": 5000,
+            "quantity": 10,
+            "isDelete": false,
+            "createDate": "2023-11-13T12:18:59.071Z"
+        },
+        {
+            "id": 1699882445168,
+            "product_id": 1699716351015,
+            "variant_1_id": 1699758939823,
+            "price": 3000,
+            "quantity": 5,
+            "isDelete": true,
+            "createDate": "2023-11-13T13:34:05.168Z",
+            "updateDate": "2023-11-13T13:35:24.220Z"
+        },
+        {
+            "id": 1699882445174,
+            "product_id": 1699716351015,
+            "variant_1_id": 1699758957057,
+            "price": 3000,
+            "quantity": 5,
+            "isDelete": true,
+            "createDate": "2023-11-13T13:34:05.174Z",
+            "updateDate": "2023-11-13T13:35:24.228Z"
+        },
+        {
+            "id": 1699882568344,
+            "product_id": 1699716351015,
+            "variant_1_id": 1699758939823,
+            "price": 2000,
+            "quantity": 10,
+            "isDelete": true,
+            "createDate": "2023-11-13T13:36:08.344Z",
+            "updateDate": "2023-11-13T13:41:40.326Z"
+        },
+        {
+            "id": 1699882568350,
+            "product_id": 1699716351015,
+            "variant_1_id": 1699758957057,
+            "price": 2000,
+            "quantity": 10,
+            "isDelete": true,
+            "createDate": "2023-11-13T13:36:08.350Z",
+            "updateDate": "2023-11-13T13:41:40.331Z"
+        },
+        {
+            "id": 1699884265890,
+            "product_id": 1699884265581,
+            "price": 100000,
+            "quantity": 10,
+            "createDate": "2023-11-13T14:04:25.890Z",
+            "isDelete": true,
+            "updateDate": "2023-11-13T14:08:12.261Z"
+        },
+        {
+            "id": 1699884492268,
+            "product_id": 1699884265581,
+            "variant_1_id": 1699884398426,
+            "variant_2_id": 1699689424058,
+            "price": 100000,
+            "quantity": 6,
+            "isDelete": false,
+            "createDate": "2023-11-13T14:08:12.268Z",
+            "updateDate": "2023-11-13T15:58:01.888Z"
+        },
+        {
+            "id": 1699884492274,
+            "product_id": 1699884265581,
+            "variant_1_id": 1699884398426,
+            "variant_2_id": 1699689433343,
+            "price": 120000,
+            "quantity": 6,
+            "isDelete": false,
+            "createDate": "2023-11-13T14:08:12.274Z",
+            "updateDate": "2023-11-13T15:58:01.890Z"
+        },
+        {
+            "id": 1699884492283,
+            "product_id": 1699884265581,
+            "variant_1_id": 1699884398426,
+            "variant_2_id": 1699689442075,
+            "price": 150000,
+            "quantity": 6,
+            "isDelete": false,
+            "createDate": "2023-11-13T14:08:12.283Z",
+            "updateDate": "2023-11-13T15:58:01.892Z"
+        },
+        {
+            "id": 1699889614123,
+            "product_id": 1699889613813,
+            "price": 5000,
+            "quantity": 10,
+            "createDate": "2023-11-13T15:33:34.123Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699891081895,
+            "product_id": 1699884265581,
+            "variant_1_id": 1699884409722,
+            "variant_2_id": 1699689424058,
+            "price": 100000,
+            "quantity": 5,
+            "isDelete": false,
+            "createDate": "2023-11-13T15:58:01.895Z"
+        },
+        {
+            "id": 1699891081897,
+            "product_id": 1699884265581,
+            "variant_1_id": 1699884409722,
+            "variant_2_id": 1699689433343,
+            "price": 120000,
+            "quantity": 5,
+            "isDelete": false,
+            "createDate": "2023-11-13T15:58:01.897Z"
+        },
+        {
+            "id": 1699891081898,
+            "product_id": 1699884265581,
+            "variant_1_id": 1699884409722,
+            "variant_2_id": 1699689442075,
+            "price": 150000,
+            "quantity": 5,
+            "isDelete": false,
+            "createDate": "2023-11-13T15:58:01.898Z"
+        },
+        {
+            "id": 1699891224487,
+            "product_id": 1699891224183,
+            "price": 50000,
+            "quantity": 10,
+            "createDate": "2023-11-13T16:00:24.487Z",
+            "isDelete": true,
+            "updateDate": "2023-11-13T16:09:26.519Z"
+        },
+        {
+            "id": 1699891766526,
+            "product_id": 1699891224183,
+            "variant_1_id": 1699891376783,
+            "price": 50000,
+            "quantity": 3,
+            "isDelete": false,
+            "createDate": "2023-11-13T16:09:26.526Z",
+            "updateDate": "2023-11-13T16:09:49.623Z"
+        },
+        {
+            "id": 1699891766529,
+            "product_id": 1699891224183,
+            "variant_1_id": 1699891385878,
+            "price": 50000,
+            "quantity": 2,
+            "isDelete": false,
+            "createDate": "2023-11-13T16:09:26.529Z",
+            "updateDate": "2023-11-13T16:09:49.627Z"
+        }
+    ],
+    "product_categories": [
+        {
+            "id": 1699617210548,
+            "name": "Apple",
+            "createDate": "2023-11-10T11:53:30.548Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T12:35:54.888Z"
+        },
+        {
+            "id": 1699619065471,
+            "name": "MacBook",
+            "parent_category_id": 1699617210548,
+            "createDate": "2023-11-10T12:24:25.470Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T12:35:35.711Z"
+        },
+        {
+            "id": 1699632069657,
+            "name": "Google",
+            "createDate": "2023-11-10T16:01:09.657Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699632370873,
+            "name": "Chrome",
+            "parent_category_id": 1699632069657,
+            "createDate": "2023-11-10T16:06:10.872Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T16:17:41.935Z"
+        },
+        {
+            "id": 1699632662583,
+            "name": "Pixel",
+            "parent_category_id": 1699632069657,
+            "createDate": "2023-11-10T16:11:02.583Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T16:55:13.606Z"
+        },
+        {
+            "id": 1699632895434,
+            "name": "iPhone",
+            "parent_category_id": 1699617210548,
+            "createDate": "2023-11-10T16:14:55.434Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T16:31:43.472Z"
+        },
+        {
+            "id": 1699632914038,
+            "name": "Apple Watch",
+            "parent_category_id": 1699617210548,
+            "createDate": "2023-11-10T16:15:14.038Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T16:16:48.593Z"
+        },
+        {
+            "id": 1699633688365,
+            "name": "Microsoft",
+            "createDate": "2023-11-10T16:28:08.364Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699633710715,
+            "name": "Surface",
+            "parent_category_id": 1699633688365,
+            "createDate": "2023-11-10T16:28:30.715Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699633725099,
+            "name": "Office",
+            "parent_category_id": 1699633688365,
+            "createDate": "2023-11-10T16:28:45.099Z",
+            "isDelete": false,
+            "updateDate": "2023-11-10T16:30:34.782Z"
+        },
+        {
+            "id": 1699635214834,
+            "name": "Test one",
+            "parent_category_id": 1699632069657,
+            "createDate": "2023-11-10T16:53:34.834Z",
+            "isDelete": true
+        },
+        {
+            "id": 1699635278026,
+            "name": "Test two",
+            "parent_category_id": 1699632069657,
+            "createDate": "2023-11-10T16:54:38.025Z",
+            "isDelete": true
+        },
+        {
+            "id": 1699635294546,
+            "name": "Test three",
+            "parent_category_id": 1699632069657,
+            "createDate": "2023-11-10T16:54:54.546Z",
+            "isDelete": true
+        },
+        {
+            "id": 1699667839997,
+            "name": "Test Cate",
+            "createDate": "2023-11-11T01:57:19.996Z",
+            "isDelete": true
+        },
+        {
+            "id": 1699775450747,
+            "name": "Facebook",
+            "createDate": "2023-11-12T07:50:50.746Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699876021958,
+            "name": "iPad",
+            "parent_category_id": 1699617210548,
+            "createDate": "2023-11-13T11:47:01.958Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699886045138,
+            "name": "Word",
+            "parent_category_id": 1699633725099,
+            "createDate": "2023-11-13T14:34:05.138Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699886054617,
+            "name": "Excel",
+            "parent_category_id": 1699633725099,
+            "createDate": "2023-11-13T14:34:14.617Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699886069493,
+            "name": "Power Point",
+            "parent_category_id": 1699633725099,
+            "createDate": "2023-11-13T14:34:29.493Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699887501584,
+            "name": "One",
+            "parent_category_id": 1699886045138,
+            "createDate": "2023-11-13T14:58:21.584Z",
+            "isDelete": true
+        },
+        {
+            "id": 1699890309874,
+            "name": "Accessories",
+            "parent_category_id": 1699617210548,
+            "createDate": "2023-11-13T15:45:09.874Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699890396650,
+            "name": "Cases & Protuction",
+            "parent_category_id": 1699890309874,
+            "createDate": "2023-11-13T15:46:36.650Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699890415103,
+            "name": "Power & Cables",
+            "parent_category_id": 1699890309874,
+            "createDate": "2023-11-13T15:46:55.103Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699890438905,
+            "name": "Headphone & Speakers",
+            "parent_category_id": 1699890309874,
+            "createDate": "2023-11-13T15:47:18.905Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699890494306,
+            "name": "Mice & Keyboards",
+            "parent_category_id": 1699890309874,
+            "createDate": "2023-11-13T15:48:14.306Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699890530824,
+            "name": "Creativity",
+            "parent_category_id": 1699890309874,
+            "createDate": "2023-11-13T15:48:50.824Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699892043811,
+            "name": "iPad Pro",
+            "parent_category_id": 1699876021958,
+            "createDate": "2023-11-13T16:14:03.811Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699892057521,
+            "name": "iPad Air",
+            "parent_category_id": 1699876021958,
+            "createDate": "2023-11-13T16:14:17.521Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699892068136,
+            "name": "iPad Mini",
+            "parent_category_id": 1699876021958,
+            "createDate": "2023-11-13T16:14:28.136Z",
+            "isDelete": false
+        }
+    ],
+    "product_variants": [
+        {
+            "id": 1699679275775,
+            "name": "Storage",
+            "description": "iPhone storage",
+            "createDate": "2023-11-11T05:07:55.774Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699680676072,
+            "name": "iPhone Color",
+            "description": "iPhone 15 colors",
+            "createDate": "2023-11-11T05:31:16.070Z",
+            "isDelete": false,
+            "updateDate": "2023-11-11T07:17:37.231Z"
+        },
+        {
+            "id": 1699680930966,
+            "name": "Pixel Color",
+            "description": "Google pixel phone colors",
+            "createDate": "2023-11-11T05:35:30.965Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699688307749,
+            "name": "Silver",
+            "description": "edited",
+            "parent_variant_id": 1699680676072,
+            "createDate": "2023-11-11T07:38:27.749Z",
+            "isDelete": false,
+            "updateDate": "2023-11-11T07:43:51.895Z"
+        },
+        {
+            "id": 1699688644417,
+            "name": "Gray",
+            "description": "",
+            "parent_variant_id": 1699680676072,
+            "createDate": "2023-11-11T07:44:04.415Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699688832321,
+            "name": "Gold",
+            "description": "gold color",
+            "parent_variant_id": 1699680676072,
+            "createDate": "2023-11-11T07:47:12.320Z",
+            "isDelete": false,
+            "updateDate": "2023-11-11T07:47:26.079Z"
+        },
+        {
+            "id": 1699689424058,
+            "name": "128 GB",
+            "description": "",
+            "parent_variant_id": 1699679275775,
+            "createDate": "2023-11-11T07:57:04.056Z",
+            "isDelete": false,
+            "updateDate": "2023-11-11T07:58:34.846Z"
+        },
+        {
+            "id": 1699689433343,
+            "name": "256 GB",
+            "description": "",
+            "parent_variant_id": 1699679275775,
+            "createDate": "2023-11-11T07:57:13.342Z",
+            "isDelete": false,
+            "updateDate": "2023-11-11T07:58:28.101Z"
+        },
+        {
+            "id": 1699689442075,
+            "name": "512 GB",
+            "description": "",
+            "parent_variant_id": 1699679275775,
+            "createDate": "2023-11-11T07:57:22.075Z",
+            "isDelete": false,
+            "updateDate": "2023-11-11T07:58:18.717Z"
+        },
+        {
+            "id": 1699758939823,
+            "name": "Gray",
+            "description": "",
+            "parent_variant_id": 1699680930966,
+            "createDate": "2023-11-12T03:15:39.822Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699758957057,
+            "name": "Blue",
+            "description": "",
+            "parent_variant_id": 1699680930966,
+            "createDate": "2023-11-12T03:15:57.056Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699884318983,
+            "name": "iPad Color",
+            "description": "iPad colors",
+            "createDate": "2023-11-13T14:05:18.983Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699884398426,
+            "name": "Gray",
+            "description": "gray",
+            "parent_variant_id": 1699884318983,
+            "createDate": "2023-11-13T14:06:38.426Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699884409722,
+            "name": "Silver",
+            "description": "silver",
+            "parent_variant_id": 1699884318983,
+            "createDate": "2023-11-13T14:06:49.722Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699891265320,
+            "name": "Magic Keyboard Color",
+            "description": "",
+            "createDate": "2023-11-13T16:01:05.320Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699891376783,
+            "name": "Black",
+            "description": "",
+            "parent_variant_id": 1699891265320,
+            "createDate": "2023-11-13T16:02:56.783Z",
+            "isDelete": false
+        },
+        {
+            "id": 1699891385878,
+            "name": "White",
+            "description": "",
+            "parent_variant_id": 1699891265320,
+            "createDate": "2023-11-13T16:03:05.878Z",
+            "isDelete": false
+        }
+    ]
+}

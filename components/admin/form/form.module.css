@@ -1,0 +1,137 @@
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--space-4);
+    background-color: rgb(var(--background-accent-rgb));
+    padding: var(--space-4);
+    border-radius: var(--space-2);
+}
+
+.formContainer {
+    width: 100%;
+    /* max-width: 800px; */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-4);
+}
+.formGroupSpan {
+    grid-column: span 2;
+}
+
+.formGroup .label {
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--foreground-400);
+}
+.inputContainer .input {
+    width: 100%;
+    font-size: .9rem;
+    padding: .5em;
+    border: 1px solid var(--foreground-100);
+    border-radius: var(--space-2);
+    background-color: rgb(var(--background-rgb));
+    color: rgb(var(--foreground-rgb));
+}
+.inputContainer .input:hover,
+.inputContainer .input:focus {
+    border-color: var(--primary-600);
+    outline: 1px solid var(--primary-600);
+}
+.inputContainer input:read-only {
+    border-color: var(--foreground-100);
+    outline: none;
+    background-color: transparent;
+}
+.inputContainer textarea {
+    width: 100%;
+    font-size: .9rem;
+    padding: .5em;
+    border: 1px solid var(--foreground-100);
+    border-radius: var(--space-2);
+    background-color: rgb(var(--background-rgb));
+    color: rgb(var(--foreground-rgb));
+    resize: none;
+}
+.inputContainer textarea:hover,
+.inputContainer textarea:focus {
+    border-color: var(--primary-600);
+    outline: 1px solid var(--primary-600);
+}
+
+.inputContainer small {
+    font-size: .65rem;
+    color: var(--danger);
+}
+
+.selectContainer {
+    position: relative;
+}
+.selectContainer select {
+    appearance: none; 
+    width: 100%;
+    font-size: .9rem;
+    padding: .5em;
+    border: 1px solid var(--foreground-100);
+    border-radius: var(--space-2);
+    background-color: rgb(var(--background-rgb));
+    color: rgb(var(--foreground-rgb));
+}
+.selectContainer svg {
+    position: absolute;
+    right: var(--space-2);
+    top: 50%;
+    translate: 0 -50%;
+    width: 1.4em;
+}
+
+.formFooter {
+    width: 100%;
+    /* max-width: 800px; */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-4);
+    border-top: 1px solid var(--foreground-50);
+    padding-top: var(--space-4);
+}
+.footerCenter {
+    justify-content: center;
+}
+.dates {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+}
+.date {
+    font-size: .7rem;
+    color: var(--foreground-200);
+}
+
+.checkboxs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: var(--space-3);
+    padding: var(--space-2) 0;
+}
+.checkbox {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-size: .9rem;
+}
+
+
+.inputSkeleton {
+    width: 100%;
+    font-size: 1rem;
+    padding: .5em;
+    background-color: var(--foreground-50);
+    color: transparent;
+    margin-top: 4px;
+}

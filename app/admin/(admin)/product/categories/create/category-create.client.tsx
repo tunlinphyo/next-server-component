@@ -1,0 +1,39 @@
+'use client'
+
+import { DisplayInput, Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
+import { useFormState } from "react-dom"
+import { onCategoryCreate } from "../categories.actions"
+import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
+import { CategoryType } from "@/libs/definations"
+
+const initState = {
+    name: '',
+    parent_category_id: ''
+}
+
+export function CategoryCreateForm({ parent }: { parent?: CategoryType }) {
+    const [ state, onAction ] = useFormState(onCategoryCreate, initState)
+    return (
+        <Form action={onAction} footer={
+            <FormFooter>
+                <button type="reset">Clear <ArrowPathIcon /></button>
+                <FormCreatButton icon={<CheckCircleIcon />}>Create Category</FormCreatButton>
+            </FormFooter>
+        }>
+            <Input
+                name="name"
+                error={state?.name}
+            >
+                Name
+            </Input>
+            {
+                parent && <>
+                    <input type="hidden" name="parent_category_id" defaultValue={parent.id} />
+                    <DisplayInput defaultValue={parent.name}>
+                        Parent Name
+                    </DisplayInput>
+                </>
+            }
+        </Form>
+    )
+}

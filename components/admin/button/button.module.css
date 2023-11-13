@@ -1,0 +1,10 @@
+.buttonSkeleton {
+    width: 120px;
+    color: transparent;
+    font-size: 1em;
+    padding: .5em 2em;
+    font-weight: 400;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    background-color: var(--foreground-50);
+}

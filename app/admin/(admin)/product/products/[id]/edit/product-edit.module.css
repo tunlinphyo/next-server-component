@@ -1,0 +1,26 @@
+
+.variants {
+    grid-column: span 2;
+    border: 1px solid var(--foreground-100);
+    border-radius: var(--space-2);
+    background-color: rgb(var(--background-rgb));
+    color: rgb(var(--foreground-rgb));
+    padding: var(--space-4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.productClasses {
+    grid-column: span 2;
+    margin: 0 calc(var(--space-4) * -1);
+}
+
+.classAction {
+    display: flex;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: calc(var(--space-4) * -1);
+    padding: var(--space-3) var(--space-4) 0;
+}

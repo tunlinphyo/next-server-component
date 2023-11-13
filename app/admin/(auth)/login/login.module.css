@@ -1,0 +1,19 @@
+
+.login {
+    margin: var(--space-4) auto;
+    width: 100%;
+    height: calc(100vh - (var(--space-4) * 2));
+    background-color: rgb(var(--background-rgb));
+    padding: var(--space-5);
+    border-radius: var(--space-3);
+    border: 1px solid rgba(var(--border-rgb), .4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-3);
+}
+.login form {
+    max-width: 400px;
+    padding-bottom: var(--space-5);
+}
