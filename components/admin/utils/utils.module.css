@@ -50,8 +50,8 @@
     font-weight: 600;
     padding: .2em .6em;
     border-radius: 3em;
-    background-color: var(--foreground-300);
-    color: rgb(var(--background-rgb));
+    background-color: var(--primary-100);
+    color: var(--primary-600);
     min-width: 40px;
     text-align: center;
 }

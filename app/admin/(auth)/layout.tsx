@@ -1,5 +1,6 @@
 import { ChildrenProp } from '@/libs/definations'
-import styles from './login.module.css'
+import '../admin.css'
+import styles from './auth.module.css'
 
 export default async function Layout({ children }: ChildrenProp) {
   return (

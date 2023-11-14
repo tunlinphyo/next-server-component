@@ -6,9 +6,14 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
 
+  /* --primary: hsl(243, 100%, 69%);
   --primary-hue: 145;
   --primary-saturation: 63%;
-  --primary-lightness: 49%;
+  --primary-lightness: 49%; */
+
+  --primary-hue: 243;
+  --primary-saturation: 100%;
+  --primary-lightness: 69%;
 
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
@@ -29,9 +34,11 @@
   --foreground-400: rgba(var(--foreground-rgb), .4);
   --foreground-500: rgba(var(--foreground-rgb), .5);
   --foreground-600: rgba(var(--foreground-rgb), .6);
+  --foreground-700: rgba(var(--foreground-rgb), .7);
+  --foreground-800: rgba(var(--foreground-rgb), .8);
 
   --primary-600: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
-  --primary-100: hsl(var(--primary-hue), 43%, 93%);
+  --primary-100: hsl(var(--primary-hue), 80%, 93%);
 
   --space-0: 0deg;
   --space-1: 2.5px;
@@ -46,9 +53,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary-hue: 160;
+    /* --primary-hue: 160;
     --primary-saturation: 43%;
-    --primary-lightness: 69%;
+    --primary-lightness: 69%; */
+
+    --primary-hue: 243;
+    --primary-saturation: 92%;
+    --primary-lightness: 82%;
 
     --foreground-rgb: 220, 220, 220;
     --background-rgb: 35, 35, 35;
@@ -57,7 +68,7 @@
     --border-rgb: 60, 60, 60;
     --danger: hsl(6, 59%, 77%);
 
-    --primary-100: hsl(var(--primary-hue), 20%, 20%);
+    --primary-100: hsl(var(--primary-hue), 25%, 25%);
 
     --callout-rgb: 20, 20, 20;
     --callout-border-rgb: 108, 108, 108;

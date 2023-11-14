@@ -1,6 +1,6 @@
 .productClasses {
     grid-column: span 2;
-    margin: 0 calc(var(--space-4) * -1);
+    margin: calc(var(--space-4) * -1);
 }
 
 .variants {

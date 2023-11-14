@@ -48,8 +48,8 @@ export async function POST<T extends BaseData>(table: Table, data: Partial<T>) {
 
 export async function PUT<T extends BaseData>(table: Table, data: T) {
     let datas:T[] = await db.getData(`/${table}`)
-    const newDatas = datas.map(item => item.id === data.id 
-            ? { ...data, updateDate: new Date() } 
+    const newDatas = datas.map(item => item.id === data.id
+            ? { ...data, updateDate: new Date() }
             : item
         )
     await db.push(`/${table}`, [ ...newDatas ])

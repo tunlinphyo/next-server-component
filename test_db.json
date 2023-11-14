@@ -116,6 +116,13 @@
             "createDate": "2023-11-10T09:14:33.811Z",
             "isDelete": false,
             "updateDate": "2023-11-10T09:20:05.221Z"
+        },
+        {
+            "name": "New Customer 3",
+            "email": "new3@gmail.com",
+            "id": 1699932984423,
+            "createDate": "2023-11-14T03:36:24.423Z",
+            "isDelete": false
         }
     ],
     "products": [
@@ -192,11 +199,15 @@
             "category_ids": [
                 1699633688365,
                 1699633725099,
-                1699886045138,
-                1699887501584
+                1699886045138
             ],
             "createDate": "2023-11-13T15:33:33.813Z",
-            "isDelete": false
+            "isDelete": false,
+            "images": [
+                "public/uploads/1699949885383.png",
+                "public/uploads/1699949885486.jpeg"
+            ],
+            "updateDate": "2023-11-14T08:18:05.489Z"
         },
         {
             "id": 1699891224183,
@@ -421,7 +432,8 @@
             "price": 5000,
             "quantity": 10,
             "createDate": "2023-11-13T15:33:34.123Z",
-            "isDelete": false
+            "isDelete": false,
+            "updateDate": "2023-11-14T08:18:05.515Z"
         },
         {
             "id": 1699891081895,
@@ -687,6 +699,13 @@
             "name": "iPad Mini",
             "parent_category_id": 1699876021958,
             "createDate": "2023-11-13T16:14:28.136Z",
+            "isDelete": false
+        },
+        {
+            "name": "Watch",
+            "parent_category_id": 1699617210548,
+            "id": 1699936311922,
+            "createDate": "2023-11-14T04:31:51.922Z",
             "isDelete": false
         }
     ],

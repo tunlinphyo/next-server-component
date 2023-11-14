@@ -6,8 +6,15 @@ import { CustomerType, GenericObject } from "@/libs/definations"
 import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { PER_PAGE } from "@/libs/const"
 
-const PER_PAGE = 5
+export async function getTotalCustomer() {
+    await wait()
+
+    const customers = await GET<CustomerType>('customers', { isDelete: false })
+
+    return customers.length
+}
 
 export async function getCustomersPageLength() {
     await wait()
@@ -44,7 +51,6 @@ export async function deleteCustomer(id: number) {
         await DELETE<CustomerType>('customers', id)
         revalidatePath('/admin/customers')
         redirect('/admin/customers')
-        return { code: 'Success' }
     } catch(e) {
         console.log('CAN REDIRECT ON SELF PAGE', e)
     }
@@ -68,14 +74,8 @@ export async function onCustomerCreate(prevState: any, formData: FormData) {
         return errors
     }
 
-    const newCustomer: CustomerType = {
-        id: Date.now(),
-        ...result.data,
-        createDate: new Date(),
-        isDelete: false
-    }
-
-    await POST<CustomerType>('customers', newCustomer)
+    const newCustomer = await POST<CustomerType>('customers', result.data)
+    console.log('CUSTOMER_UPDATED', newCustomer)
     revalidatePath('/admin/customers')
     redirect('/admin/customers')
 }
@@ -104,13 +104,8 @@ export async function onCustomerEdit(prevState: any, formData: FormData) {
         return errors
     }
 
-    const editedCustomer = {
-        ...result.data,
-        updateDate: new Date(),
-    } as CustomerType
-
-    const updatedCustomer = await PATCH<CustomerType>('customers', editedCustomer)
-    console.log('UPDATED', updatedCustomer)
+    const updatedCustomer = await PATCH<CustomerType>('customers', result.data)
+    console.log('CUSTOMER_UPDATED', updatedCustomer)
     revalidatePath('/admin/customers')
     redirect('/admin/customers')
 }

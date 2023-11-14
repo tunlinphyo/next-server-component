@@ -108,14 +108,7 @@ export async function onCategoryCreate(prevState: any, formData: FormData) {
         return { name: 'Category name is already in used' }
     }
 
-    const newCategory = {
-        id: Date.now(),
-        ...result.data,
-        createDate: new Date(),
-        isDelete: false
-    }
-
-    await POST<CategoryType>('product_categories', newCategory)
+    const newCategory = await POST<CategoryType>('product_categories', result.data)
     if (newCategory.parent_category_id) {
         revalidatePath(`/admin/product/categories/${newCategory.parent_category_id}/edit`)
         redirect(`/admin/product/categories/${newCategory.parent_category_id}/edit`)
@@ -139,12 +132,7 @@ export async function onCategoryEdit(prevState: any, formData: FormData) {
         return { name: 'Category name is already in used' }
     }
 
-    const editedCategory = {
-        ...result.data,
-        updateDate: new Date(),
-    } as CategoryType
-
-    const updatedCategory = await PATCH<CategoryType>('product_categories', editedCategory)
+    const updatedCategory = await PATCH<CategoryType>('product_categories', result.data)
     console.log('UPDATED', updatedCategory)
     if (updatedCategory?.parent_category_id) {
         revalidatePath(`/admin/product/categories/${updatedCategory.parent_category_id}/edit`)

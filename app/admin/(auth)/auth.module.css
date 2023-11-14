@@ -1,8 +1,7 @@
 
 .login {
-    margin: var(--space-4) auto;
+    /* margin: var(--space-4) auto; */
     width: 100%;
-    height: calc(100vh - (var(--space-4) * 2));
     background-color: rgb(var(--background-rgb));
     padding: var(--space-5);
     border-radius: var(--space-3);
@@ -16,4 +15,13 @@
 .login form {
     max-width: 400px;
     padding-bottom: var(--space-5);
+}
+
+@media (min-width: 992px) {
+    .login {
+        grid-template-columns: minmax(200px, .3fr) minmax(0, 1fr);
+        height: calc(100vh - (var(--space-4) * 2));
+        max-height: 680px;
+        outline: 20px solid #000;
+    }
 }

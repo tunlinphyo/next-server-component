@@ -66,9 +66,11 @@ export interface ProductType {
     id: number;
     name: string;
     description: string;
-    image?: string;
+    images?: string[];
     price?: number;
     quantity?: number;
+    minPrice?: number;
+    maxPrice?: number;
     categories?: CategoryType[];
     category_ids?: number[];
     variant_1_id?: number;

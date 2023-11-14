@@ -103,25 +103,13 @@ export async function onVariantCreate(prevState: any, formData: FormData) {
         return getZodErrors(result.error.issues)
     }
 
-    // const isName = await GET_ONE<VariantType>('product_variants', { name: result.data.name, isDelete: false })
-    // if (isName) {
-    //     return { name: 'Variant name is already in used' }
-    // }
-
-    const newVariant = {
-        id: Date.now(),
-        ...result.data,
-        createDate: new Date(),
-        isDelete: false
-    }
-
-    const newData = await POST<VariantType>('product_variants', newVariant)
+    const newVariant = await POST<VariantType>('product_variants', result.data)
     if (newVariant.parent_variant_id) {
         revalidatePath(`/admin/product/variants/${newVariant.parent_variant_id}/edit`)
         redirect(`/admin/product/variants/${newVariant.parent_variant_id}/edit`)
     } else {
         revalidatePath('/admin/product/variants')
-        redirect(`/admin/product/variants/${newData.id}/edit`)
+        redirect(`/admin/product/variants/${newVariant.id}/edit`)
     }
 }
 
@@ -139,12 +127,7 @@ export async function onVariantEdit(prevState: any, formData: FormData) {
         return { name: 'Variant name is already in used' }
     }
 
-    const editedVariant = {
-        ...result.data,
-        updateDate: new Date(),
-    } as VariantType
-
-    const updatedVariant = await PATCH<VariantType>('product_variants', editedVariant)
+    const updatedVariant = await PATCH<VariantType>('product_variants', result.data)
     if (updatedVariant?.parent_variant_id) {
         revalidatePath(`/admin/product/variants/${updatedVariant.parent_variant_id}/edit`)
         redirect(`/admin/product/variants/${updatedVariant.parent_variant_id}/edit`)

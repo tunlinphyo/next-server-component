@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <PageContainer>
       <FlexBetween>
-        <h1>Products</h1>
+        <h1>Product</h1>
       </FlexBetween>
       <Summary>
         <Suspense fallback={<SummaryCardSkeleton />}>

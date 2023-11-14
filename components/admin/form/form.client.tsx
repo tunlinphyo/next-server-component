@@ -83,11 +83,11 @@ export function Input({ children, name, type, defaultValue, error }: InputProps)
         <div className={styles.formGroup}>
             <label htmlFor={name} className={styles.label}>{ children }</label>
             <div className={styles.inputContainer}>
-                <input 
+                <input
                     className={styles.input}
-                    type={type || 'text'} 
-                    name={name} 
-                    defaultValue={defaultValue || ''} 
+                    type={type || 'text'}
+                    name={name}
+                    defaultValue={defaultValue || ''}
                 />
                 { error && <small>{ error }</small> }
             </div>
@@ -116,10 +116,10 @@ export function Checkboxs({ children, name, list, defaultValue, error }: Checkbo
                 <div className={styles.checkboxs}>
                     {
                         list.map(item => (
-                            <Checkbox 
-                                key={item.id} 
-                                id={item.id} 
-                                name={name} 
+                            <Checkbox
+                                key={item.id}
+                                id={item.id}
+                                name={name}
                                 label={item.name}
                                 checked={!!checkeds?.includes(item.id)}
                             />
@@ -135,7 +135,7 @@ export function Checkboxs({ children, name, list, defaultValue, error }: Checkbo
 export function Checkbox({ id, name, label, checked }: CheckboxProp) {
     return (
         <label className={styles.checkbox}>
-            <input type="checkbox" name={`${name}_${id}`} value={id} defaultChecked={checked} />
+            <input type="checkbox" name={name} value={id} defaultChecked={checked} />
             <div className={styles.checkboxLabel}>{ label }</div>
         </label>
     )
@@ -160,7 +160,7 @@ export function Select({ children, name, list, defaultValue, error, placeholder 
                 <div className={styles.selectContainer}>
                     <ChevronUpDownIcon />
                     <select name={name} defaultValue={defaultValue}>
-                        <option value="">{ placeholder || 'Select a value' }</option> 
+                        <option value="">{ placeholder || 'Select a value' }</option>
                         {
                             list.map(item => (
                                 <option key={item.id} value={item.id}>{ item.name }</option>
@@ -222,11 +222,11 @@ export function DeleteButton({ children }: { children?: React.ReactNode }) {
         }
     }
     return (
-        <button 
+        <button
             type="button"
             ref={buttonEl}
             onClick={handleClick}
-            className={clsx('button icon-button danger', isChildren && 'has-children')} 
+            className={clsx('button icon-button danger', isChildren && 'has-children')}
             disabled={pending || loading}>
             { children }
             {

@@ -3,10 +3,6 @@ import {
     FlexBetween,
     PageContainer,
 } from "@/components/admin/utils/utils.client";
-import {
-    FormSkeleton,
-    FromDeleteButton,
-} from "@/components/admin/form/form.client";
 import { Suspense } from "react";
 import { VariantSelect } from "./product-class.server";
 import { TableSkeleton } from "@/components/admin/table/table.client";
@@ -21,12 +17,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <FlexBetween>
             <h1>Edit Product Variant</h1>
         </FlexBetween>
-        <Suspense fallback={
-            <>
-                <FormSkeleton count={2} />
-                <TableSkeleton cols={4} rows={4} />
-            </>
-        }>
+        <Suspense fallback={<TableSkeleton cols={4} rows={4} />}>
             <VariantSelect id={id} />
         </Suspense>
         </PageContainer>

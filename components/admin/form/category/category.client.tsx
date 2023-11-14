@@ -32,7 +32,7 @@ export function CategorySelect({ children, name, list, defaultValue, error }: Ca
             <label htmlFor={name} className={formStyles.label}>{ children }</label>
             <div className={formStyles.inputContainer}>
                 <div className={style.categoryContainer}>
-                    <CategoryCheckbox 
+                    <CategoryCheckbox
                         name={name}
                         list={list}
                         checkeds={checkeds}
@@ -47,13 +47,13 @@ export function CategorySelect({ children, name, list, defaultValue, error }: Ca
 export function CategoryCheckbox({ name, list, checkeds }: CategoryCheckboxProps) {
     return (
         <ul className={style.categories}>
-            { 
+            {
                 list.map(parent => (
-                    <CategoryLi 
+                    <CategoryLi
                         key={parent.id}
-                        name={name} 
-                        category={parent} 
-                        checkeds={checkeds} 
+                        name={name}
+                        category={parent}
+                        checkeds={checkeds}
                     />
                 ))
             }
@@ -66,10 +66,10 @@ export function CategoryLi({ name, category, checkeds }: CategoryLiProps) {
     return (
         <li className={style.category}>
             <div className={clsx(style.toggle, category.children?.length && style.hasChild)}>
-                <Checkbox 
-                    key={category.id} 
-                    id={category.id} 
-                    name={name} 
+                <Checkbox
+                    key={category.id}
+                    id={category.id}
+                    name={name}
                     label={category.name}
                     checked={!!checkeds?.includes(category.id)}
                 />

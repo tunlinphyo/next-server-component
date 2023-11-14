@@ -41,7 +41,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: var(--space-3);
-    color: var(--foreground-600);
+    color: var(--foreground-800);
     font-weight: 400;
     font-size: .9em;
     background-color: rgb(var(--background-accent-rgb));
@@ -59,7 +59,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: var(--space-3);
-    color: var(--foreground-400);
+    color: var(--foreground-800);
     font-weight: 400;
     font-size: .9em;
     background-color: rgb(var(--background-accent-rgb));

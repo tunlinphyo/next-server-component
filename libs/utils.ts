@@ -58,13 +58,13 @@ function getValueAfterLastUnderscore(input: string): string | undefined {
 
 function extractValues(input: string): [ string, string | undefined ] {
     const lastUnderscoreIndex = input.lastIndexOf('_')
-  
+
     if (lastUnderscoreIndex !== -1) {
         const before = input.substring(0, lastUnderscoreIndex)
         const after = input.substring(lastUnderscoreIndex + 1)
         return [ before, after ]
     }
-  
+
     return [ input, undefined ]
 }
 
@@ -76,13 +76,13 @@ export function getFormDataBy(formData: FormData, index: number) {
             const [ keyName ] = extractValues(key)
             formObject[keyName] = value
         })
-    
+
     return formObject
 }
 
 export function formatPrice(price: number | undefined, currencySymbol: string = '$'): string {
     if (!price) return 'Invalit price'
-    const formattedPrice = price.toFixed(2)
+    const formattedPrice = price.toFixed(0)
 
     // Add thousands separator
     const parts = formattedPrice.split('.')

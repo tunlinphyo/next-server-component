@@ -31,7 +31,7 @@ export function Nav({ nav }: { nav: Navigation }) {
     }
 
     return (
-        <li className={clsx(isActive() && styles.active)}>
+        <li key={nav.href} className={clsx(isActive() && styles.active)}>
             <Link href={nav.href}>
                 { getIcon(nav.name) }
                 { nav.name }

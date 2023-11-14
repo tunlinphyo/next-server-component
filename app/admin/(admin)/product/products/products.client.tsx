@@ -27,7 +27,11 @@ export function ProductTable({ products }: { products: ProductType[] }) {
                         <TableRow key={product.id}>
                             <TableData>{ product.id }</TableData>
                             <TableData>{ product.name }</TableData>
-                            <TableData>{ formatPrice(product.price) }</TableData>
+                            <TableData>
+                                { formatPrice(product.minPrice) }
+                                { product.minPrice != product.maxPrice && <div>~</div> }
+                                { product.minPrice != product.maxPrice && formatPrice(product.maxPrice) }
+                            </TableData>
                             <TableData>
                                 <Budge>{ product.quantity }</Budge>
                             </TableData>

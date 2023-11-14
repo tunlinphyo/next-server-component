@@ -34,12 +34,12 @@ export function VariantSelectForm({ id, variants }: {  id: number, variants: For
             </FormFooter>
         }>
             <input type="hidden" name="id" defaultValue={id} />
-            <Select 
+            <Select
                 name="variant_1_id"
                 list={variants}
                 error={state?.variant_1_id}
             >Variant One</Select>
-            <Select 
+            <Select
                 name="variant_2_id"
                 list={variants}
                 error={state?.variant_2_id}
@@ -92,11 +92,11 @@ export function ClassCreateEditForm({ product, variant1, variant2, classes }: Pr
                                 <TableRow key={index}>
                                     <TableData>
                                         <input type="hidden" name={`id_${index}`} defaultValue={item.id} />
-                                        <input 
+                                        <input
                                             className={styles.checkbox}
-                                            type="checkbox" 
-                                            name={`index_${index}`} 
-                                            defaultValue={index} 
+                                            type="checkbox"
+                                            name={`index_${index}`}
+                                            defaultValue={index}
                                             defaultChecked={!!item.id} />
                                     </TableData>
                                     <TableData>
@@ -114,16 +114,16 @@ export function ClassCreateEditForm({ product, variant1, variant2, classes }: Pr
                                         }
                                     </TableData>
                                     <TableData>
-                                        <Input 
-                                            name={`price_${index}`} 
-                                            defaultValue={item.price} 
+                                        <Input
+                                            name={`price_${index}`}
+                                            defaultValue={item.price}
                                             error={state[String(index)]?.price}
                                         />
                                     </TableData>
                                     <TableData>
-                                        <Input 
-                                            name={`quantity_${index}`} 
-                                            defaultValue={item.quantity} 
+                                        <Input
+                                            name={`quantity_${index}`}
+                                            defaultValue={item.quantity}
                                             error={state[String(index)]?.quantity}
                                         />
                                     </TableData>

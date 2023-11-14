@@ -6,6 +6,7 @@ import { Form, FormCreatButton, FormFooter, Input, Textarea } from "@/components
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { FormCategoryType } from "@/libs/definations"
 import { CategorySelect } from "@/components/admin/form/category/category.client"
+import { FilesUpload } from "@/components/admin/form/files/files.client"
 
 const initState = {
     name: '',
@@ -19,6 +20,8 @@ const initState = {
 
 export function ProductCreateForm({ categories }: { categories: FormCategoryType[] }) {
     const [ state, onAction ] = useFormState(onProductCreate, initState)
+
+
 
     console.log('CATEGORIES', categories)
     return (
@@ -34,6 +37,7 @@ export function ProductCreateForm({ categories }: { categories: FormCategoryType
             >
                 Name
             </Input>
+            <FilesUpload />
             <Textarea
                 name="description"
                 error={state?.description}
@@ -54,7 +58,7 @@ export function ProductCreateForm({ categories }: { categories: FormCategoryType
             >
                 Quantity
             </Input>
-            <CategorySelect 
+            <CategorySelect
                 name="category_ids"
                 list={categories}
             >

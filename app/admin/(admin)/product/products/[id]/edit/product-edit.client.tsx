@@ -14,9 +14,10 @@ import { formatPrice } from "@/libs/utils"
 import clsx from "clsx"
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client"
 import { appConfirm } from "@/libs/modals"
+import { FilesUpload } from "@/components/admin/form/files/files.client"
 
 type ProductEditProps = {
-    product: ProductType; 
+    product: ProductType;
     classes: ProductClassType[];
     categories: FormCategoryType[];
 }
@@ -54,6 +55,7 @@ export function ProductEditForm({ product, classes, categories }: ProductEditPro
             >
                 Name
             </Input>
+            <FilesUpload />
             <Textarea
                 name="description"
                 defaultValue={product.description}
@@ -83,7 +85,7 @@ export function ProductEditForm({ product, classes, categories }: ProductEditPro
                     </Input>
                 </> : <input type="hidden" name="is_variant" defaultValue="1" />
             }
-            <CategorySelect 
+            <CategorySelect
                 name="category_ids"
                 list={categories}
                 defaultValue={product.category_ids}
@@ -103,7 +105,7 @@ export function ClassForm({ product, classes }: { product: ProductType, classes:
             confirmText: 'yes'
         })
         if (isSave) {
-            const buttonEl = event.target as HTMLButtonElement 
+            const buttonEl = event.target as HTMLButtonElement
             const formEl = buttonEl.closest('form')
             await formEl?.requestSubmit()
         }

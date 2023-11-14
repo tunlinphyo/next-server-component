@@ -1,12 +1,15 @@
 'use server'
 
-import { getCheckboxValues, getFormDataBy, getZodErrors, isObjectEmpty, wait } from "@/libs/utils";
-import { CreateProductSchema, EditProductClassSchema, EditProductSchema, ProductClassSchema, VariantSchema } from "./products.schema";
-import { CategoryType, FormArrayType, FormCategoryType, GenericObject, NestedObject, ProductClassType, ProductType, VariantType } from "@/libs/definations";
-import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db";
+import { getCheckboxValues, getFormDataBy, getZodErrors, isObjectEmpty, wait } from "@/libs/utils"
+import { CreateProductSchema, EditProductClassSchema, EditProductSchema, ProductClassSchema, VariantSchema } from "./products.schema"
+import { CategoryType, FormArrayType, FormCategoryType, NestedObject, ProductClassType, ProductType, VariantType } from "@/libs/definations"
+import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { PER_PAGE } from "@/libs/const";
+import { PER_PAGE } from "@/libs/const"
+import { getStockAndPrices } from "./products.utils"
+import path from "path"
+import fs, { promises as fsPromises } from "fs"
 
 export async function getAllCategories() {
     await wait()
@@ -34,7 +37,7 @@ export async function getAllCategories() {
 }
 
 async function _getChildCategories(category: CategoryType) {
-    const children = await GET<CategoryType>('product_categories', { parent_category_id: category.id, isDelete: false }) 
+    const children = await GET<CategoryType>('product_categories', { parent_category_id: category.id, isDelete: false })
     if (children.length) {
         category.children = []
         for await (const child of children) {
@@ -79,10 +82,13 @@ export async function getProducts(page: number = 1) {
     const result: ProductType[] = []
     for await (const product of paginated) {
         const productClasses = await GET<ProductClassType>('product_class', { product_id: product.id, isDelete: false })
-        if (productClasses) {
+        const { stockTotal, minPrice, maxPrice } = getStockAndPrices(productClasses)
+        if (productClasses.length) {
             // product.classes = productClasses
-            product.price = productClasses[0]?.price
-            product.quantity = productClasses[0]?.quantity
+            product.price = minPrice
+            product.minPrice = minPrice
+            product.maxPrice = maxPrice
+            product.quantity = stockTotal
         }
         result.push(product)
     }
@@ -107,7 +113,7 @@ export async function getProduct(id: number) {
     product.price = classes[0].price
     product.quantity = classes[0].quantity
     product.classes = classes
-    
+
     return product
 }
 
@@ -141,9 +147,52 @@ export async function deleteProduct(id: number) {
     }
 }
 
+function getFileExtension(file: File): string {
+    // Split the file name by dot to get an array of parts
+    const fileNameParts = file.name.split('.');
+
+    // Get the last part of the array, which should be the file extension
+    const fileExtension = fileNameParts.pop()?.toLowerCase() || '';
+
+    return fileExtension;
+}
+
+async function saveImage(file: File) {
+    const destinationDirectory = 'public/uploads'
+    const extension = getFileExtension(file)
+    const fileName = `${Date.now()}.${extension}`
+    const destinationPath = path.join(destinationDirectory, fileName)
+
+    try {
+        const imageBuffer = await file.arrayBuffer()
+        const buffer = Buffer.from(imageBuffer)
+        fs.writeFileSync(destinationPath, buffer)
+        return destinationPath
+    } catch (e) {
+        console.log(e)
+        return null
+    }
+}
+
+async function saveImages(files: File[]) {
+    const images: string[] = []
+    for await (const file of files) {
+        await wait(100)
+        const result = await saveImage(file)
+        if (result) images.push(result)
+    }
+    return images
+}
+
+export async function onImageUpload(prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData)
+    console.log('FORM_DATA_FROM_IMAGE_UPLOAD', data)
+}
+
 export async function onProductCreate(prevState: any, formData: FormData) {
     const data = Object.fromEntries(formData)
-    const category_ids = getCheckboxValues(formData, 'category_ids')
+    console.log('FORM_DATA_FROM_CREATE', data)
+    const category_ids = formData.getAll('category_ids').map(item => Number(item))
     const result = CreateProductSchema.safeParse({ ...data, category_ids })
 
     if (!result.success) {
@@ -152,27 +201,24 @@ export async function onProductCreate(prevState: any, formData: FormData) {
 
     const productData = result.data
 
-    const newProduct: ProductType = {
-        id: 1,
+    const images = formData.getAll('images') as File[]
+    const imagePaths = await saveImages(images)
+
+    const newProduct: Partial<ProductType> = {
         name: productData.name,
         description: productData.description,
-        image: productData.image,
+        images: imagePaths,
         category_ids,
-        createDate: new Date(),
-        isDelete: false
     }
 
     const product = await POST<ProductType>('products', newProduct)
     console.log('NEW_PRODUCT', product)
 
     await wait(300) // add not do duplicate id
-    const newProductClass: ProductClassType = {
-        id: 1,
+    const newProductClass: Partial<ProductClassType> = {
         product_id: product.id,
         price: productData.price,
-        quantity: productData.quantity,
-        createDate: new Date(),
-        isDelete: false
+        quantity: productData.quantity
     }
     const productClass = await POST<ProductClassType>('product_class', newProductClass)
     console.log('PRODUCT_CLASS', productClass)
@@ -185,10 +231,10 @@ export async function onProductEdit(initState: any, formData: FormData) {
     await wait()
 
     const data = Object.fromEntries(formData)
-    const category_ids = getCheckboxValues(formData, 'category_ids')
+    const category_ids = formData.getAll('category_ids').map(item => Number(item))
     const result = EditProductSchema.safeParse({ ...data, category_ids })
     const isVariant = Number(formData.get('is_variant'))
-    
+
     let classResult: any
     let errors: any = {}
     if (!isVariant) {
@@ -210,7 +256,15 @@ export async function onProductEdit(initState: any, formData: FormData) {
     }
     if (!isObjectEmpty(errors)) return errors
 
-    await PATCH<ProductType>('products', result.data)
+    const images = formData.getAll('images') as File[]
+    const imagePaths = await saveImages(images)
+
+    const editData: Partial<ProductType> = {
+        ...result.data,
+        images: imagePaths,
+    }
+
+    await PATCH<ProductType>('products', editData)
     if (!isVariant && classResult.success) {
         const productClass = await GET_ONE<ProductClassType>('product_class', {
             id: classResult.data.id,
@@ -229,7 +283,7 @@ export async function onVariantCreate(prevState: any, formData: FormData) {
     await wait()
 
     const result = VariantSchema.safeParse(Object.fromEntries(formData))
-    
+
     if (!result.success) {
         console.log(getZodErrors(result.error.issues))
         return getZodErrors(result.error.issues)
@@ -257,7 +311,7 @@ export async function onClassEdit(prevState: any, formData: FormData) {
     const newClasses: Partial<ProductClassType>[] = []
     for await (const index of indexs) {
         const result = getFormDataBy(formData, index)
-        
+
         const data: Partial<ProductClassType> = {
             id: result.id ? Number(result.id) : undefined,
             product_id: Number(product_id),
@@ -311,7 +365,7 @@ export async function onVariantDelete(id: number) {
     const defaultClass = await GET_ONE<ProductClassType>('product_class', {
         product_id: id,
         variant_1_id: undefined
-    }) 
+    })
     if (!defaultClass) return { code: 'Could not find default class' }
 
     const currentClasses = await GET<ProductClassType>('product_class', {
@@ -324,7 +378,7 @@ export async function onVariantDelete(id: number) {
 
     // DELETE ALL CURRENT CLASS
     for await (const current of currentClasses) {
-        await PATCH<ProductClassType>('product_class', { 
+        await PATCH<ProductClassType>('product_class', {
             id: current.id,
             isDelete: true,
         })
