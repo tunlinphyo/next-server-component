@@ -8,8 +8,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { PER_PAGE } from "@/libs/const"
 import { getStockAndPrices } from "./products.utils"
-import path from "path"
-import fs, { promises as fsPromises } from "fs"
+import { deleteImage } from "@/libs/images"
 
 export async function getAllCategories() {
     await wait()
@@ -147,48 +146,6 @@ export async function deleteProduct(id: number) {
     }
 }
 
-function getFileExtension(file: File): string {
-    // Split the file name by dot to get an array of parts
-    const fileNameParts = file.name.split('.');
-
-    // Get the last part of the array, which should be the file extension
-    const fileExtension = fileNameParts.pop()?.toLowerCase() || '';
-
-    return fileExtension;
-}
-
-async function saveImage(file: File) {
-    const destinationDirectory = 'public/uploads'
-    const extension = getFileExtension(file)
-    const fileName = `${Date.now()}.${extension}`
-    const destinationPath = path.join(destinationDirectory, fileName)
-
-    try {
-        const imageBuffer = await file.arrayBuffer()
-        const buffer = Buffer.from(imageBuffer)
-        fs.writeFileSync(destinationPath, buffer)
-        return destinationPath
-    } catch (e) {
-        console.log(e)
-        return null
-    }
-}
-
-async function saveImages(files: File[]) {
-    const images: string[] = []
-    for await (const file of files) {
-        await wait(100)
-        const result = await saveImage(file)
-        if (result) images.push(result)
-    }
-    return images
-}
-
-export async function onImageUpload(prevState: any, formData: FormData) {
-    const data = Object.fromEntries(formData)
-    console.log('FORM_DATA_FROM_IMAGE_UPLOAD', data)
-}
-
 export async function onProductCreate(prevState: any, formData: FormData) {
     const data = Object.fromEntries(formData)
     console.log('FORM_DATA_FROM_CREATE', data)
@@ -200,14 +157,17 @@ export async function onProductCreate(prevState: any, formData: FormData) {
     }
 
     const productData = result.data
+    const imagesToDelete = formData.getAll('delete_images') as string[]
+    const images = formData.getAll('images') as string[]
 
-    const images = formData.getAll('images') as File[]
-    const imagePaths = await saveImages(images)
+    for await (const img of imagesToDelete) {
+        await deleteImage(img)
+    }
 
     const newProduct: Partial<ProductType> = {
         name: productData.name,
         description: productData.description,
-        images: imagePaths,
+        images,
         category_ids,
     }
 
@@ -256,12 +216,16 @@ export async function onProductEdit(initState: any, formData: FormData) {
     }
     if (!isObjectEmpty(errors)) return errors
 
-    const images = formData.getAll('images') as File[]
-    const imagePaths = await saveImages(images)
+    const imagesToDelete = formData.getAll('delete_images') as string[]
+    const images = formData.getAll('images') as string[]
+
+    for await (const img of imagesToDelete) {
+        await deleteImage(img)
+    }
 
     const editData: Partial<ProductType> = {
         ...result.data,
-        images: imagePaths,
+        images,
     }
 
     await PATCH<ProductType>('products', editData)

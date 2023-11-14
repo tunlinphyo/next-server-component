@@ -22,6 +22,7 @@
     justify-content: flex-start;
     align-items: center;
     position: sticky;
+    z-index: 5;
     top: 0;
     background-color: rgb(var(--background-rgb));
 }

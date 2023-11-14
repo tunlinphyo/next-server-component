@@ -1,9 +1,10 @@
 'use server'
 
 import { CubeIcon, ListBulletIcon, TicketIcon, UsersIcon } from "@heroicons/react/24/outline"
-import { DashboardSummaryCard } from "./dashboard.client"
+import { DashboardSummaryCard, ProductTable } from "./dashboard.client"
 import { getTotalProductCategory, getTotalProductVariant, getTotalProducts } from "./product/product.actions"
 import { getTotalCustomer } from "./customers/customers.actions"
+import { getLatestProducts } from "./dashboard.actions"
 
 export async function ProductSummary() {
     const count = await getTotalProducts()
@@ -42,5 +43,12 @@ export async function CustomerSummary() {
             icon={<UsersIcon />}
             title="Customers"
         >{ count }</DashboardSummaryCard>
+    )
+}
+
+export async function LatestProducts() {
+    const { lastDate, products } = await getLatestProducts()
+    return (
+        <ProductTable lastDate={lastDate} products={products} />
     )
 }

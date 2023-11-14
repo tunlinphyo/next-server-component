@@ -1,3 +1,85 @@
 .fileUpload {
     grid-column: span 2;
 }
+
+.fileUpload .label {
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--foreground-400);
+}
+.imageGrid {
+    width: 100%;
+    font-size: .9rem;
+    padding: .5em;
+    border: 1px solid var(--foreground-100);
+    border-radius: var(--space-2);
+    background-color: rgb(var(--background-rgb));
+    color: rgb(var(--foreground-rgb));
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 150px);
+    gap: var(--space-2);
+}
+.imageBox {
+    width: 150px;
+    height: 150px;
+    border-radius: var(--space-2);
+    border: 1px solid var(--foreground-100);
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+.imageBox:has(.iconConatiner:hover) {
+    border-color: var(--primary-600);
+    outline: 1px solid var(--primary-600);
+}
+
+.imageBox img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.iconConatiner {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background-color: rgb(var(--background-accent-rgb));
+}
+.photoIcon {
+    width: 2.5rem;
+    color: var(--foreground-400);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+.plusIcon {
+    width: 1.5rem;
+    color: var(--foreground-400);
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    translate: 9px -5px;
+}
+
+.deleteIcon {
+    width: 36px;
+    height: 36px;
+    min-width: 0!important;
+    padding: 0;
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    display: grid;
+    place-content: center;
+    border-radius: 50%;
+}
+.deleteIcon:hover {
+    border-color: var(--primary-600);
+    outline: 1px solid var(--primary-600);
+}
+.deleteIcon svg {
+    width: 1.2rem;
+    color: var(--danger);
+}

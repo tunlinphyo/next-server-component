@@ -1,0 +1,27 @@
+.thumbImages {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+}
+.thumbImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--foreground-100);
+    background-color: rgb(var(--background-accent-rgb));
+    position: relative;
+    object-fit: cover;
+    margin-right: -16px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.thumbImg.withImg {
+    border-color: var(--foreground-300);
+}
+.thumbImg svg {
+    width: 1.2rem;
+    color: var(--foreground-300);
+}

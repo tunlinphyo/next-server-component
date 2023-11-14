@@ -11,10 +11,9 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { appToast } from "@/libs/toasts"
 import { formatPrice } from "@/libs/utils"
-import clsx from "clsx"
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client"
 import { appConfirm } from "@/libs/modals"
-import { FilesUpload } from "@/components/admin/form/files/files.client"
+import { ImageUpload } from "@/components/admin/form/files/files.client"
 
 type ProductEditProps = {
     product: ProductType;
@@ -55,7 +54,12 @@ export function ProductEditForm({ product, classes, categories }: ProductEditPro
             >
                 Name
             </Input>
-            <FilesUpload />
+            <ImageUpload 
+                name="images"
+                defaultValue={product.images}
+            >
+                Images (optional)
+            </ImageUpload>
             <Textarea
                 name="description"
                 defaultValue={product.description}

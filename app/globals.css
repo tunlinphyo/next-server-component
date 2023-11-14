@@ -58,11 +58,11 @@
     --primary-lightness: 69%; */
 
     --primary-hue: 243;
-    --primary-saturation: 92%;
-    --primary-lightness: 82%;
+    --primary-saturation: 90%;
+    --primary-lightness: 80%;
 
     --foreground-rgb: 220, 220, 220;
-    --background-rgb: 35, 35, 35;
+    --background-rgb: 30, 30, 30;
     --background-accent-rgb: 40, 40, 40;
 
     --border-rgb: 60, 60, 60;

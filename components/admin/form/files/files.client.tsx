@@ -4,10 +4,22 @@ import { useCallback, useState } from "react"
 import styles from './files.module.css'
 import {useDropzone} from 'react-dropzone'
 import Image from "next/image"
+import { ChildrenProp } from "@/libs/definations"
+import { appToast } from "@/libs/toasts"
+import { PhotoIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline"
+import clsx from "clsx"
+import { appConfirm } from "@/libs/modals"
 
-export function FilesUpload() {
-    const [ images, setImages ] = useState<string[]>([])
-    const [uploadMessage, setUploadMessage] = useState<string | null>(null)
+type ImageUploadProps = {
+    name: string;
+    defaultValue?: string[];
+    children?: React.ReactNode;
+}
+
+export function ImageUpload({ children, name, defaultValue }: ImageUploadProps) {
+    const [ images, setImages ] = useState(defaultValue || [])
+    const [ toRemoves, setToRemoves ] = useState<string[]>([])
+
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
         const formData = new FormData()
         formData.append('file', acceptedFiles[0])
@@ -22,30 +34,64 @@ export function FilesUpload() {
                 const result = await response.json()
                 console.log('IMAGE_PATH', result)
                 setImages([ ...images, result.data ])
-                setUploadMessage('File uploaded successfully')
+                appToast('File uploaded successfully')
             } else {
-                setUploadMessage('File upload failed')
+                appToast('File upload failed')
             }
         } catch (error: any) {
-            setUploadMessage('Error uploading file')
+            appToast(error.message)
             console.error('Error uploading file:', error.message)
         }
-    }, [uploadMessage])
-    const { getRootProps, getInputProps } = useDropzone({onDrop})
+    }, [ images ])
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        accept: {
+            'image/*': [],
+        },
+        maxFiles: 1
+    })
+
+    const removeImage = async (image: string) => {
+        const result = await appConfirm('Are you sure to delete?')
+        if (result) {
+            setToRemoves([ ...toRemoves, image ])
+            const newImages = images.filter(img => img !== image)
+            setImages(newImages)
+        }
+    }
 
     return (
         <div className={styles.fileUpload}>
-            <div { ...getRootProps() }>
-                <input { ...getInputProps() } />
-                <p>Drag & drop an image file here, or click to select one</p>
-            </div>
-            {uploadMessage && <p>{uploadMessage}</p>}
-            <Image src="/public/uploads/1699961050578.jpeg" width={200} height={200} alt="image" />
             {
-                images.map((img, index) => (
-                    <Image key={index} src={img} width={200} height={200} alt="image" />
+                toRemoves.map((img, index) => (
+                    <input key={index} type="hidden" name="delete_images" defaultValue={img} />
                 ))
             }
+            <label htmlFor={name} className={styles.label}>{ children }</label>
+            <div className={styles.imageGrid}>
+                {
+                    images.map((img, index) => (
+                        <div className={styles.imageBox} key={index}>
+                            <button 
+                                type="button" 
+                                className={styles.deleteIcon}
+                                onClick={removeImage.bind(null, img)}>
+                                <TrashIcon />
+                            </button>
+                            <input type="hidden" name={name} defaultValue={img} />
+                            <Image key={index} src={img} width={200} height={200} alt="image" />
+                        </div>
+                    ))
+                }
+                <div className={clsx(styles.imageBox, styles.addImage)}>
+                    <div { ...getRootProps() } className={styles.iconConatiner}>
+                        <input { ...getInputProps() } />
+                        <PhotoIcon className={styles.photoIcon} />
+                        <PlusIcon className={styles.plusIcon} />
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

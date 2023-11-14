@@ -3,11 +3,11 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
     body {
-        padding: var(--space-5) 0;
+        padding: max(var(--space-5), 6vh) 0;
     }
-}
+} */

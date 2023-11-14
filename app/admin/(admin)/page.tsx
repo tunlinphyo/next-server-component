@@ -1,6 +1,6 @@
 import { PageContainer } from "@/components/admin/utils/utils.client";
-import { CategorySummary, CustomerSummary, ProductSummary, VariantSummary } from "./dashboard.server";
-import { DashboardSummary, DashboardSummarySkileton } from "./dashboard.client";
+import { CategorySummary, CustomerSummary, LatestProducts, ProductSummary, VariantSummary } from "./dashboard.server";
+import { DashboardSummary, DashboardSummarySkileton, ProductTableSkileton } from "./dashboard.client";
 import { Suspense } from "react";
 
 export default function Page() {
@@ -22,7 +22,10 @@ export default function Page() {
                 </Suspense>
             </DashboardSummary>
             <h1>Recent Products</h1>
-            <div style={{ height: '300px', backgroundColor: 'rgb(var(--background-accent-rgb))', borderRadius: 'var(--space-2)' }} />
+            <Suspense fallback={<ProductTableSkileton />}>
+                <LatestProducts />
+            </Suspense>
+            
         </PageContainer>
     )
 }

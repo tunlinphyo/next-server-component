@@ -11,6 +11,8 @@ import { formatDate } from "@/libs/utils";
 import { useEffect, useRef, useState } from "react";
 import { appConfirm } from "@/libs/modals";
 import { appToast } from "@/libs/toasts";
+import RelativeTime from 'react-relative-time'
+
 
 type FormProps = ChildrenProp & {
     action: (formData: FormData) => void;
@@ -240,7 +242,11 @@ export function FormDates({ createDate, updateDate }: { createDate: Date, update
     return (
         <div className={styles.dates}>
             <div className={styles.date}>Create at: { formatDate(createDate) }</div>
-            { updateDate && <div className={styles.date}>Last update at: { formatDate(updateDate) }</div> }
+            {/* { updateDate && <div className={styles.date}>Last update at: { formatDate(updateDate) }</div> } */}
+            { updateDate && <div className={styles.date}>
+                    Last update at: <RelativeTime value={updateDate} />
+                </div> 
+            }
         </div>
     )
 }

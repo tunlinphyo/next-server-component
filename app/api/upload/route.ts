@@ -1,7 +1,5 @@
-
-import path from "path"
-import fs, { promises as fsPromises } from "fs"
 import { NextRequest, NextResponse } from "next/server"
+import { saveImage } from "@/libs/images"
 
 export async function POST(request: NextRequest) {
     try {
@@ -14,29 +12,5 @@ export async function POST(request: NextRequest) {
     } catch(error: any) {
         return NextResponse.json({ success: false, message: error.message })
     }
-}
-
-async function saveImage(file: File) {
-    const destinationDirectory = 'public/uploads'
-    const extension = getFileExtension(file)
-    const fileName = `${Date.now()}.${extension}`
-    const destinationPath = path.join(destinationDirectory, fileName)
-
-    try {
-        const imageBuffer = await file.arrayBuffer()
-        const buffer = Buffer.from(imageBuffer)
-        fs.writeFileSync(destinationPath, buffer)
-        return '/'.concat(destinationPath)
-    } catch (e) {
-        console.log(e)
-        return null
-    }
-}
-
-function getFileExtension(file: File): string {
-    const fileNameParts = file.name.split('.')
-    const fileExtension = fileNameParts.pop()?.toLowerCase() || ''
-
-    return fileExtension
 }
 

@@ -136,7 +136,12 @@
                 1699617210548,
                 1699632914038
             ],
-            "updateDate": "2023-11-13T13:42:39.619Z"
+            "updateDate": "2023-11-14T14:50:53.330Z",
+            "images": [
+                "/uploads/1699973441030.jpg",
+                "/uploads/1699973445655.jpg",
+                "/uploads/1699973450045.jpg"
+            ]
         },
         {
             "id": 1699716564477,
@@ -175,7 +180,12 @@
                 1699617210548,
                 1699632895434
             ],
-            "updateDate": "2023-11-13T12:36:41.980Z"
+            "updateDate": "2023-11-14T15:03:37.072Z",
+            "images": [
+                "/uploads/1699974204830.jpeg",
+                "/uploads/1699974209389.jpeg",
+                "/uploads/1699974213748.jpeg"
+            ]
         },
         {
             "id": 1699884265581,
@@ -190,7 +200,13 @@
             "isDelete": false,
             "variant_1_id": 1699884318983,
             "variant_2_id": 1699679275775,
-            "updateDate": "2023-11-13T16:18:12.637Z"
+            "updateDate": "2023-11-14T15:10:50.009Z",
+            "images": [
+                "/uploads/1699972392735.jpeg",
+                "/uploads/1699972409966.jpeg",
+                "/uploads/1699972414716.jpeg",
+                "/uploads/1699972418999.jpeg"
+            ]
         },
         {
             "id": 1699889613813,
@@ -203,11 +219,8 @@
             ],
             "createDate": "2023-11-13T15:33:33.813Z",
             "isDelete": false,
-            "images": [
-                "public/uploads/1699949885383.png",
-                "public/uploads/1699949885486.jpeg"
-            ],
-            "updateDate": "2023-11-14T08:18:05.489Z"
+            "updateDate": "2023-11-14T14:08:49.949Z",
+            "images": []
         },
         {
             "id": 1699891224183,
@@ -216,6 +229,7 @@
             "category_ids": [
                 1699617210548,
                 1699876021958,
+                1699892043811,
                 1699890309874,
                 1699890396650,
                 1699890494306
@@ -224,7 +238,29 @@
             "isDelete": false,
             "variant_1_id": 1699891265320,
             "variant_2_id": 0,
-            "updateDate": "2023-11-13T16:04:28.492Z"
+            "updateDate": "2023-11-14T16:13:00.284Z",
+            "images": [
+                "/uploads/1699970897480.jpeg",
+                "/uploads/1699970901904.jpeg",
+                "/uploads/1699970906302.jpeg",
+                "/uploads/1699970910771.jpeg",
+                "/uploads/1699970915791.jpeg",
+                "/uploads/1699970920515.jpeg"
+            ]
+        },
+        {
+            "name": "Test Product",
+            "description": "this is test",
+            "images": [
+                "/uploads/1699972963198.jpeg"
+            ],
+            "category_ids": [
+                1699775450747
+            ],
+            "id": 1699972943635,
+            "createDate": "2023-11-14T14:42:23.635Z",
+            "isDelete": false,
+            "updateDate": "2023-11-14T14:42:46.348Z"
         }
     ],
     "product_class": [
@@ -235,7 +271,7 @@
             "quantity": 5,
             "createDate": "2023-11-11T15:25:51.325Z",
             "isDelete": false,
-            "updateDate": "2023-11-13T13:42:39.632Z"
+            "updateDate": "2023-11-14T14:50:53.341Z"
         },
         {
             "id": 1699716564781,
@@ -320,9 +356,10 @@
             "variant_1_id": 1699688644417,
             "variant_2_id": 1699689424058,
             "price": 3000,
-            "quantity": 10,
+            "quantity": 2,
             "isDelete": false,
-            "createDate": "2023-11-13T12:18:59.056Z"
+            "createDate": "2023-11-13T12:18:59.056Z",
+            "updateDate": "2023-11-14T15:10:25.771Z"
         },
         {
             "id": 1699877939067,
@@ -330,9 +367,10 @@
             "variant_1_id": 1699688644417,
             "variant_2_id": 1699689433343,
             "price": 4000,
-            "quantity": 10,
+            "quantity": 2,
             "isDelete": false,
-            "createDate": "2023-11-13T12:18:59.067Z"
+            "createDate": "2023-11-13T12:18:59.067Z",
+            "updateDate": "2023-11-14T15:10:25.773Z"
         },
         {
             "id": 1699877939071,
@@ -340,9 +378,10 @@
             "variant_1_id": 1699688644417,
             "variant_2_id": 1699689442075,
             "price": 5000,
-            "quantity": 10,
+            "quantity": 2,
             "isDelete": false,
-            "createDate": "2023-11-13T12:18:59.071Z"
+            "createDate": "2023-11-13T12:18:59.071Z",
+            "updateDate": "2023-11-14T15:10:25.774Z"
         },
         {
             "id": 1699882445168,
@@ -399,10 +438,10 @@
             "variant_1_id": 1699884398426,
             "variant_2_id": 1699689424058,
             "price": 100000,
-            "quantity": 6,
+            "quantity": 2,
             "isDelete": false,
             "createDate": "2023-11-13T14:08:12.268Z",
-            "updateDate": "2023-11-13T15:58:01.888Z"
+            "updateDate": "2023-11-14T15:11:06.213Z"
         },
         {
             "id": 1699884492274,
@@ -410,10 +449,10 @@
             "variant_1_id": 1699884398426,
             "variant_2_id": 1699689433343,
             "price": 120000,
-            "quantity": 6,
+            "quantity": 2,
             "isDelete": false,
             "createDate": "2023-11-13T14:08:12.274Z",
-            "updateDate": "2023-11-13T15:58:01.890Z"
+            "updateDate": "2023-11-14T15:11:06.215Z"
         },
         {
             "id": 1699884492283,
@@ -421,10 +460,10 @@
             "variant_1_id": 1699884398426,
             "variant_2_id": 1699689442075,
             "price": 150000,
-            "quantity": 6,
+            "quantity": 2,
             "isDelete": false,
             "createDate": "2023-11-13T14:08:12.283Z",
-            "updateDate": "2023-11-13T15:58:01.892Z"
+            "updateDate": "2023-11-14T15:11:06.218Z"
         },
         {
             "id": 1699889614123,
@@ -433,7 +472,7 @@
             "quantity": 10,
             "createDate": "2023-11-13T15:33:34.123Z",
             "isDelete": false,
-            "updateDate": "2023-11-14T08:18:05.515Z"
+            "updateDate": "2023-11-14T15:09:19.962Z"
         },
         {
             "id": 1699891081895,
@@ -441,9 +480,10 @@
             "variant_1_id": 1699884409722,
             "variant_2_id": 1699689424058,
             "price": 100000,
-            "quantity": 5,
+            "quantity": 1,
             "isDelete": false,
-            "createDate": "2023-11-13T15:58:01.895Z"
+            "createDate": "2023-11-13T15:58:01.895Z",
+            "updateDate": "2023-11-14T15:11:06.221Z"
         },
         {
             "id": 1699891081897,
@@ -451,9 +491,10 @@
             "variant_1_id": 1699884409722,
             "variant_2_id": 1699689433343,
             "price": 120000,
-            "quantity": 5,
+            "quantity": 1,
             "isDelete": false,
-            "createDate": "2023-11-13T15:58:01.897Z"
+            "createDate": "2023-11-13T15:58:01.897Z",
+            "updateDate": "2023-11-14T15:11:06.223Z"
         },
         {
             "id": 1699891081898,
@@ -461,9 +502,10 @@
             "variant_1_id": 1699884409722,
             "variant_2_id": 1699689442075,
             "price": 150000,
-            "quantity": 5,
+            "quantity": 1,
             "isDelete": false,
-            "createDate": "2023-11-13T15:58:01.898Z"
+            "createDate": "2023-11-13T15:58:01.898Z",
+            "updateDate": "2023-11-14T15:11:06.225Z"
         },
         {
             "id": 1699891224487,
@@ -493,6 +535,15 @@
             "isDelete": false,
             "createDate": "2023-11-13T16:09:26.529Z",
             "updateDate": "2023-11-13T16:09:49.627Z"
+        },
+        {
+            "product_id": 1699972943635,
+            "price": 5000,
+            "quantity": 1,
+            "id": 1699972943943,
+            "createDate": "2023-11-14T14:42:23.943Z",
+            "isDelete": false,
+            "updateDate": "2023-11-14T14:42:46.353Z"
         }
     ],
     "product_categories": [
@@ -706,6 +757,20 @@
             "parent_category_id": 1699617210548,
             "id": 1699936311922,
             "createDate": "2023-11-14T04:31:51.922Z",
+            "isDelete": false
+        },
+        {
+            "name": "iPhone Pro",
+            "parent_category_id": 1699632895434,
+            "id": 1699975142619,
+            "createDate": "2023-11-14T15:19:02.619Z",
+            "isDelete": false
+        },
+        {
+            "name": "iPhone SE",
+            "parent_category_id": 1699632895434,
+            "id": 1699975153914,
+            "createDate": "2023-11-14T15:19:13.914Z",
             "isDelete": false
         }
     ],

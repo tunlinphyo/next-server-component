@@ -16,15 +16,23 @@
     gap: var(--space-3);
 }
 
-.card {
+.card,
+.tableCard {
     background: rgb(var(--background-accent-rgb));
     border-radius: var(--space-2);
     padding: var(--space-2);
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 30px minmax(0, 1fr);
+    grid-template-rows: 24px minmax(0, 1fr);
+    gap: var(--space-2);
+    overflow: hidden;
 }
-.cardHeader {
+.tableCard {
+    grid-template-rows: minmax(0, 1fr) 28px;
+    gap: 0;
+}
+.cardHeader,
+.tableFooter {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -33,8 +41,12 @@
     color: var(--foreground-800);
     font-size: .8rem;
 }
+.tableFooter svg,
 .cardHeader svg {
     width: 1.2em;
+}
+.tableContainer {
+    margin: -20px -10px;
 }
 .cardBody {
     display: flex;
@@ -54,9 +66,14 @@
     background-color: var(--foreground-50);
 }
 
+.lastUpdate {
+    font-size: .8rem;
+    color: var(--foreground-500);
+}
+
 @media (min-width: 992px) {
     .main {
-        grid-template-columns: minmax(200px, .3fr) minmax(0, 1fr);
+        grid-template-columns: minmax(250px, .2fr) minmax(0, 1fr);
         height: calc(100vh - (var(--space-4) * 2));
         max-height: 680px;
         outline: 20px solid #000;
