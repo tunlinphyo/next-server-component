@@ -88,3 +88,12 @@
         top: 0;
     }
 }
+
+
+@media (prefers-color-scheme: dark) {
+    .navHeader {
+        color: var(--primary-600);
+        background-color: var(--primary-100);
+    }
+  }
+  

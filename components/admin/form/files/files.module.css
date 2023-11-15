@@ -1,6 +1,6 @@
 .fileUpload {
     grid-column: span 2;
-    --size: 150px;
+    --size: 134px;
 }
 .avatarUpload {
     grid-column: span 2;
@@ -23,7 +23,7 @@
     color: rgb(var(--foreground-rgb));
 
     display: grid;
-    grid-template-columns: repeat(auto-fit, 150px);
+    grid-template-columns: repeat(auto-fit, var(--size));
     gap: var(--space-2);
 }
 .imageBox {
