@@ -2,8 +2,8 @@
 
 import { CubeIcon, ListBulletIcon, TicketIcon, UsersIcon } from "@heroicons/react/24/outline"
 import { DashboardSummaryCard, ProductTable } from "./dashboard.client"
-import { getTotalProductCategory, getTotalProductVariant, getTotalProducts } from "./product/product.actions"
-import { getTotalCustomer } from "./customers/customers.actions"
+import { getTotalProductCategory, getTotalProductVariant, getTotalProducts } from "../product/product.actions"
+import { getTotalCustomer } from "../customers/customers.actions"
 import { getLatestProducts } from "./dashboard.actions"
 
 export async function ProductSummary() {

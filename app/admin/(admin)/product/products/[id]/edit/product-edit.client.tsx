@@ -3,7 +3,7 @@
 import { FormCategoryType, ProductClassType, ProductType } from "@/libs/definations"
 import { useFormState } from "react-dom"
 import { onProductEdit } from "../../products.actions"
-import { Form, FormCreatButton, FormFooter, Input, Textarea } from "@/components/admin/form/form.client"
+import { Form, FormCreatButton, FormFooter, IdContainer, Input, Textarea } from "@/components/admin/form/form.client"
 import { ArrowPathIcon, CheckCircleIcon, PencilIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { CategorySelect } from "@/components/admin/form/category/category.client"
 import styles from "./product-edit.module.css"
@@ -14,6 +14,7 @@ import { formatPrice } from "@/libs/utils"
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client"
 import { appConfirm } from "@/libs/modals"
 import { ImageUpload } from "@/components/admin/form/files/files.client"
+import { Budge } from "@/components/admin/utils/utils.client"
 
 type ProductEditProps = {
     product: ProductType;
@@ -130,6 +131,13 @@ export function ClassForm({ product, classes }: { product: ProductType, classes:
                         </button>
                     </div>
                     <Table>
+                        <colgroup>
+                            <col width="15%" />
+                            <col width="20%" />
+                            <col width="20%" />
+                            <col width="20%" />
+                            <col width="15%" />
+                        </colgroup>
                         <TableHeader>
                             <TableHead>#</TableHead>
                             <TableHead>{ product.variant1?.name }</TableHead>
@@ -141,11 +149,15 @@ export function ClassForm({ product, classes }: { product: ProductType, classes:
                             {
                                 classes.map(item => (
                                     <TableRow key={item.id}>
-                                        <TableData>{ item.id }</TableData>
+                                        <TableData>
+                                            <IdContainer id={item.id} />
+                                        </TableData>
                                         <TableData>{ item.variant1?.name }</TableData>
                                         <TableData>{ item.variant2?.name }</TableData>
                                         <TableData>{ formatPrice(item.price) }</TableData>
-                                        <TableData>{ item.quantity }</TableData>
+                                        <TableData>
+                                            <Budge>{ item.quantity }</Budge>
+                                        </TableData>
                                     </TableRow>
                                 ))
                             }

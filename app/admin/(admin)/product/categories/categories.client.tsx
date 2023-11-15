@@ -1,7 +1,7 @@
 'use client'
 
 import { LinkIcon } from "@/components/admin/button/button.client";
-import { FromDeleteButton } from "@/components/admin/form/form.client";
+import { FromDeleteButton, IdContainer } from "@/components/admin/form/form.client";
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client";
 import { CategoryType } from "@/libs/definations";
 import { formatDate } from "@/libs/utils";
@@ -24,7 +24,9 @@ export function CategoryTable({ categories, child }: { categories: CategoryType[
                 {
                     categories.map(cate => (
                         <TableRow key={cate.id}>
-                            <TableData>{ cate.id }</TableData>
+                            <TableData>
+                                <IdContainer id={cate.id} />    
+                            </TableData>
                             <TableData>{ cate.name }</TableData>
                             { child && <TableData>{ cate.parent_category && cate.parent_category.name }</TableData> }
                             <TableData>

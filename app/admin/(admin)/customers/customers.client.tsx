@@ -4,7 +4,7 @@ import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@
 import { deleteCustomer } from "./customers.actions"
 import { LinkIcon } from "@/components/admin/button/button.client"
 import { PencilIcon } from "@heroicons/react/24/outline"
-import { FromDeleteButton } from "@/components/admin/form/form.client"
+import { FromDeleteButton, IdContainer } from "@/components/admin/form/form.client"
 import { CustomerType } from "@/libs/definations"
 import { formatDate } from '../../../../libs/utils';
 
@@ -29,7 +29,9 @@ export function CustomerTable({ customers }: { customers: CustomerType[] }) {
                 {
                     customers.map(customer => (
                         <TableRow key={customer.id}>
-                            <TableData>{ customer.id }</TableData>
+                            <TableData>
+                                <IdContainer id={customer.id} />
+                            </TableData>
                             <TableData>{ customer.name }</TableData>
                             <TableData>{ customer.email }</TableData>
                             <TableData>{ formatDate(customer.createDate) }</TableData>

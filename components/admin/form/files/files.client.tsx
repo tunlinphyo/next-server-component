@@ -49,7 +49,8 @@ export function ImageUpload({ children, name, defaultValue }: ImageUploadProps) 
         accept: {
             'image/*': [],
         },
-        maxFiles: 1
+        maxFiles: 1,
+        multiple: false
     })
 
     const removeImage = async (image: string) => {

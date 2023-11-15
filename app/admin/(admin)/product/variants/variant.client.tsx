@@ -1,7 +1,7 @@
 'use client'
 
 import { LinkIcon } from "@/components/admin/button/button.client";
-import { FromDeleteButton } from "@/components/admin/form/form.client";
+import { FromDeleteButton, IdContainer } from "@/components/admin/form/form.client";
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client";
 import { VariantType } from "@/libs/definations";
 import { formatDate } from "@/libs/utils";
@@ -24,7 +24,9 @@ export function VariantTable({ variants, child }: { variants: VariantType[], chi
                 {
                     variants.map(variant => (
                         <TableRow key={variant.id}>
-                            <TableData>{ variant.id }</TableData>
+                            <TableData>
+                                <IdContainer id={variant.id} />
+                            </TableData>
                             <TableData>{ variant.name }</TableData>
                             <TableData>{ variant.description }</TableData>
                             <TableData>
@@ -42,6 +44,7 @@ export function VariantTable({ variants, child }: { variants: VariantType[], chi
                                             ? `/admin/product/variants/${variant.id}/edit?parent=${variant.parent_variant_id}`
                                             : `/admin/product/variants/${variant.id}/edit`
                                     }
+                                    theme="primary"
                                 >
                                     <PencilIcon />
                                 </LinkIcon>

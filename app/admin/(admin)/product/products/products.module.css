@@ -1,0 +1,10 @@
+
+.productName {
+    font-size: 1em;
+}
+.productPrice {
+    color: var(--foreground-400);
+    display: flex;
+    gap: var(--space-2);
+    font-size: .9em;
+}

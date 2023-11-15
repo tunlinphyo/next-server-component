@@ -3,7 +3,7 @@
 import { GET } from "@/libs/db"
 import { ProductClassType, ProductType } from "@/libs/definations"
 import { wait } from "@/libs/utils"
-import { getStockAndPrices } from "./product/products/products.utils"
+import { getStockAndPrices } from "../product/products/products.utils"
 
 
 export async function getLatestProducts() {

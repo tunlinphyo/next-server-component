@@ -11,7 +11,7 @@ import { formatDate } from "@/libs/utils";
 import { useEffect, useRef, useState } from "react";
 import { appConfirm } from "@/libs/modals";
 import { appToast } from "@/libs/toasts";
-import RelativeTime from 'react-relative-time'
+import { timeAgo } from "@/libs/relative-time";
 
 
 type FormProps = ChildrenProp & {
@@ -244,7 +244,7 @@ export function FormDates({ createDate, updateDate }: { createDate: Date, update
             <div className={styles.date}>Create at: { formatDate(createDate) }</div>
             {/* { updateDate && <div className={styles.date}>Last update at: { formatDate(updateDate) }</div> } */}
             { updateDate && <div className={styles.date}>
-                    Last update at: <RelativeTime value={updateDate} />
+                    Last update at: { timeAgo(updateDate) }
                 </div> 
             }
         </div>
@@ -275,6 +275,14 @@ export function FormSkeleton({ count }: { count: number }) {
                 <ButtonSkeleton />
                 <ButtonSkeleton />
             </FormFooter>
+        </div>
+    )
+}
+
+export function IdContainer({ id }: { id: number }) {
+    return (
+        <div className={styles.idContainer}>
+            { id }
         </div>
     )
 }

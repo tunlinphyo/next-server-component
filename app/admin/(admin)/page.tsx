@@ -1,6 +1,6 @@
 import { PageContainer } from "@/components/admin/utils/utils.client";
-import { CategorySummary, CustomerSummary, LatestProducts, ProductSummary, VariantSummary } from "./dashboard.server";
-import { DashboardSummary, DashboardSummarySkileton, ProductTableSkileton } from "./dashboard.client";
+import { CategorySummary, CustomerSummary, LatestProducts, ProductSummary, VariantSummary } from "./(dashboard)/dashboard.server";
+import { DashboardSummary, DashboardSummarySkileton, ProductTableSkileton } from "./(dashboard)/dashboard.client";
 import { Suspense } from "react";
 
 export default function Page() {
@@ -25,7 +25,7 @@ export default function Page() {
             <Suspense fallback={<ProductTableSkileton />}>
                 <LatestProducts />
             </Suspense>
-            
+
         </PageContainer>
     )
 }

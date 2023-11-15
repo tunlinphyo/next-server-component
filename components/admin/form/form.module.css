@@ -135,3 +135,9 @@
     color: transparent;
     margin-top: 4px;
 }
+
+.idContainer {
+    width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

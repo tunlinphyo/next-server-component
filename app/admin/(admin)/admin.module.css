@@ -1,0 +1,20 @@
+.main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    padding: var(--space-4);
+    background-color: rgb(var(--background-rgb));
+    /* margin: var(--space-4) auto; */
+    border-radius: var(--space-3);
+    gap: var(--space-4);
+    border: 1px solid rgba(var(--border-rgb), .4);
+}
+
+@media (min-width: 992px) {
+    .main {
+        grid-template-columns: minmax(250px, .2fr) minmax(0, 1fr);
+        height: calc(100vh - (var(--space-4) * 2));
+        max-height: 680px;
+        outline: 20px solid #000;
+    }
+}
