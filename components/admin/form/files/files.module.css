@@ -1,7 +1,13 @@
 .fileUpload {
     grid-column: span 2;
+    --size: 150px;
+}
+.avatarUpload {
+    grid-column: span 2;
+    --size: 100px;
 }
 
+.avatarUpload .label,
 .fileUpload .label {
     font-size: .7rem;
     font-weight: 600;
@@ -21,8 +27,8 @@
     gap: var(--space-2);
 }
 .imageBox {
-    width: 150px;
-    height: 150px;
+    width: var(--size);
+    height: var(--size);
     border-radius: var(--space-2);
     border: 1px solid var(--foreground-100);
     overflow: hidden;
@@ -46,6 +52,12 @@
     cursor: pointer;
     background-color: rgb(var(--background-accent-rgb));
 }
+.avatarUpload .iconConatiner {
+    background-color: rgb(var(--background-rgb));
+}
+.iconConatiner.imageDisabled {
+    pointer-events: none;
+}
 .photoIcon {
     width: 2.5rem;
     color: var(--foreground-400);
@@ -62,6 +74,14 @@
     left: 50%;
     translate: 9px -5px;
 }
+.loadingIcon {
+    width: 2.5rem;
+    color: var(--foreground-300);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
 
 .deleteIcon {
     width: 36px;
@@ -74,10 +94,18 @@
     display: grid;
     place-content: center;
     border-radius: 50%;
+    opacity: .7;
 }
 .deleteIcon:hover {
+    opacity: 1;
     border-color: var(--primary-600);
     outline: 1px solid var(--primary-600);
+}
+.deleteIcon:disabled {
+    opacity: 1;
+}
+.deleteIcon:disabled svg {
+    opacity: .5;
 }
 .deleteIcon svg {
     width: 1.2rem;

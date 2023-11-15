@@ -4,7 +4,7 @@ import { CustomerCreateForm } from "./customer-create.client"
 export default function Page() {
     return (
       <PageContainer>
-        <BackHeader>Customers</BackHeader>
+        <BackHeader />
         <h1>Create Customer</h1>
         <CustomerCreateForm />
       </PageContainer>

@@ -1,12 +1,13 @@
 'use server'
 
 import { getZodErrors, wait } from "@/libs/utils"
-import { CreateCustomerSchema, CustomerSchema } from "./customers.schema"
+import { CreateCustomerSchema, EditCustomerSchema } from "./customers.schema"
 import { CustomerType, GenericObject } from "@/libs/definations"
 import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { PER_PAGE } from "@/libs/const"
+import { deleteImage } from "@/libs/images"
 
 export async function getTotalCustomer() {
     await wait()
@@ -74,7 +75,17 @@ export async function onCustomerCreate(prevState: any, formData: FormData) {
         return errors
     }
 
-    const newCustomer = await POST<CustomerType>('customers', result.data)
+    const imagesToDelete = formData.getAll('delete_images') as string[]
+    for await (const img of imagesToDelete) {
+        await deleteImage(img)
+    }
+
+    const createCustomer = {
+        ...result.data,
+        confirm: undefined
+    }
+
+    const newCustomer = await POST<CustomerType>('customers', createCustomer)
     console.log('CUSTOMER_UPDATED', newCustomer)
     revalidatePath('/admin/customers')
     redirect('/admin/customers')
@@ -85,7 +96,7 @@ export async function onCustomerEdit(prevState: any, formData: FormData) {
 
     console.log('FORM_DATA', Object.fromEntries(formData))
 
-    const result = CustomerSchema.safeParse(Object.fromEntries(formData))
+    const result = EditCustomerSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
         return getZodErrors(result.error.issues)
@@ -104,7 +115,17 @@ export async function onCustomerEdit(prevState: any, formData: FormData) {
         return errors
     }
 
-    const updatedCustomer = await PATCH<CustomerType>('customers', result.data)
+    const imagesToDelete = formData.getAll('delete_images') as string[]
+    for await (const img of imagesToDelete) {
+        await deleteImage(img)
+    }
+
+    const editCustomer = {
+        ...result.data,
+        confirm: undefined
+    }
+
+    const updatedCustomer = await PATCH<CustomerType>('customers', editCustomer)
     console.log('CUSTOMER_UPDATED', updatedCustomer)
     revalidatePath('/admin/customers')
     redirect('/admin/customers')

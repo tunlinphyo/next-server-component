@@ -13,6 +13,7 @@
             "id": 1699591061731,
             "name": "New Customer Ed",
             "email": "new@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T04:37:41.730Z",
             "isDelete": false,
             "updateDate": "2023-11-10T07:42:14.280Z"
@@ -21,6 +22,7 @@
             "id": 1699590247673,
             "name": "User 9",
             "email": "user9@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T04:24:07.673Z",
             "isDelete": false
         },
@@ -28,6 +30,7 @@
             "id": 1699590184956,
             "name": "User 8 Edit",
             "email": "user8@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T04:23:04.956Z",
             "isDelete": false,
             "updateDate": "2023-11-10T07:15:42.715Z"
@@ -36,6 +39,7 @@
             "id": 1699589984899,
             "name": "User 7",
             "email": "user7@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T04:19:44.899Z",
             "isDelete": false
         },
@@ -43,6 +47,7 @@
             "id": 1699589917162,
             "name": "User 6",
             "email": "user6@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T04:18:37.162Z",
             "isDelete": false
         },
@@ -50,6 +55,7 @@
             "id": 1699589903525,
             "name": "User 5",
             "email": "user5@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T04:18:23.525Z",
             "isDelete": false
         },
@@ -57,6 +63,7 @@
             "id": 1699589855918,
             "name": "Another User",
             "email": "another@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T04:17:35.918Z",
             "isDelete": false
         },
@@ -64,6 +71,7 @@
             "id": 1699589832783,
             "name": "Hello World",
             "email": "hello@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T04:17:12.783Z",
             "isDelete": false
         },
@@ -71,6 +79,7 @@
             "id": 1699588745505,
             "name": "New test",
             "email": "admin2@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T03:59:05.505Z",
             "isDelete": false
         },
@@ -78,13 +87,17 @@
             "id": 1699527441808,
             "name": "Tun Lin Phyo",
             "email": "tun@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-09T10:57:21.808Z",
-            "isDelete": false
+            "isDelete": false,
+            "avatar": "/uploads/1700036657078.png",
+            "updateDate": "2023-11-15T08:24:19.926Z"
         },
         {
             "id": 1699526747383,
             "name": "Tun Lin",
             "email": "admin@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-09T10:45:47.383Z",
             "isDelete": false
         },
@@ -92,6 +105,7 @@
             "id": 1699593900117,
             "name": "My User",
             "email": "myuser@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T05:25:00.117Z",
             "isDelete": false
         },
@@ -99,6 +113,7 @@
             "id": 1699598656197,
             "name": "New Customer 2",
             "email": "new2@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T06:44:16.197Z",
             "isDelete": false
         },
@@ -107,12 +122,16 @@
             "name": "New Customer",
             "email": "nc@gmail.com",
             "createDate": "2023-11-10T08:17:32.388Z",
-            "isDelete": false
+            "isDelete": false,
+            "avatar": "/uploads/1700027540199.jpeg",
+            "password": "1234567",
+            "updateDate": "2023-11-15T05:52:35.566Z"
         },
         {
             "id": 1699607673811,
             "name": "Hello World 2",
             "email": "world@gmail.com",
+            "password": "1234567",
             "createDate": "2023-11-10T09:14:33.811Z",
             "isDelete": false,
             "updateDate": "2023-11-10T09:20:05.221Z"
@@ -120,23 +139,36 @@
         {
             "name": "New Customer 3",
             "email": "new3@gmail.com",
+            "password": "1234567",
             "id": 1699932984423,
             "createDate": "2023-11-14T03:36:24.423Z",
-            "isDelete": false
+            "isDelete": false,
+            "avatar": "/uploads/1700027925219.jpeg",
+            "updateDate": "2023-11-15T05:58:46.754Z"
+        },
+        {
+            "avatar": "/uploads/1700026500194.jpeg",
+            "name": "Google user",
+            "email": "google@gmail.com",
+            "password": "1234567",
+            "id": 1700026525661,
+            "createDate": "2023-11-15T05:35:25.661Z",
+            "isDelete": false,
+            "updateDate": "2023-11-15T05:40:26.470Z"
         }
     ],
     "products": [
         {
             "id": 1699716351015,
             "name": "Apple Watch",
-            "description": "test product",
+            "description": "Best product with iPhone or iPad",
             "createDate": "2023-11-11T15:25:51.015Z",
             "isDelete": false,
             "category_ids": [
                 1699617210548,
                 1699632914038
             ],
-            "updateDate": "2023-11-14T14:50:53.330Z",
+            "updateDate": "2023-11-15T08:08:13.373Z",
             "images": [
                 "/uploads/1699973441030.jpg",
                 "/uploads/1699973445655.jpg",
@@ -166,7 +198,12 @@
             ],
             "variant_1_id": 1699679275775,
             "variant_2_id": 0,
-            "updateDate": "2023-11-13T12:56:09.521Z"
+            "updateDate": "2023-11-15T04:29:33.197Z",
+            "images": [
+                "/uploads/1700022532496.jpeg",
+                "/uploads/1700022537230.jpeg",
+                "/uploads/1700022541805.jpeg"
+            ]
         },
         {
             "id": 1699782777245,
@@ -180,11 +217,12 @@
                 1699617210548,
                 1699632895434
             ],
-            "updateDate": "2023-11-14T15:03:37.072Z",
+            "updateDate": "2023-11-15T04:35:29.802Z",
             "images": [
                 "/uploads/1699974204830.jpeg",
                 "/uploads/1699974209389.jpeg",
-                "/uploads/1699974213748.jpeg"
+                "/uploads/1699974213748.jpeg",
+                "/uploads/1700022921070.jpeg"
             ]
         },
         {
@@ -200,7 +238,7 @@
             "isDelete": false,
             "variant_1_id": 1699884318983,
             "variant_2_id": 1699679275775,
-            "updateDate": "2023-11-15T00:54:33.719Z",
+            "updateDate": "2023-11-15T04:37:00.743Z",
             "images": [
                 "/uploads/1699972392735.jpeg",
                 "/uploads/1699972409966.jpeg",
@@ -238,7 +276,7 @@
             "isDelete": false,
             "variant_1_id": 1699891265320,
             "variant_2_id": 0,
-            "updateDate": "2023-11-15T01:33:35.168Z",
+            "updateDate": "2023-11-15T09:36:02.368Z",
             "images": [
                 "/uploads/1699970897480.jpeg",
                 "/uploads/1699970901904.jpeg",
@@ -249,18 +287,35 @@
             ]
         },
         {
-            "name": "Test Product",
-            "description": "this is test",
+            "name": "Pixel Watch",
+            "description": "this is google pixel watch",
             "images": [
-                "/uploads/1699972963198.jpeg"
+                "/uploads/1700041707074.jpeg"
             ],
             "category_ids": [
-                1699775450747
+                1699632069657,
+                1699632662583
             ],
             "id": 1699972943635,
             "createDate": "2023-11-14T14:42:23.635Z",
             "isDelete": false,
-            "updateDate": "2023-11-14T14:42:46.348Z"
+            "updateDate": "2023-11-15T09:49:14.653Z"
+        },
+        {
+            "name": "Surface Laptop Studio",
+            "description": "Microsoft surface laptop studio",
+            "images": [
+                "/uploads/1700049108025.jpeg",
+                "/uploads/1700049113481.jpeg",
+                "/uploads/1700049118131.jpeg"
+            ],
+            "category_ids": [
+                1699633688365,
+                1699633710715
+            ],
+            "id": 1700049145062,
+            "createDate": "2023-11-15T11:52:25.062Z",
+            "isDelete": false
         }
     ],
     "product_class": [
@@ -271,7 +326,7 @@
             "quantity": 5,
             "createDate": "2023-11-11T15:25:51.325Z",
             "isDelete": false,
-            "updateDate": "2023-11-14T14:50:53.341Z"
+            "updateDate": "2023-11-15T08:08:13.404Z"
         },
         {
             "id": 1699716564781,
@@ -543,7 +598,15 @@
             "id": 1699972943943,
             "createDate": "2023-11-14T14:42:23.943Z",
             "isDelete": false,
-            "updateDate": "2023-11-14T14:42:46.353Z"
+            "updateDate": "2023-11-15T09:49:14.694Z"
+        },
+        {
+            "product_id": 1700049145062,
+            "price": 150000,
+            "quantity": 5,
+            "id": 1700049145369,
+            "createDate": "2023-11-15T11:52:25.369Z",
+            "isDelete": false
         }
     ],
     "product_categories": [
@@ -910,6 +973,14 @@
             "description": "",
             "parent_variant_id": 1699891265320,
             "createDate": "2023-11-13T16:03:05.878Z",
+            "isDelete": false
+        },
+        {
+            "name": "1 TB",
+            "description": "",
+            "parent_variant_id": 1699679275775,
+            "id": 1700041985109,
+            "createDate": "2023-11-15T09:53:05.109Z",
             "isDelete": false
         }
     ]

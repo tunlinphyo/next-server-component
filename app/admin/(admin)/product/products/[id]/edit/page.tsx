@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const id = Number(params.id)
     return (
       <PageContainer>
-        <BackHeader href="/admin/product/products">Products</BackHeader>
+        <BackHeader />
         <FlexBetween>
             <h1>Edit Product</h1>
             <FromDeleteButton action={deleteProduct.bind(null, id)}>

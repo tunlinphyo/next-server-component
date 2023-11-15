@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const id = Number(params.id)
     return (
         <PageContainer>
-            <BackHeader href={`/admin/product/variants/${id}/edit`}>Product Variants</BackHeader>
+            <BackHeader />
             <h1>Create Product Variant</h1>
             <Suspense fallback={<FormSkeleton count={3} />}>
                 <CreateVariant id={id} />

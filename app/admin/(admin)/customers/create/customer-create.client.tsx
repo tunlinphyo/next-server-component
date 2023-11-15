@@ -4,10 +4,13 @@ import { Form, FormCreatButton, FormFooter, Input } from "@/components/admin/for
 import { useFormState, useFormStatus } from "react-dom"
 import { onCustomerCreate } from "../customers.actions"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
+import { AvatarUpload } from "@/components/admin/form/files/files.client"
 
 const initState = {
     name: '',
-    email: ''
+    email: '',
+    password: '',
+    confirm: ''
 }
 
 export function CustomerCreateForm() {
@@ -26,15 +29,34 @@ export function CustomerCreateForm() {
                 name="name"
                 error={state?.name}
             >
-                Customer Name
+                Name
             </Input>
             <Input
                 type="email"
                 name="email"
                 error={state?.email}
             >
-                Customer Email
+                Email
             </Input>
+            <Input
+                type="password"
+                name="password"
+                error={state?.password}
+            >
+                Password
+            </Input>
+            <Input
+                type="password"
+                name="confirm"
+                error={state?.confirm}
+            >
+                Confirm Password
+            </Input>
+            <AvatarUpload
+                name="avatar"
+            >
+                Avatar (optional)
+            </AvatarUpload>
         </Form>
     )
 }

@@ -4,7 +4,7 @@ import { CreateCategory } from "./category-create.server"
 export default async function Page() {
     return (
       <PageContainer>
-        <BackHeader>Product Categories</BackHeader>
+        <BackHeader />
         <h1>Create Product Categories</h1>
         <CreateCategory />
       </PageContainer>

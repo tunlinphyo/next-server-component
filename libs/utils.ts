@@ -12,7 +12,7 @@ export function getZodErrors(errors: GenericObject[]) {
 }
 
 export function wait(time?: number) {
-    const delay = getRandomItemFromArray([ 200, 400, 600, 800, 1000 ])
+    const delay = getRandomItemFromArray([ 200, 300, 400, 500, 600, 700, 800 ])
     return new Promise((resolve) => {
         setTimeout(() => resolve(true), time || delay)
     })
@@ -96,9 +96,13 @@ export function formatPrice(price: number | undefined, currencySymbol: string = 
 
 export function isObjectEmpty(obj: Record<string, any>): boolean {
     for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        return false
-      }
+        if (obj.hasOwnProperty(key)) {
+            return false
+        }
     }
     return true
-  }
+}
+
+export function localCompare(value: string, key: string) {
+    return value.toLowerCase().includes(key.toLowerCase())
+}

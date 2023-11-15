@@ -25,11 +25,7 @@ export default async function Page({
     const parent = Number(searchParams?.parent)
     return (
         <PageContainer>
-            {
-                parent 
-                    ? <BackHeader href={`/admin/product/variants/${parent}/edit`}>Edit Product Varients</BackHeader>
-                    : <BackHeader href={`/admin/product/variants`}>Product Varients</BackHeader>
-            }
+            <BackHeader />
             <FlexBetween>
                 <h1>Edit Product Variant</h1>
             </FlexBetween>
@@ -40,7 +36,7 @@ export default async function Page({
                 !parent && <>
                     <FlexBetween>
                         <LinkButton href={`/admin/product/variants/${id}/create`} theme="primary">
-                            Create Variant <PlusIcon />
+                            Add Child Variant <PlusIcon />
                         </LinkButton>
                     </FlexBetween>
                     <Suspense key={page} fallback={<TableSkeleton cols={5} rows={5} />}>

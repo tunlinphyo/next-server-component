@@ -33,6 +33,8 @@ export interface CustomerType {
     id: number;
     name: string;
     email: string;
+    avatar?: string;
+    password: string;
     createDate: Date;
     updateDate?: Date;
     isDelete: boolean;

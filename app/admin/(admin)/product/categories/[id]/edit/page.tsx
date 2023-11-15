@@ -10,7 +10,7 @@ import { TableSkeleton } from "@/components/admin/table/table.client";
 import { ChildCategoryList } from "../../categories.server";
 import { getCategoryPageLength } from "../../categories.actions"
 
-export default async function Page({ params, searchParams }: { 
+export default async function Page({ params, searchParams }: {
     params: { id: string },
     searchParams?: {
         page?: string;
@@ -22,32 +22,24 @@ export default async function Page({ params, searchParams }: {
     const parent = Number(searchParams?.parent)
     return (
         <PageContainer>
-            {
-                parent 
-                    ? <BackHeader href={`/admin/product/categories/${parent}/edit`}>Edit Product Categories</BackHeader>
-                    : <BackHeader href={`/admin/product/categories`}>Product Categories</BackHeader>
-            }
+            <BackHeader />
             <FlexBetween>
                 <h1>Edit Product Category</h1>
             </FlexBetween>
             <Suspense key={id + page} fallback={<FormSkeleton count={1} />}>
                 <CategoryEdit id={id} />
             </Suspense>
-            {/* {
-                !parent && <> */}
-                    <FlexBetween>
-                        <LinkButton href={`/admin/product/categories/${id}/create`} theme="primary">
-                            Create Category <PlusIcon />
-                        </LinkButton>
-                    </FlexBetween>
-                    <Suspense key={page} fallback={<TableSkeleton cols={4} rows={5} />}>
-                        <ChildCategoryList id={id} page={page} />
-                    </Suspense>
-                    <Suspense fallback={<PaginationSkileton />}>
-                        <Pagination action={getCategoryPageLength.bind(null, id)} />
-                    </Suspense>
-                {/* </>
-            } */}
+            <FlexBetween>
+                <LinkButton href={`/admin/product/categories/${id}/create`} theme="primary">
+                    Add Child Category <PlusIcon />
+                </LinkButton>
+            </FlexBetween>
+            <Suspense key={page} fallback={<TableSkeleton cols={4} rows={5} />}>
+                <ChildCategoryList id={id} page={page} />
+            </Suspense>
+            <Suspense fallback={<PaginationSkileton />}>
+                <Pagination action={getCategoryPageLength.bind(null, id)} />
+            </Suspense>
         </PageContainer>
     )
 }

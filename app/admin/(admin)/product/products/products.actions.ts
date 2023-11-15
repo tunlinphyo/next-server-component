@@ -3,7 +3,7 @@
 import { getCheckboxValues, getFormDataBy, getZodErrors, isObjectEmpty, wait } from "@/libs/utils"
 import { CreateProductSchema, EditProductClassSchema, EditProductSchema, ProductClassSchema, VariantSchema } from "./products.schema"
 import { CategoryType, FormArrayType, FormCategoryType, NestedObject, ProductClassType, ProductType, VariantType } from "@/libs/definations"
-import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
+import { DELETE, GET, GET_ONE, PATCH, POST, QUERY } from "@/libs/db"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { PER_PAGE } from "@/libs/const"
@@ -58,17 +58,23 @@ export async function getAllVariants(parent_variant_id?: number) {
     })
 }
 
-export async function getProductPageLength() {
+export async function getProductPageLength(query: string) {
     await wait()
 
-    const products = await GET<ProductType>('products', { isDelete: false })
+    const q = query || ''
+    const options = { name: q, description: q }
+
+    const products = await QUERY<ProductType>('products', options)
     return Math.ceil(products.length / PER_PAGE)
 }
 
-export async function getProducts(page: number = 1) {
+export async function getProducts(page: number, query: string ) {
     await wait()
 
-    const products = await GET<ProductType>('products', { isDelete: false })
+    const q = query || ''
+    const options = { name: q, description: q }
+
+    const products = await QUERY<ProductType>('products', options)
     const index = page - 1
     const start = index ? index * PER_PAGE : 0
     const end = start + PER_PAGE

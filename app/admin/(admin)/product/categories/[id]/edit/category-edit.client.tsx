@@ -16,7 +16,7 @@ export function CategoryEditForm({ category }: { category: CategoryType }) {
     return (
         <Form action={onAction} footer={
             <FormFooter>
-                <button type="reset">Clear <ArrowPathIcon /></button>
+                <button type="reset">Reset <ArrowPathIcon /></button>
                 <FormCreatButton icon={<CheckCircleIcon />}>Edit Category</FormCreatButton>
             </FormFooter>
         }>

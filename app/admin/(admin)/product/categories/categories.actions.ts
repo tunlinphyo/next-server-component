@@ -9,7 +9,7 @@ import { RedirectType, redirect } from "next/navigation"
 import { PER_PAGE } from "@/libs/const"
 
 export async function getCategoryPageLength(id?: number) {
-    await wait()
+    await wait(50)
 
     const query: Partial<CategoryType> = {
         isDelete: false

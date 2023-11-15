@@ -7,20 +7,22 @@ import { PencilIcon } from "@heroicons/react/24/outline"
 import { FromDeleteButton, IdContainer } from "@/components/admin/form/form.client"
 import { CustomerType } from "@/libs/definations"
 import { formatDate } from '../../../../libs/utils';
+import { ThumbnailImage } from "@/components/admin/image/image.client"
+import styles from './customers.module.css'
 
 export function CustomerTable({ customers }: { customers: CustomerType[] }) {
     return (
         <Table>
             <colgroup>
                 <col width="10%" />
-                <col width="15%" />
-                <col width="15%" />
                 <col width="20%" />
-                <col width="5%" />
+                <col width="20%" />
+                <col width="20%" />
+                <col width="10%" />
             </colgroup>
             <TableHeader>
                 <TableHead>#</TableHead>
-                <TableHead>Name</TableHead>
+                <TableHead>Customer</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Create Date</TableHead>
                 <TableHead></TableHead>
@@ -32,7 +34,9 @@ export function CustomerTable({ customers }: { customers: CustomerType[] }) {
                             <TableData>
                                 <IdContainer id={customer.id} />
                             </TableData>
-                            <TableData>{ customer.name }</TableData>
+                            <TableData>
+                                <CustomerData customer={customer} />
+                            </TableData>
                             <TableData>{ customer.email }</TableData>
                             <TableData>{ formatDate(customer.createDate) }</TableData>
                             <TableData end={true}>
@@ -46,5 +50,14 @@ export function CustomerTable({ customers }: { customers: CustomerType[] }) {
                 }
             </TableBody>
         </Table>
+    )
+}
+
+export function CustomerData({ customer }: { customer: CustomerType }) {
+    return (
+        <div className={styles.customerData}>
+            <ThumbnailImage image={customer.avatar} />
+            <h4 className={styles.customerName}>{ customer.name }</h4>
+        </div>
     )
 }

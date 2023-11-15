@@ -18,7 +18,7 @@ export function VariantEditForm({ variant }: { variant: VariantType }) {
     return (
         <Form action={onAction} footer={
             <FormFooter>
-                <button type="reset">Clear <ArrowPathIcon /></button>
+                <button type="reset">Reset <ArrowPathIcon /></button>
                 <FormCreatButton icon={<CheckCircleIcon />}>Edit Variant</FormCreatButton>
             </FormFooter>
         }>

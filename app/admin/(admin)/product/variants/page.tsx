@@ -22,11 +22,11 @@ export default function Page({
     const page = Number(searchParams?.page) ?? 1;
     return (
         <PageContainer>
-            <BackHeader href="/admin/product">Product</BackHeader>
+            <BackHeader />
             <FlexBetween>
                 <h1>Product Variants</h1>
                 <LinkButton href="/admin/product/variants/create" theme="primary">
-                    Create Variant <PlusIcon />
+                    Add Variant <PlusIcon />
                 </LinkButton>
             </FlexBetween>
             <Suspense key={page} fallback={<TableSkeleton cols={6} rows={5} />}>

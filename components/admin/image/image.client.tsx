@@ -16,23 +16,34 @@ export function ThumbnailImages({ images }: { images: string[] | undefined }) {
         )
     }
     const more = images.length - 4
-    console.log("MORE", more)
     const list = images.slice(0, 4)
     return (
         <div className={styles.thumbImages}>
             {
                 list.map((item, index) => (
-                    <Image 
+                    <Image
                         className={clsx(styles.thumbImg, styles.withImg)}
-                        key={index} 
-                        src={item} 
-                        width={32} 
-                        height={32} 
+                        key={index}
+                        src={item}
+                        width={32}
+                        height={32}
                         alt='image' />
                 ))
             }
             {
                 more > 0 && <div className={styles.thumbImg}>+{ more }</div>
+            }
+        </div>
+    )
+}
+
+export function ThumbnailImage({ image }: { image: string | undefined }) {
+    return (
+        <div className={styles.images}>
+            {
+                image
+                    ? <Image className={clsx(styles.thumbImg, styles.withImg)} src={image} width={32} height={32} alt='image' />
+                    : <div className={styles.thumbImg}><PhotoIcon /></div>
             }
         </div>
     )

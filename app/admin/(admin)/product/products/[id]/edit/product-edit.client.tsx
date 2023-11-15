@@ -8,7 +8,7 @@ import { ArrowPathIcon, CheckCircleIcon, PencilIcon, PlusIcon } from "@heroicons
 import { CategorySelect } from "@/components/admin/form/category/category.client"
 import styles from "./product-edit.module.css"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { appToast } from "@/libs/toasts"
 import { formatPrice } from "@/libs/utils"
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client"
@@ -55,7 +55,7 @@ export function ProductEditForm({ product, classes, categories }: ProductEditPro
             >
                 Name
             </Input>
-            <ImageUpload 
+            <ImageUpload
                 name="images"
                 defaultValue={product.images}
             >

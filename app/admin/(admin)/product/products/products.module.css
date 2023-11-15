@@ -1,6 +1,9 @@
-
+.productData {
+    padding: var(--space-1) 0;
+}
 .productName {
     font-size: 1em;
+    font-weight: 500;
 }
 .productPrice {
     color: var(--foreground-400);

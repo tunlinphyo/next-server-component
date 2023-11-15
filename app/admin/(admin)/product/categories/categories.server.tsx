@@ -13,6 +13,8 @@ export async function CategoryList({ page }: { page: number }) {
 export async function ChildCategoryList({ page, id }: { page: number, id: number }) {
     const categories = await getChildCategories(id, page)
     return (
-        <CategoryTable categories={categories} child={true} />
+        categories.length
+            ? <CategoryTable categories={categories} child={true} />
+            : <></>
     )
 }

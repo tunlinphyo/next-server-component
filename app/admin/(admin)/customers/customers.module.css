@@ -1,0 +1,11 @@
+.customerData {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-1) 0;
+    align-items: center;
+}
+.customerName {
+    font-size: 1em;
+    font-weight: 400;
+}

@@ -3,7 +3,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Link from "next/link";
-import { generatePagination } from "./pagination";
+import { generatePagination } from "./pagination.util";
 import { usePathname, useSearchParams } from "next/navigation";
 import styles from "./pagination.module.css";
 
@@ -19,6 +19,8 @@ export function PaginationClient({ totalPages }: { totalPages: number }) {
     };
 
     const allPages = generatePagination(currentPage, totalPages);
+
+    if (!allPages.length) return <></>
 
     return (
         <div className={styles.pagiantion}>

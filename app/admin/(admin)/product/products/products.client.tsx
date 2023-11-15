@@ -61,7 +61,7 @@ export function ProductTable({ products }: { products: ProductType[] }) {
 
 export function ProductData({ product }: { product: ProductType }) {
     return (
-        <div>
+        <div className={styles.productData}>
             <h4 className={styles.productName}>{ product.name }</h4>
             <small className={styles.productPrice}>
                 { formatPrice(product.minPrice) }

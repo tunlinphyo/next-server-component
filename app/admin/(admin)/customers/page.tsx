@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: {
             <FlexBetween>
                 <h1>Customers</h1>
                 <LinkButton href="/admin/customers/create" theme="primary">
-                    Create Customer
+                    Add Customer
                     <PlusIcon />
                 </LinkButton>
             </FlexBetween>

@@ -22,11 +22,11 @@ export default async function Page({
     const page = Number(searchParams?.page) ?? 1
     return (
         <PageContainer>
-            <BackHeader href="/admin/product">Product</BackHeader>
+            <BackHeader />
             <FlexBetween>
                 <h1>Product categories</h1>
                 <LinkButton href="/admin/product/categories/create" theme="primary">
-                    Create Category <PlusIcon />
+                    Add Category <PlusIcon />
                 </LinkButton>
             </FlexBetween>
             <Suspense key={page} fallback={<TableSkeleton cols={4} rows={5} />}>

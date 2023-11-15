@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
 export async function getVariantPageLength(id?: number) {
-    await wait()
+    await wait(50)
 
     const query: Partial<VariantType> = {
         isDelete: false

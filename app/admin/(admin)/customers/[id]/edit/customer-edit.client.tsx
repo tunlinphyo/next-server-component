@@ -5,10 +5,13 @@ import { useFormState, useFormStatus } from "react-dom"
 import { onCustomerEdit } from "../../customers.actions"
 import { CustomerType } from "@/libs/definations"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
+import { AvatarUpload } from "@/components/admin/form/files/files.client"
 
 const initState = {
     name: '',
-    email: ''
+    email: '',
+    password: '',
+    confirm: ''
 }
 
 export function CustomerEditForm({ customer }: { customer: CustomerType }) {
@@ -16,8 +19,8 @@ export function CustomerEditForm({ customer }: { customer: CustomerType }) {
     return (
         <Form action={onAction} footer={
             <FormFooter>
-                <button type="reset">Clear <ArrowPathIcon /></button>
-                <FormCreatButton icon={<CheckCircleIcon />}>Create Customer</FormCreatButton>
+                <button type="reset">Reset <ArrowPathIcon /></button>
+                <FormCreatButton icon={<CheckCircleIcon />}>Edit Customer</FormCreatButton>
             </FormFooter>
         }>
             <input name="id" type="hidden" defaultValue={customer.id} />
@@ -36,6 +39,28 @@ export function CustomerEditForm({ customer }: { customer: CustomerType }) {
             >
                 Customer Email
             </Input>
+            <Input
+                type="password"
+                name="password"
+                error={state?.password}
+                defaultValue={customer.password}
+            >
+                Password
+            </Input>
+            <Input
+                type="password"
+                name="confirm"
+                error={state?.confirm}
+                defaultValue={customer.password}
+            >
+                Confirm Password
+            </Input>
+            <AvatarUpload
+                name="avatar"
+                defaultValue={customer.avatar}
+            >
+                Avatar (optional)
+            </AvatarUpload>
         </Form>
     )
 }

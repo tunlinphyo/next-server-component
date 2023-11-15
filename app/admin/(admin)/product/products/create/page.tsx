@@ -10,7 +10,7 @@ import { CreateProduct } from "./product-create.server";
 export default function Page() {
     return (
         <PageContainer>
-            <BackHeader>Products</BackHeader>
+            <BackHeader />
             <FlexBetween>
                 <h1>Create Products</h1>
             </FlexBetween>

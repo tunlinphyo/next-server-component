@@ -29,16 +29,15 @@ export function FlexBetween({ children }: ChildrenProp) {
     )
 }
 
-export function BackHeader({ children, href }: ChildrenProp & { href?: string }) {
+export function BackHeader() {
     const router = useRouter()
     const back = () => {
-        if (href) router.push(href)
-        else router.back()
+        router.back()
     }
     return (
         <div className={styles.backHeader}>
             <ChevronLeftIcon className={styles.backIcon} />
-            <button onClick={back}>{ children }</button>
+            <button onClick={back}>Back</button>
         </div>
     )
 }

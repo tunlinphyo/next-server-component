@@ -1,11 +1,25 @@
 import { JsonDB, Config } from 'node-json-db'
 import { GenericObject, Table } from './definations';
+import { localCompare } from './utils';
 
 const db = new JsonDB(new Config("test_db", true, true, '/'));
 
 type BaseData = {
     id: number;
     isDelete: boolean;
+}
+
+export async function QUERY<T extends GenericObject>(table: Table, query?: GenericObject) {
+    await db.reload()
+    const datas:T[] = await db.getData(`/${table}`)
+    if (!query) return datas
+    return datas.filter(item => {
+        let is = false
+        Object.entries(query).forEach(([key, value]) => {
+            is = localCompare(item[key], value)
+        })
+        return is && item.isDelete == false
+    })
 }
 
 export async function GET<T extends GenericObject>(table: Table, query?: GenericObject) {
@@ -18,6 +32,7 @@ export async function GET<T extends GenericObject>(table: Table, query?: Generic
             is = is && (item[key] == value)
         })
         return is
+
     })
 }
 
