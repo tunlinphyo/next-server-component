@@ -315,7 +315,10 @@
             ],
             "id": 1700049145062,
             "createDate": "2023-11-15T11:52:25.062Z",
-            "isDelete": false
+            "isDelete": false,
+            "variant_1_id": 1699679275775,
+            "variant_2_id": 0,
+            "updateDate": "2023-11-16T01:25:46.416Z"
         }
     ],
     "product_class": [
@@ -606,7 +609,35 @@
             "quantity": 5,
             "id": 1700049145369,
             "createDate": "2023-11-15T11:52:25.369Z",
-            "isDelete": false
+            "isDelete": true,
+            "updateDate": "2023-11-16T01:26:11.211Z"
+        },
+        {
+            "id": 1700097971212,
+            "product_id": 1700049145062,
+            "variant_1_id": 1699689433343,
+            "price": 180000,
+            "quantity": 2,
+            "isDelete": false,
+            "createDate": "2023-11-16T01:26:11.212Z"
+        },
+        {
+            "id": 1700097971213,
+            "product_id": 1700049145062,
+            "variant_1_id": 1699689442075,
+            "price": 200000,
+            "quantity": 2,
+            "isDelete": false,
+            "createDate": "2023-11-16T01:26:11.213Z"
+        },
+        {
+            "id": 1700097971214,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700041985109,
+            "price": 220000,
+            "quantity": 2,
+            "isDelete": false,
+            "createDate": "2023-11-16T01:26:11.214Z"
         }
     ],
     "product_categories": [
