@@ -1,6 +1,6 @@
 .fileUpload {
     grid-column: span 2;
-    --size: 134px;
+    --size: 134.4px;
 }
 .avatarUpload {
     grid-column: span 2;
@@ -93,7 +93,7 @@
     right: var(--space-2);
     display: grid;
     place-content: center;
-    border-radius: 50%;
+    border-radius: 50%!important;
     opacity: .7;
 }
 .deleteIcon:hover {

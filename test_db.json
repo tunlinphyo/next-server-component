@@ -499,7 +499,7 @@
             "quantity": 2,
             "isDelete": false,
             "createDate": "2023-11-13T14:08:12.268Z",
-            "updateDate": "2023-11-14T15:11:06.213Z"
+            "updateDate": "2023-11-16T12:13:53.635Z"
         },
         {
             "id": 1699884492274,
@@ -510,7 +510,7 @@
             "quantity": 2,
             "isDelete": false,
             "createDate": "2023-11-13T14:08:12.274Z",
-            "updateDate": "2023-11-14T15:11:06.215Z"
+            "updateDate": "2023-11-16T12:13:53.652Z"
         },
         {
             "id": 1699884492283,
@@ -518,10 +518,10 @@
             "variant_1_id": 1699884398426,
             "variant_2_id": 1699689442075,
             "price": 150000,
-            "quantity": 2,
+            "quantity": 0,
             "isDelete": false,
             "createDate": "2023-11-13T14:08:12.283Z",
-            "updateDate": "2023-11-14T15:11:06.218Z"
+            "updateDate": "2023-11-16T12:13:53.670Z"
         },
         {
             "id": 1699889614123,
@@ -541,7 +541,7 @@
             "quantity": 1,
             "isDelete": false,
             "createDate": "2023-11-13T15:58:01.895Z",
-            "updateDate": "2023-11-14T15:11:06.221Z"
+            "updateDate": "2023-11-16T12:13:53.686Z"
         },
         {
             "id": 1699891081897,
@@ -549,10 +549,10 @@
             "variant_1_id": 1699884409722,
             "variant_2_id": 1699689433343,
             "price": 120000,
-            "quantity": 1,
+            "quantity": 0,
             "isDelete": false,
             "createDate": "2023-11-13T15:58:01.897Z",
-            "updateDate": "2023-11-14T15:11:06.223Z"
+            "updateDate": "2023-11-16T12:13:53.695Z"
         },
         {
             "id": 1699891081898,
@@ -563,7 +563,7 @@
             "quantity": 1,
             "isDelete": false,
             "createDate": "2023-11-13T15:58:01.898Z",
-            "updateDate": "2023-11-14T15:11:06.225Z"
+            "updateDate": "2023-11-16T12:13:53.711Z"
         },
         {
             "id": 1699891224487,

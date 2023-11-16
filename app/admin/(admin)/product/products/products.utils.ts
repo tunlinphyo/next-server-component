@@ -1,4 +1,4 @@
-import { CategoryType, ProductClassType } from "@/libs/definations"
+import { ProductClassType } from "@/libs/definations"
 
 export function getStockAndPrices(classList: ProductClassType[]) {
     let prices: number[] = [], total: number = 0

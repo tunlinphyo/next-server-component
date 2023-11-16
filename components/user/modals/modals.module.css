@@ -1,0 +1,42 @@
+
+.bottomSheetButton {
+    width: 100%;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-3);
+    font-size: 1em;
+    border-radius: var(--space-3);
+}
+.bottomSheetButton:hover {
+    background-color: rgb(var(--background-accent-rgb));
+}
+.bottomSheetButton:disabled {
+    opacity: .5;
+    pointer-events: none;
+}
+.bottomSheetButton svg {
+    width: 1.4rem;
+    color: var(--foreground-500);
+}
+.closeButton {
+    width: 100%;
+    height: 38px;
+    border-radius: var(--space-4);
+    border: none;
+    background-color: rgb(var(--background-accent-rgb));
+    text-transform: uppercase;
+    color: var(--danger);
+}
+.closeButton:hover {
+    outline: 2px solid var(--danger);
+}
+
+.buttonGroup {
+    padding: var(--space-3) 0;
+}

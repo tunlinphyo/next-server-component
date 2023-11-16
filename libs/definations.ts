@@ -10,6 +10,17 @@ export interface ChildrenProp {
     children: React.ReactNode;
 }
 
+export interface UserNavType {
+    href: string;
+    name: string;
+    icon?: any;
+}
+
+export interface CookieCartType {
+    id: number;
+    quantity: number;
+}
+
 export interface FormArrayType {
     id: number;
     name: string;

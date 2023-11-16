@@ -1,11 +1,11 @@
-import { z, ZodError } from "zod"
+import { z } from "zod"
 
 export const ProductSchema = z.object({
     id: z.coerce.number(),
     name: z.string().min(5),
     description: z.string().min(10).max(300),
     price: z.coerce.number().min(10),
-    quantity: z.coerce.number().min(1),
+    quantity: z.coerce.number(),
     category_ids: z.coerce.number().array().optional(),
 })
 
@@ -28,6 +28,6 @@ export const ProductClassSchema = z.object({
     variant_1_id: z.number(),
     variant_2_id: z.number().optional(),
     price: z.number().min(10),
-    quantity: z.number().min(1)
+    quantity: z.number()
 })
 

@@ -2,12 +2,98 @@ body {
     width: 100%;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-/* @media (min-width: 768px) {
-    body {
-        padding: max(var(--space-5), 6vh) 0;
-    }
-} */
+.admin .button,
+.admin button {
+  color: var(--foreground-400);
+  text-transform: uppercase;
+  font-size: .8em;
+  letter-spacing: .1em;
+  padding: .5em 1em;
+  cursor: pointer;
+  font-weight: 400;
+  border-radius: var(--space-2);
+  border: 1px solid rgb(var(--border-rgb));
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  background-color: rgb(var(--background-rgb));
+}
+.admin .button.full,
+.admin button.full {
+  width: 100%;
+}
+.admin .button:not(.icon-button),
+.admin button:not(.icon-button) {
+  min-width: 120px;
+}
+
+.admin .button.primary,
+.admin button.primary {
+  border: 1px solid var(--primary-600);
+  background-color: var(--primary-600);
+  color: rgb(var(--background-rgb));
+}
+.admin .button.danger,
+.admin button.danger {
+  border: 1px solid var(--danger);
+  background-color: var(--danger);
+  color: rgb(var(--background-rgb));
+}
+
+.admin .button:disabled,
+.admin button:disabled {
+  opacity: .3;
+  pointer-events: none;
+}
+.admin .icon-button:not(.has-children) {
+  padding: .5em .75em .3em;
+  border: none;
+  line-height: 1;
+}
+.admin .icon-button.has-children {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  padding: .5em 1.5em;
+}
+.admin .icon-button:disabled {
+  opacity: 1;
+}
+
+.admin .icon-button:not(.has-children).primary {
+  background-color: transparent;
+  color: var(--primary-600);
+  border: none;
+}
+.admin .icon-button:not(.has-children).danger {
+  background-color: transparent;
+  color: var(--danger);
+  border: none;
+}
+.admin .icon-button.has-children.danger {
+  border-color: var(--danger);
+  background-color: transparent;
+  color: var(--danger);
+}
+.admin .button svg,
+.admin button svg {
+  width: 1.5em;
+}
+.admin .icon-button.has-children svg {
+  width: 1.2em;
+}
+
+main {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 10px;
+}

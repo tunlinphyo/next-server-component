@@ -1,0 +1,130 @@
+
+.custom-modal-container {
+    position: absolute;
+    z-index: 999;
+
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    background-color: rgba(var(--foreground-rgb), .6);
+    border-radius: var(--space-4);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    animation: BackdropEnter .4s ease;
+}
+.custom-modal-closing {
+    animation: BackdropLeave .8s ease forwards;
+}
+.bottom-sheet-container.custom-modal-closing {
+    animation: BackdropLeave .4s ease forwards;
+}
+
+.custom-modal-view {
+    width: calc(100% - var(--space-5));
+    /* min-height: 200px; */
+    background-color: rgb(var(--background-rgb));
+    border-radius: var(--space-4);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    will-change: transform;
+    animation: AlertEnter .4s cubic-bezier(.05, .1, .2, 1.2);
+}
+.custom-modal-closing .custom-modal-view {
+    animation: AlertLeave .8s cubic-bezier(.5, -.5, .1, 1.5) forwards;
+}
+
+.bottom-sheet-container {
+    align-items: flex-end;
+    padding: var(--space-3);
+}
+.bottom-sheet-view {
+    width: 100%;
+    background-color: rgb(var(--background-rgb));
+    border-radius: 20px 20px 35px 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+    overflow: hidden;
+    padding: var(--space-3);
+
+    will-change: transform;
+    animation: SheetEnter .4s cubic-bezier(.05, .1, .2, 1);
+}
+.custom-modal-closing .bottom-sheet-view {
+    animation: SheetLeave .4s cubic-bezier(.05, .1, .2, 1) forwards;
+}
+
+
+
+@keyframes BackdropEnter {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes BackdropLeave {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes AlertEnter {
+    from {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes AlertLeave {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(.7);
+    }
+}
+
+@keyframes SheetEnter {
+    from {
+        transform: translateY(101%);
+    }
+    to {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes SheetLeave {
+    from {
+        transform: translateY(0%);
+    }
+    to {
+        transform: translateY(101%);
+    }
+}

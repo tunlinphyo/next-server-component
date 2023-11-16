@@ -18,7 +18,12 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="view-on-desktop">
+          View On Desktop
+        </div>
+        {children}
+      </body>
     </html>
   )
 }

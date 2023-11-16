@@ -21,7 +21,7 @@
     .login {
         grid-template-columns: minmax(200px, .3fr) minmax(0, 1fr);
         height: calc(100vh - (var(--space-4) * 2));
-        max-height: 680px;
+        max-height: 720px;
         outline: 20px solid #000;
     }
 }
