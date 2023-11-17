@@ -7,6 +7,7 @@
     background-color: transparent;
     display: flex;
     justify-content: flex-start;
+    text-align: left;
     align-items: center;
     gap: var(--space-3);
     padding: 0 var(--space-3);
@@ -15,6 +16,7 @@
 }
 .bottomSheetButton:hover {
     background-color: rgb(var(--background-accent-rgb));
+    outline: 2px solid var(--primary-600);
 }
 .bottomSheetButton:disabled {
     opacity: .5;

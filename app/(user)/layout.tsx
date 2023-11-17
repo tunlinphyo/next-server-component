@@ -4,7 +4,7 @@ import './user.css'
 import styles from './user.module.css'
 import Link from 'next/link'
 import { ArrowLongRightIcon } from '@heroicons/react/24/outline'
-import { CartIconSkeleton, NavigationSkeleton, PageHeader, UserLinkSkeleton } from '@/components/user/utils/utils.client'
+import { CartIconSkeleton, NavigationSkeleton, PageFooter, PageHeader, UserLinkSkeleton } from '@/components/user/utils/utils.client'
 import { Suspense } from 'react'
 import { ServerCartIcon, ServerNavigation, ServerUser } from './user.server'
 
@@ -29,6 +29,7 @@ export default async function Layout({ children }: ChildrenProp) {
                             </Suspense>
                         </PageHeader>
                         {children}
+                        <PageFooter />
                     </div>
                 </div>
             </main>

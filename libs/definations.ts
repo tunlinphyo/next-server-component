@@ -121,3 +121,13 @@ export interface ProductClassType {
     updateDate?: Date;
     isDelete: boolean;
 }
+
+export interface CartType {
+    id: number;
+    product: ProductType;
+    productClass: ProductClassType;
+    quantity: number;
+    createDate: Date;
+    updateDate?: Date;
+    isDelete: boolean;
+}

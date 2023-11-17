@@ -3,7 +3,7 @@
 import { ProductClassType, ProductType } from '@/libs/definations'
 import styles from './products.module.css'
 import Image from 'next/image'
-import { ArrowPathIcon, ListBulletIcon, PhotoIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon, ListBulletIcon, NoSymbolIcon, PhotoIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
 import { formatPrice } from '@/libs/utils'
 import { TextSkeleton } from '@/components/user/utils/utils.client'
 import Link from 'next/link'
@@ -44,7 +44,7 @@ export function Product({ product }: { product: ProductType }) {
                 }
             </Link>
             <Link href={`/products/${product.id}`} className={styles.productDetail}>
-                <h4>{ product.name } | { product.quantity }</h4>
+                <h4>{ product.name }</h4>
                 <small className={styles.productPrice}>
                     { formatPrice(product.minPrice) }
                     { product.minPrice != product.maxPrice && <span>~</span> }
@@ -53,12 +53,20 @@ export function Product({ product }: { product: ProductType }) {
             </Link>
             <div className={styles.productAction}>
                 {
-                    product.classes && (
-                        <AddToCartForm product={product} productClass={product.classes} />
-                    )
+                    product.classes && product.quantity 
+                        ? <AddToCartForm product={product} productClass={product.classes} />
+                        : <OutofStockButton />
                 }
             </div>
         </div>
+    )
+}
+
+export function OutofStockButton() {
+    return (
+        <button className={styles.addToCart} disabled={true}>
+            out of stock <NoSymbolIcon />
+        </button>
     )
 }
 
@@ -97,11 +105,13 @@ export function AddToCartForm({ product, productClass }: AddToCartFormProps) {
     }, [ state ])
 
     const handleSubmit = useCallback((id: number) => {
-        if (formEl.current) {
-            setClassId(id)
-            formEl.current.requestSubmit()
-            setModal(false)
-        }
+        setClassId(id)
+        setTimeout(() => {
+                if (formEl.current) {
+                formEl.current.requestSubmit()
+                setModal(false)
+            }
+        }, 0)
     }, [ classId ])
 
     return (
@@ -119,7 +129,10 @@ export function AddToCartForm({ product, productClass }: AddToCartFormProps) {
                         productClass.map(item => (
                             <BottomSheetButton onClick={() => handleSubmit(item.id)} key={item.id} disabled={!item.quantity}>
                                 <ListBulletIcon />
-                                { item.variant1?.name } { item.variant2 && ' - ' } { item.variant2?.name }
+                                <span style={{ flex: 1 }}>
+                                    { item.variant1?.name } { item.variant2 && ' - ' } { item.variant2?.name }
+                                </span>
+                                <span>{ formatPrice(item.price) }</span>
                             </BottomSheetButton>
                         ))
                     }

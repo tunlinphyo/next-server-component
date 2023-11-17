@@ -106,3 +106,7 @@ export function isObjectEmpty(obj: Record<string, any>): boolean {
 export function localCompare(value: string, key: string) {
     return value.toLowerCase().includes(key.toLowerCase())
 }
+
+export function encodeURL(urlParameter: string) {
+    return encodeURIComponent(urlParameter)
+}

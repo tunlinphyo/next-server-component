@@ -21,6 +21,7 @@
 
   --border-rgb: 220, 220, 220;
   --danger: hsl(6, 79%, 57%);
+  --danger-100: hsla(6, 79%, 57%, .1);
 
   --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
@@ -72,6 +73,7 @@
 
     --border-rgb: 60, 60, 60;
     --danger: hsl(6, 59%, 77%);
+    --danger-100: hsla(6, 59%, 77%, .1);
 
     --primary-100: hsl(var(--primary-hue), 25%, 25%);
 
@@ -146,6 +148,9 @@ h1, h2, h3, h4, h5, h6 {
   left: 50%;
   translate: -50% 0;
   z-index: 998;
+
+  /* opacity: 0;
+  pointer-events: none; */
 }
 .site-change-link svg {
   width: 1.5em;

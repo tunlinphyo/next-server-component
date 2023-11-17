@@ -30,6 +30,16 @@
     color: var(--foreground-900);
 }
 
+.pageFooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-5) var(--space-4) 0;
+    font-size: .7rem;
+    color: var(--foreground-400);
+}
+
 .menuButton {
     width: 38px;
     height: 38px;
@@ -54,7 +64,7 @@
     position: absolute;
     height: 480px;
     transform-origin: top center;
-    transform: rotateX(90deg);
+    transform: scaleY(0) rotateX(90deg);
     top: 0;
     left: 0; right: 0;
     background-color: var(--primary-100);
@@ -69,8 +79,8 @@
     border-bottom: 5px solid var(--primary-600);
 }
 .navigationOpen {
-    transform: rotateX(0deg);
-    transition: transform .7s cubic-bezier(0, .5, .5, 1);
+    transform: scaleY(1) rotateX(0deg);
+    transition: transform .5s cubic-bezier(0, .5, .5, 1);
 }
 .navList {
     margin: 0;

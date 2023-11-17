@@ -15,7 +15,7 @@
     min-height: 220px;
     border-radius: var(--space-4);
     background-color: rgb(var(--background-accent-rgb));
-    padding: var(--space-2);
+    padding: var(--space-3);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

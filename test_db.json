@@ -299,7 +299,7 @@
             "id": 1699972943635,
             "createDate": "2023-11-14T14:42:23.635Z",
             "isDelete": false,
-            "updateDate": "2023-11-15T09:49:14.653Z"
+            "updateDate": "2023-11-16T13:52:52.973Z"
         },
         {
             "name": "Surface Laptop Studio",
@@ -597,11 +597,11 @@
         {
             "product_id": 1699972943635,
             "price": 5000,
-            "quantity": 1,
+            "quantity": 0,
             "id": 1699972943943,
             "createDate": "2023-11-14T14:42:23.943Z",
             "isDelete": false,
-            "updateDate": "2023-11-15T09:49:14.694Z"
+            "updateDate": "2023-11-16T13:52:52.978Z"
         },
         {
             "product_id": 1700049145062,

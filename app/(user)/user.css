@@ -5,3 +5,30 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.primary-button {
+    width: 100%;
+    height: 36px;
+    color: var(--foreground-400);
+    text-transform: uppercase;
+    font-size: .8em;
+    padding: 0 1em;
+    cursor: pointer;
+    font-weight: 400;
+    border-radius: var(--space-3);
+    border: 1px solid rgb(var(--border-rgb));
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-3);
+    background-color: rgb(var(--background-rgb));
+}
+
+.primary-button svg {
+    width: 1.4em;
+}
+
+.primary-button:hover {
+    outline: 2px solid var(--primary-600);
+}

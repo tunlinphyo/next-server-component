@@ -56,6 +56,14 @@ export function PageTitle({ title }: { title: string }) {
     )
 }
 
+export function PageFooter() {
+    return (
+        <footer className={styles.pageFooter}>
+            &copy; 2023
+        </footer>
+    )
+}
+
 export function Navigations({ children, toggle }: NavigationsProps) {
     return (
         <nav className={clsx(styles.navigation, toggle && styles.navigationOpen)}>
