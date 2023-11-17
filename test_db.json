@@ -1033,23 +1033,12 @@
     "cart_items": [
         {
             "cart_id": 1700196528385,
-            "product_id": 1699891224183,
-            "product_class_id": 1699891766529,
+            "product_id": 1700049145062,
+            "product_class_id": 1700097971213,
             "quantity": 1,
-            "id": 1700207112212,
-            "createDate": "2023-11-17T07:45:12.212Z",
-            "isDelete": false,
-            "updateDate": "2023-11-17T11:11:18.811Z"
-        },
-        {
-            "cart_id": 1700196528385,
-            "product_id": 1699782777245,
-            "product_class_id": 1699877939067,
-            "quantity": 1,
-            "id": 1700222548613,
-            "createDate": "2023-11-17T12:02:28.613Z",
-            "isDelete": false,
-            "updateDate": "2023-11-17T12:02:42.813Z"
+            "id": 1700224520018,
+            "createDate": "2023-11-17T12:35:20.018Z",
+            "isDelete": false
         }
     ]
 }

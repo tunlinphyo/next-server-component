@@ -2,7 +2,7 @@
 
 import { ChildrenProp, UserNavType, UserType } from '@/libs/definations'
 import styles from './utils.module.css'
-import { ArrowRightOnRectangleIcon, Bars3BottomLeftIcon, ShoppingBagIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftOnRectangleIcon, Bars3BottomLeftIcon, ShoppingBagIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
@@ -110,7 +110,7 @@ export function UserLink({ user }: { user?: UserType }) {
             </Link>
         ) : (
             <Link href="/login" className={styles.userIcon}>
-                <ArrowRightOnRectangleIcon />
+                <ArrowLeftOnRectangleIcon />
             </Link>
         )
     )

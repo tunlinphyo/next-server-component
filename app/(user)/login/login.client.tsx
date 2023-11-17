@@ -4,7 +4,7 @@ import { Form, FormFooter, Input, FormCreatButton, FormSkeleton } from '@/compon
 import styles from './login.module.css'
 import { useFormState } from 'react-dom'
 import { onLogin } from './login.actions'
-import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { appToast } from '@/libs/toasts'
@@ -31,7 +31,7 @@ export function LoginForm() {
         <div className={styles.formContainer}>
             <Form action={onAction} footer={
                 <FormFooter>
-                    <FormCreatButton icon={<ArrowRightOnRectangleIcon />}>
+                    <FormCreatButton icon={<ArrowLeftOnRectangleIcon />}>
                         Login
                     </FormCreatButton>
                 </FormFooter>

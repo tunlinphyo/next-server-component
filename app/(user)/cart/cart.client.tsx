@@ -36,8 +36,9 @@ export function CartForm({ isLogined, isCartItems }: { isLogined: boolean, isCar
     }
 
     return (
-        <form>
-
+        <form className={styles.checkoutForm}>
+            <h4>Checkout</h4>
+            <div>Comming soon..</div>
         </form>
     )
 }

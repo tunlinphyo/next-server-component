@@ -1,6 +1,5 @@
 'use server'
 
-import { wait } from "@/libs/utils"
 import { CartIcon, NavigationList, UserLink } from "@/components/user/utils/utils.client"
 import { UserNavType } from "@/libs/definations"
 import { getCartItemCount, getUser, isLogined } from "./user.actions"
@@ -21,7 +20,8 @@ export async function ServerUser() {
 }
 
 export async function ServerNavigation() {
-    await wait()
+    const is = await isLogined()
+
     const navigations: UserNavType[] = [
         {
             href: '/',
@@ -35,11 +35,20 @@ export async function ServerNavigation() {
             href: '/cart',
             name: 'Cart',
         },
-        {
+    ]
+
+    if (is) {
+        navigations.push({
             href: '/account',
             name: 'Account',
-        }
-    ]
+        })
+    } else {
+        navigations.push({
+            href: '/login',
+            name: 'Login',
+        })
+    }
+
     return (
         <NavigationList navigations={navigations} />
     )

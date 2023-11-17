@@ -35,7 +35,6 @@ export async function handleSignIn(user: UserType) {
     setCookieUser(user)
     await handleUserCart(user.id)
     clearCookieCart()
-
 }
 
 export async function handleSignOut() {
