@@ -6,6 +6,13 @@
             "email": "admin@gmail.com",
             "password": "password",
             "isDelete": false
+        },
+        {
+            "id": 1699514821967,
+            "name": "User",
+            "email": "user@gmail.com",
+            "password": "password",
+            "isDelete": false
         }
     ],
     "customers": [
@@ -299,7 +306,7 @@
             "id": 1699972943635,
             "createDate": "2023-11-14T14:42:23.635Z",
             "isDelete": false,
-            "updateDate": "2023-11-16T13:52:52.973Z"
+            "updateDate": "2023-11-17T07:47:17.816Z"
         },
         {
             "name": "Surface Laptop Studio",
@@ -601,7 +608,7 @@
             "id": 1699972943943,
             "createDate": "2023-11-14T14:42:23.943Z",
             "isDelete": false,
-            "updateDate": "2023-11-16T13:52:52.978Z"
+            "updateDate": "2023-11-17T07:47:17.844Z"
         },
         {
             "product_id": 1700049145062,
@@ -1013,6 +1020,36 @@
             "id": 1700041985109,
             "createDate": "2023-11-15T09:53:05.109Z",
             "isDelete": false
+        }
+    ],
+    "carts": [
+        {
+            "user_id": 1699514821967,
+            "id": 1700196528385,
+            "createDate": "2023-11-17T04:48:48.385Z",
+            "isDelete": false
+        }
+    ],
+    "cart_items": [
+        {
+            "cart_id": 1700196528385,
+            "product_id": 1699891224183,
+            "product_class_id": 1699891766529,
+            "quantity": 1,
+            "id": 1700207112212,
+            "createDate": "2023-11-17T07:45:12.212Z",
+            "isDelete": false,
+            "updateDate": "2023-11-17T11:11:18.811Z"
+        },
+        {
+            "cart_id": 1700196528385,
+            "product_id": 1699782777245,
+            "product_class_id": 1699877939067,
+            "quantity": 1,
+            "id": 1700222548613,
+            "createDate": "2023-11-17T12:02:28.613Z",
+            "isDelete": false,
+            "updateDate": "2023-11-17T12:02:42.813Z"
         }
     ]
 }

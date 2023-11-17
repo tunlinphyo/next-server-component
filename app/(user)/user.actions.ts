@@ -1,32 +1,45 @@
 'use server'
 
 import { wait } from "@/libs/utils"
-import { cookies } from "next/headers"
-import { COOKIE_CART, COOKIE_USER } from "./user.const"
-import { CookieCartType } from "@/libs/definations"
+import { UserType } from "@/libs/definations"
+import { getCart, getCartItems, handleUserCart } from "./cart.server"
+import { redirect } from "next/navigation"
+import { clearCookieCart, clearCookieUser, getCookieCartItems, getCookieUser, setCookieUser } from "./cookie.server";
 
 export async function isLogined() {
     await wait()
-    
-    const cookieStore = cookies()
-    const cookieUser = cookieStore.get(COOKIE_USER)
+    return !!(await getCookieUser())
+}
 
-    return !!cookieUser?.value
+export async function getUser() {
+    await wait()
+    return await getCookieUser()
 }
 
 export async function getCartItemCount() {
-    await wait()
+    const user = await getUser()
 
-    // CHECK_USER_LOGIN
-    // IF LOGIN Get cart from DB
+    if (user) {
+        const cart = await getCart(user.id)
+        const cartItems = await getCartItems(cart.id)
+        console.log('CART_COUNT', cart)
+        return cartItems.reduce((acc, item) => acc + item.quantity, 0)
+    } else {
+        const cartItems = await getCookieCartItems()
+        if (!cartItems.length) return 0
+        return cartItems.reduce((acc, item) => acc + item.quantity, 0)
+    }
+}
 
-    // ELSE Get from Cookie
-    const cookieStore = cookies()
-    const cookieCart = cookieStore.get(COOKIE_CART)
+export async function handleSignIn(user: UserType) {
+    setCookieUser(user)
+    await handleUserCart(user.id)
+    clearCookieCart()
 
-    const cart: CookieCartType[] = cookieCart?.value ? JSON.parse(cookieCart.value) : []
+}
 
-    console.log('CART_COUNT', cart)
-
-    return cart.reduce((acc, item) => acc + item.quantity, 0)
+export async function handleSignOut() {
+    clearCookieUser()
+    clearCookieCart()
+    redirect('/')
 }

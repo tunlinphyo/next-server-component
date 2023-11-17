@@ -1,0 +1,69 @@
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--space-4);
+    background-color: rgb(var(--background-accent-rgb));
+    padding: var(--space-4);
+    border-radius: var(--space-4);
+}
+
+.formContainer {
+    width: 100%;
+    /* max-width: 800px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: var(--space-4);
+}
+
+.formGroup .label {
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--foreground-400);
+}
+.inputContainer .input {
+    width: 100%;
+    height: 40px;
+    font-size: .9rem;
+    padding: 0 1em;
+    border: 1px solid var(--foreground-100);
+    border-radius: var(--space-3);
+    background-color: rgb(var(--background-rgb));
+    color: rgb(var(--foreground-rgb));
+}
+.inputContainer .input:hover,
+.inputContainer .input:focus {
+    border-color: var(--primary-600);
+    outline: 1px solid var(--primary-600);
+}
+.inputContainer input:read-only {
+    border-color: var(--foreground-100);
+    outline: none;
+    background-color: transparent;
+}
+
+.formFooter {
+    width: 100%;
+    /* max-width: 800px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: var(--space-3);
+    border-top: 1px solid var(--foreground-50);
+    padding-top: var(--space-4);
+}
+
+.inputSkeleton {
+    width: 100%;
+    font-size: 1rem;
+    padding: .5em;
+    background-color: var(--foreground-50);
+    color: transparent;
+    margin-top: 4px;
+    border-radius: var(--space-3);
+}

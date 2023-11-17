@@ -3,11 +3,12 @@
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
 import { PER_PAGE } from "@/libs/const"
 import { GET, QUERY } from "@/libs/db"
-import { CookieCartType, ProductClassType, ProductType, VariantType } from "@/libs/definations"
+import { ProductClassType, ProductType, VariantType } from "@/libs/definations"
 import { wait } from "@/libs/utils"
-import { revalidatePath } from 'next/cache';
-import { cookies } from "next/headers"
-import { COOKIE_CART } from "../user.const"
+import { revalidatePath } from 'next/cache'
+import { getUser } from "../user.actions"
+import { createCartItem, getCart, getCartItem, updateCartItem } from "../cart.server"
+import { getCookieCartItems, setCookieCartItems } from "../cookie.server"
 
 
 export async function getProductPageLength(query: string) {
@@ -66,30 +67,35 @@ export async function getProducts(page: number, query: string ) {
 }
 
 export async function addToCart(prevState: any, formData: FormData) {
-    await wait()
+    const user = await getUser()
 
-    const id = Number(formData.get('class_id'))
+    const class_id = Number(formData.get('class_id'))
 
-    // CHECK_USER_LOGIN
-    // IF LOGIN Set cart item to DB
-
-    // ELSE Set to Cookie
-    const cookieStore = cookies()
-    const cookieCart = cookieStore.get(COOKIE_CART)
-
-    let carts: CookieCartType[] = cookieCart?.value ? JSON.parse(cookieCart.value) : []
-    const is = carts.find(item => item.id == id)
-    if (is) {
-        carts = carts.map(item => {
-            if (item.id == id) return { ...item, quantity: item.quantity + 1 }
-            return item
-        })
+    if (user) {
+        const cart = await getCart(user.id)
+        try {
+            const cartItem = await getCartItem(cart.id, class_id)
+            if (cartItem) {
+                await updateCartItem({ ...cartItem, quantity: cartItem.quantity + 1 })
+            } else {
+                await createCartItem(cart.id, class_id, 1)
+            }
+        } catch(error: any) {
+            return { code: error.message }
+        }
     } else {
-        carts = [ ...carts, { id, quantity: 1 } ]
+        let carts = await getCookieCartItems()
+        const is = carts.find(item => item.id == class_id)
+        if (is) {
+            carts = carts.map(item => {
+                if (item.id == class_id) return { ...item, quantity: item.quantity + 1 }
+                return item
+            })
+        } else {
+            carts = [ ...carts, { id: class_id, quantity: 1 } ]
+        }
+        await setCookieCartItems(carts)
     }
-
-    console.log('ADD_TO_CART', carts, id)
-    cookieStore.set(COOKIE_CART, JSON.stringify(carts))
 
     revalidatePath('/products')
     return { code: 'Success!' }

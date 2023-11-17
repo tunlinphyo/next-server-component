@@ -161,18 +161,3 @@
 
 
 
-
-.emptyContainer {
-    padding: var(--space-4);
-}
-.emptyCard {
-    width: 100%;
-    height: 360px;
-    background-color: rgb(var(--background-accent-rgb));
-    border-radius: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-3);
-}

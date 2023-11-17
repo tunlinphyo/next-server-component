@@ -1,12 +1,13 @@
 'use client'
 
-import { ChildrenProp, UserNavType, UserType } from '@/libs/definations';
+import { ChildrenProp, UserNavType, UserType } from '@/libs/definations'
 import styles from './utils.module.css'
-import { ArrowRightOnRectangleIcon, Bars3BottomLeftIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowRightOnRectangleIcon, Bars3BottomLeftIcon, ShoppingBagIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import clsx from 'clsx';
-import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import clsx from 'clsx'
+import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 
 type PageHeaderProps = ChildrenProp & {
     navigations: React.ReactNode;
@@ -14,6 +15,12 @@ type PageHeaderProps = ChildrenProp & {
 
 type NavigationsProps = ChildrenProp & {
     toggle: boolean;
+}
+
+type EmptyCartProps = {
+    image: string;
+    text: string;
+    children?: React.ReactNode;
 }
 
 export function PageContainer({ children }: ChildrenProp) {
@@ -98,7 +105,9 @@ export function CartIcon({ count }: { count: number }) {
 export function UserLink({ user }: { user?: UserType }) {
     return (
         user ? (
-            <div>USER</div>
+            <Link href="/account" className={clsx(styles.userIcon, styles.withUser)}>
+                <UserIcon />
+            </Link>
         ) : (
             <Link href="/login" className={styles.userIcon}>
                 <ArrowRightOnRectangleIcon />
@@ -106,6 +115,34 @@ export function UserLink({ user }: { user?: UserType }) {
         )
     )
 }
+
+export function EmptyCard({ image, text, children }: EmptyCartProps) {
+    return (
+        <div className={styles.emptyContainer}>
+            <div className={styles.emptyCard}>
+                <div className={styles.emptyImage}>
+                    <Image
+                        src={image}
+                        alt={text}
+                        width={200}
+                        height={200}
+                    />
+                </div>
+                <div className={styles.emptyMessage}>
+                    { text }
+                </div>
+                {
+                    !!children && (
+                        <div className={styles.extraLink}>
+                            { children }
+                        </div>
+                    )
+                }
+            </div>
+        </div>
+    )
+}
+
 
 export function NavigationSkeleton() {
     return (

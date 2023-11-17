@@ -3,7 +3,7 @@
 import { wait } from "@/libs/utils"
 import { CartIcon, NavigationList, UserLink } from "@/components/user/utils/utils.client"
 import { UserNavType } from "@/libs/definations"
-import { getCartItemCount } from "./user.actions"
+import { getCartItemCount, getUser, isLogined } from "./user.actions"
 
 export async function ServerCartIcon() {
     const cartItemCount = await getCartItemCount()
@@ -13,9 +13,10 @@ export async function ServerCartIcon() {
 }
 
 export async function ServerUser() {
-    await wait()
+    const user = await getUser()
+
     return (
-        <UserLink user={undefined} />
+        <UserLink user={user} />
     )
 }
 

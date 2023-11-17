@@ -89,12 +89,17 @@ export async function PATCH<T extends BaseData>(table: Table, data: Partial<T>) 
     return newData
 }
 
-export async function DELETE<T extends BaseData>(table: Table, id: number) {
+export async function DELETE<T extends BaseData>(table: Table, id: number, hard: boolean = false) {
     let datas:T[] = await db.getData(`/${table}`)
-    const newDatas = datas.map(item => {
-        if (item.id === id) return { ...item, isDelete: true }
-        else return item
-    })
+    let newDatas:T[] = []
+    if (hard) {
+        newDatas = datas.filter(item => item.id !== id)
+    } else {
+        newDatas = datas.map(item => {
+            if (item.id === id) return { ...item, isDelete: true }
+            else return item
+        })
+    }
     await db.push(`/${table}`, [ ...newDatas ])
     return id
 }

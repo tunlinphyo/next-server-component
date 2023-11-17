@@ -53,7 +53,7 @@ export function Product({ product }: { product: ProductType }) {
             </Link>
             <div className={styles.productAction}>
                 {
-                    product.classes && product.quantity 
+                    product.classes && product.quantity
                         ? <AddToCartForm product={product} productClass={product.classes} />
                         : <OutofStockButton />
                 }
@@ -159,7 +159,7 @@ export function ProductsSkeleton({ count }: { count: number }) {
 
 export function ProductSkeleton() {
     return (
-        <div className={styles.product}>
+        <div className={clsx(styles.product, 'skeleton')}>
             <div className={styles.productImage}>
                 <PhotoIcon />
             </div>

@@ -1,4 +1,5 @@
-export type Table = 'users' | 'customers' | 'products' | 'product_categories' | 'product_variants' | 'product_class'
+export type Table = 'users' | 'customers' | 'products' | 'product_categories'
+    | 'product_variants' | 'product_class' | 'carts' | 'cart_items'
 
 export type GenericObject = Record<string, any>
 
@@ -122,11 +123,31 @@ export interface ProductClassType {
     isDelete: boolean;
 }
 
-export interface CartType {
+export interface CartItemType {
     id: number;
     product: ProductType;
     productClass: ProductClassType;
     quantity: number;
+    createDate: Date;
+    updateDate?: Date;
+    isDelete: boolean;
+}
+
+export interface DBCartItemType {
+    id: number;
+    cart_id: number;
+    product_id: number;
+    product_class_id: number;
+    quantity: number;
+    createDate: Date;
+    updateDate?: Date;
+    isDelete: boolean;
+}
+
+export interface CartType {
+    id: number;
+    user_id: number;
+    items?: CartItemType[];
     createDate: Date;
     updateDate?: Date;
     isDelete: boolean;

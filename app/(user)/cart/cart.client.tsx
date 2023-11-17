@@ -2,23 +2,24 @@
 
 import Link from 'next/link'
 import styles from './cart.module.css'
-import { CartType } from "@/libs/definations"
+import { CartItemType, CartType } from "@/libs/definations"
 import Image from 'next/image'
-import { ArrowPathIcon, ArrowRightOnRectangleIcon, MinusIcon, PhotoIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { ArrowLongRightIcon, ArrowPathIcon, ArrowRightOnRectangleIcon, MinusIcon, PhotoIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { formatPrice } from '@/libs/utils'
 import { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { decreaseQuantity, deleteCartItem, increaseQuantity } from './cart.actions'
 import { appToast } from '@/libs/toasts'
-import { TextSkeleton } from '@/components/user/utils/utils.client'
+import { EmptyCard, TextSkeleton } from '@/components/user/utils/utils.client'
 import clsx from 'clsx'
 import { usePathname, useSearchParams } from 'next/navigation'
+import EmptyImage from '@/app/assets/icons/empty.svg'
 
 export function CartForm({ isLogined, isCartItems }: { isLogined: boolean, isCartItems: boolean }) {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    if (!isCartItems) return <></>
+    if (!isCartItems) return null
 
     if (!isLogined) {
         const params = new URLSearchParams(searchParams)
@@ -36,14 +37,20 @@ export function CartForm({ isLogined, isCartItems }: { isLogined: boolean, isCar
 
     return (
         <form>
-            <button type="submit">TEST SUBMIT</button>
+
         </form>
     )
-} 
+}
 
-export function CartList({ list }: { list: CartType[] }) {
+export function CartList({ cart, list }: { cart?: CartType, list: CartItemType[] }) {
 
-    if (!list.length) return <EmptyCard />
+    if (!list.length) return (
+        <EmptyCard image={EmptyImage} text="Empty Cart">
+            <Link href="/products" className="primary-button">
+                Go to Products <ArrowLongRightIcon />
+            </Link>
+        </EmptyCard>
+    )
 
     return (
         <ul className={styles.cartList}>
@@ -58,20 +65,7 @@ export function CartList({ list }: { list: CartType[] }) {
     )
 }
 
-export function EmptyCard() {
-    return (
-        <div className={styles.emptyContainer}>
-            <div className={styles.emptyCard}>
-                <div className={styles.emptyImage} />
-                <div className={styles.emptyMessage}>
-                    Empty cart
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export function CartItem({ item }: { item: CartType }) {
+export function CartItem({ item }: { item: CartItemType }) {
     const product = item.product
     const productClass = item.productClass
     return (
@@ -91,7 +85,7 @@ export function CartItem({ item }: { item: CartType }) {
                     </p>
                     <small className={styles.productPrice}>{ formatPrice(productClass.price) }</small>
                 </Link>
-                <QuantityControl 
+                <QuantityControl
                     id={productClass.id}
                     quantity={item.quantity}
                     max={productClass.quantity}
@@ -106,7 +100,7 @@ export function QuantityControl({ id, quantity, max }: { id: number; quantity: n
     return (
         <div className={styles.quantityControl}>
             <DecreaseFrom id={id} quantity={quantity} />
-            <div 
+            <div
                 className={styles.quantity}>
                 { quantity }
             </div>
@@ -120,7 +114,7 @@ const initState = {
 }
 
 export function IncreaseFrom({ id, quantity, max }: { id: number; quantity: number; max: number }) {
-    const [ state, onAction ] = useFormState(increaseQuantity.bind(null, id), initState)
+    const [ state, onAction ] = useFormState(increaseQuantity.bind(null, id), { code: '' })
 
     useEffect(() => {
         if (state.code) appToast(state.code)
@@ -134,7 +128,7 @@ export function IncreaseFrom({ id, quantity, max }: { id: number; quantity: numb
 }
 
 export function DecreaseFrom({ id, quantity }: { id: number; quantity: number }) {
-    const [ state, onAction ] = useFormState(decreaseQuantity.bind(null, id), initState)
+    const [ state, onAction ] = useFormState(decreaseQuantity.bind(null, id), { code: '' })
 
     useEffect(() => {
         if (state.code) appToast(state.code)
@@ -148,14 +142,14 @@ export function DecreaseFrom({ id, quantity }: { id: number; quantity: number })
 }
 
 export function DeleteForm({ id }: { id: number }) {
-    const [ state, onAction ] = useFormState(deleteCartItem.bind(null, id), initState)
+    // const [ state, onAction ] = useFormState(deleteCartItem.bind(null, id), { code: '' })
 
-    useEffect(() => {
-        if (state.code) appToast(state.code)
-    }, [ state ])
+    // useEffect(() => {
+    //     if (state.code) appToast(state.code)
+    // }, [ state ])
 
     return (
-        <form action={onAction}>
+        <form action={deleteCartItem.bind(null, id)}>
             <DelButton />
         </form>
     )
@@ -168,7 +162,7 @@ export function QtyButton({ icon, disabled }: { icon: any; disabled: boolean }) 
             { pending ? <ArrowPathIcon className="icon-loading" /> : icon }
         </button>
     )
-} 
+}
 
 export function DelButton() {
     const { pending } = useFormStatus()
@@ -186,7 +180,7 @@ export function CartSkeleton({ count }: { count: number }) {
             {
                 list.map((item, index) => (
                     <li key={index}>
-                        <div className={styles.cartItem}>
+                        <div className={clsx(styles.cartItem, 'skeleton')}>
                             <div className={styles.productImage}>
                                 <PhotoIcon />
                             </div>

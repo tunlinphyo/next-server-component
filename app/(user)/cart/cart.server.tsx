@@ -1,18 +1,19 @@
 'use server'
 
 import { isLogined } from "../user.actions"
-import { getCart } from "./cart.actions"
+import { getCartData } from "./cart.actions"
 import { CartForm, CartList } from "./cart.client"
 
 export async function ServerCart() {
-    const [ cartItems, is ] = await Promise.all([
-        getCart(),
+    const [ cartData, is ] = await Promise.all([
+        getCartData(),
         isLogined()
     ])
+    const { cart, cartItems, errors } = cartData
 
     return (
         <>
-            <CartList list={cartItems} />
+            <CartList cart={cart} list={cartItems} />
             <CartForm isLogined={is} isCartItems={!!cartItems.length} />
         </>
     )
