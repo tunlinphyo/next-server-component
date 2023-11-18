@@ -7,8 +7,12 @@ import { LogoutFormSkeleton } from './account.client'
 export default async function Home() {
     return (
         <PageContainer>
-            <PageTitle title='User Account' />
-            <Suspense fallback={<LogoutFormSkeleton />}>
+            <Suspense fallback={
+                <>
+                    <PageTitle title='User Account' />
+                    <LogoutFormSkeleton />
+                </>
+            }>
                 <ServerLogoutForm />
             </Suspense>
         </PageContainer>

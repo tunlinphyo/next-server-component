@@ -45,6 +45,7 @@
   --primary-600: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
   --primary-100: hsl(var(--primary-hue), 80%, 93%);
   --primary-5: hsla(var(--primary-hue), var(--primary-saturation), var(--primary-lightness), .5);
+  --primary-7: hsla(var(--primary-hue), var(--primary-saturation), var(--primary-lightness), .7);
 
   --space-0: 0deg;
   --space-1: 2.5px;

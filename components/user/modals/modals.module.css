@@ -23,7 +23,7 @@
     pointer-events: none;
 }
 .bottomSheetButton svg {
-    width: 1.4rem;
+    width: 1.2rem;
     color: var(--foreground-500);
 }
 .closeButton {
@@ -34,6 +34,7 @@
     background-color: rgb(var(--background-accent-rgb));
     text-transform: uppercase;
     color: var(--danger);
+    font-size: .8rem;
 }
 .closeButton:hover {
     outline: 2px solid var(--danger);

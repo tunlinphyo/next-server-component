@@ -5,6 +5,7 @@
     justify-content: flex-start;
     align-items: stretch;
     gap: var(--space-4);
+    padding-top: var(--space-4);
 }
 
 .header {
@@ -27,6 +28,12 @@
     font-weight: 900;
     padding: var(--space-5) var(--space-4) 0;
     width: min-content;
+    color: var(--foreground-900);
+}
+.pageSubTitle {
+    font-size: 1.2rem;
+    font-weight: 800;
+    padding: var(--space-2) var(--space-4) 0;
     color: var(--foreground-900);
 }
 

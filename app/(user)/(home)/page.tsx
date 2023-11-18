@@ -1,17 +1,22 @@
 
-import { PageContainer, PageTitle } from '@/components/user/utils/utils.client'
+import { PageContainer, PageSubTitle, PageTitle } from '@/components/user/utils/utils.client'
 import styles from './home.module.css'
 import Link from 'next/link'
+import { Suspense } from 'react'
+import { ServerLatestProducts } from './home.server'
+import { Categories, ProductSlideSkeleton, SearchBar } from './home.client'
 
 export default async function Home() {
     return (
         <PageContainer>
             <PageTitle title='Start Shopping' />
-            <div  className={styles.linkContainer}>
-                <div className={styles.card}>
-                    <Link className={styles.link} href="/products">Go to products</Link>
-                </div>
-            </div>
+            <SearchBar />
+            <PageSubTitle title='Categories' />
+            <Categories />
+            <PageSubTitle title='Popular Products' />
+            <Suspense fallback={<ProductSlideSkeleton />}>
+                <ServerLatestProducts />
+            </Suspense>
         </PageContainer>
     )
 }

@@ -92,3 +92,7 @@
 .addToCart svg {
     width: 1.4em;
 }
+.variantsContiner {
+    flex: 1;
+    font-size: .9rem;
+}

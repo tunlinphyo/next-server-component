@@ -13,9 +13,9 @@ import { appToast } from '@/libs/toasts'
 import { addToCart } from './products.action'
 import clsx from 'clsx'
 import { BottomSheetButton, BottomSheetContainer, Modal } from '@/components/user/modals/modals.client'
+import { usePathname } from 'next/navigation'
 
 type AddToCartFormProps = {
-    product: ProductType;
     productClass: ProductClassType[];
 }
 
@@ -39,7 +39,7 @@ export function Product({ product }: { product: ProductType }) {
             <Link href={`/products/${product.id}`} className={styles.productImage}>
                 {
                     (product.images && product.images.length)
-                        ? <Image src={product.images[product.images.length - 1]} width={200} height={200} alt='product image' />
+                        ? <Image src={product.images[0]} width={200} height={200} alt='product image' />
                         : <PhotoIcon />
                 }
             </Link>
@@ -54,7 +54,7 @@ export function Product({ product }: { product: ProductType }) {
             <div className={styles.productAction}>
                 {
                     product.classes && product.quantity
-                        ? <AddToCartForm product={product} productClass={product.classes} />
+                        ? <AddToCartForm productClass={product.classes} />
                         : <OutofStockButton />
                 }
             </div>
@@ -94,11 +94,12 @@ export function ModalOpenButton({ loading, onClick }: { loading: boolean; onClic
 
 }
 
-export function AddToCartForm({ product, productClass }: AddToCartFormProps) {
+export function AddToCartForm({ productClass }: AddToCartFormProps) {
     const formEl = useRef<HTMLFormElement | null>(null)
     const [ state, onAction ] = useFormState(addToCart, { code: '' })
     const [ modal, setModal ] = useState(false)
     const [ classId, setClassId ] = useState(productClass[0].id)
+    const pathname = usePathname()
 
     useEffect(() => {
         if (state.code) appToast(state.code)
@@ -118,6 +119,7 @@ export function AddToCartForm({ product, productClass }: AddToCartFormProps) {
         <>
             <form ref={formEl} action={onAction}>
                 <input type="hidden" name="class_id" defaultValue={classId} />
+                <input type="hidden" name="pathname" defaultValue={pathname} />
                 {
                     (productClass.length == 1 && !productClass[0].variant_1_id)
                         ? <AddToCartButton /> : <ModalOpenButton loading={modal} onClick={() => setModal(true)} />
@@ -129,8 +131,10 @@ export function AddToCartForm({ product, productClass }: AddToCartFormProps) {
                         productClass.map(item => (
                             <BottomSheetButton onClick={() => handleSubmit(item.id)} key={item.id} disabled={!item.quantity}>
                                 <ListBulletIcon />
-                                <span style={{ flex: 1 }}>
-                                    { item.variant1?.name } { item.variant2 && ' - ' } { item.variant2?.name }
+                                <span className={styles.variantsContiner}>
+                                    <span>{ item.variant1?.name }</span>
+                                    { item.variant2 && ' - ' } 
+                                    <span>{ item.variant2?.name }</span>
                                 </span>
                                 <span>{ formatPrice(item.price) }</span>
                             </BottomSheetButton>

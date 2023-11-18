@@ -8,6 +8,7 @@ import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
+import ProfilePicture from '@/app/assets/icons/profile.svg'
 
 type PageHeaderProps = ChildrenProp & {
     navigations: React.ReactNode;
@@ -63,6 +64,12 @@ export function PageTitle({ title }: { title: string }) {
     )
 }
 
+export function PageSubTitle({ title }: { title: string }) {
+    return (
+        <h2 className={styles.pageSubTitle}>{ title }</h2>
+    )
+}
+
 export function PageFooter() {
     return (
         <footer className={styles.pageFooter}>
@@ -106,7 +113,12 @@ export function UserLink({ user }: { user?: UserType }) {
     return (
         user ? (
             <Link href="/account" className={clsx(styles.userIcon, styles.withUser)}>
-                <UserIcon />
+                <Image
+                    src={ProfilePicture}
+                    alt={user.name}
+                    width={38}
+                    height={38}
+                />
             </Link>
         ) : (
             <Link href="/login" className={styles.userIcon}>

@@ -50,7 +50,7 @@
 
 .toggle button {
     width: 32px;
-    min-width: initial;
+    min-width: initial!important;
     height: 24px;
     padding: 0;
 }

@@ -1,3 +1,15 @@
+## TODO
+
+- [ ] Add serch and filter to products (admin)
+- [ ] Add sort to category (admin)
+- [ ] Add sort to variant (admin)
+- [ ] Connect to Postgres Database
+- [ ] Use Nextauth for Authentication
+- [x] Implement user pages (user)
+- [ ] Add Favourite
+- [ ] Checkout process
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -35,11 +47,3 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-## TODO
-
-- [ ] Add serch and filter to products (admin)
-- [ ] Add sort to category (admin)
-- [ ] Add sort to variant (admin)
-- [ ] Connect to Postgres Database
-- [ ] Use Nextauth for Authentication
-- [ ] Implement user pages (user)

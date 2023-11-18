@@ -74,7 +74,7 @@ export function CartItem({ item }: { item: CartItemType }) {
             <Link href={`/products/${product.id}`} className={styles.productImage}>
                 {
                     (product.images && product.images.length)
-                        ? <Image src={product.images[product.images.length - 1]} width={200} height={200} alt='product image' />
+                        ? <Image src={product.images[0]} width={200} height={200} alt='product image' />
                         : <PhotoIcon />
                     }
             </Link>

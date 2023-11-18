@@ -1,0 +1,66 @@
+.gallery {
+    width: 100%;
+}
+.galleryContainer {
+    width: 100%;
+    padding: var(--space-3);
+    
+    display: flex;
+    overflow-x: auto;
+    gap: var(--space-3);
+
+    scroll-snap-type: x mandatory;
+    scroll-snap-stop: always;
+}
+
+.galleryCard {
+    min-width: 100%;
+    padding: var(--space-3);
+    background-color: rgb(var(--background-accent-rgb));
+    border-radius: var(--space-4);
+
+    scroll-snap-align: center;
+}
+.image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 15px;
+    background-color: rgb(var(--background-rgb));
+    overflow: hidden;
+}
+.image img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+.noImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.noImage svg {
+    width: 50%;
+    color: var(--foreground-50);
+}
+
+.bulletContainer {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+}
+.bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: var(--foreground-100);
+    transition: width .3s ease, background-color .3s ease;
+}
+.activeBullet {
+    width: 25px;
+    background-color: var(--primary-7);
+}

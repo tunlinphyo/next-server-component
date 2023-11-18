@@ -9,7 +9,7 @@
         },
         {
             "id": 1699514821967,
-            "name": "User",
+            "name": "Jon Snow",
             "email": "user@gmail.com",
             "password": "password",
             "isDelete": false
@@ -312,9 +312,14 @@
             "name": "Surface Laptop Studio",
             "description": "Microsoft surface laptop studio",
             "images": [
-                "/uploads/1700049108025.jpeg",
-                "/uploads/1700049113481.jpeg",
-                "/uploads/1700049118131.jpeg"
+                "/uploads/1700268333415.webp",
+                "/uploads/1700268342675.webp",
+                "/uploads/1700268348417.webp",
+                "/uploads/1700268353769.webp",
+                "/uploads/1700268358607.webp",
+                "/uploads/1700268363565.webp",
+                "/uploads/1700268369544.webp",
+                "/uploads/1700268374740.webp"
             ],
             "category_ids": [
                 1699633688365,
@@ -323,9 +328,34 @@
             "id": 1700049145062,
             "createDate": "2023-11-15T11:52:25.062Z",
             "isDelete": false,
+            "updateDate": "2023-11-18T01:00:21.562Z",
+            "variant_1_id": 1700268521441,
+            "variant_2_id": 1699679275775
+        },
+        {
+            "name": "Pixel Book Go",
+            "description": "Ultra thin, lightweight, a powerful processor, and up to 12 hours of battery life. Pixelbook Go is ready to go when you are.\r\n\r\nA battery that goes all day so you can go further.\r\n\r\nGet up to 2 hours of battery use in just 20 minutes of charge.",
+            "images": [
+                "/uploads/1700276993363.webp",
+                "/uploads/1700276999759.webp",
+                "/uploads/1700277005822.webp",
+                "/uploads/1700277010706.webp",
+                "/uploads/1700277015800.webp",
+                "/uploads/1700277020527.webp",
+                "/uploads/1700277025460.webp",
+                "/uploads/1700277033837.webp"
+            ],
+            "category_ids": [
+                1699632069657,
+                1699632370873,
+                1699632662583
+            ],
+            "id": 1700277087208,
+            "createDate": "2023-11-18T03:11:27.208Z",
+            "isDelete": false,
             "variant_1_id": 1699679275775,
             "variant_2_id": 0,
-            "updateDate": "2023-11-16T01:25:46.416Z"
+            "updateDate": "2023-11-18T03:20:27.162Z"
         }
     ],
     "product_class": [
@@ -617,7 +647,7 @@
             "id": 1700049145369,
             "createDate": "2023-11-15T11:52:25.369Z",
             "isDelete": true,
-            "updateDate": "2023-11-16T01:26:11.211Z"
+            "updateDate": "2023-11-18T01:02:55.745Z"
         },
         {
             "id": 1700097971212,
@@ -625,8 +655,9 @@
             "variant_1_id": 1699689433343,
             "price": 180000,
             "quantity": 2,
-            "isDelete": false,
-            "createDate": "2023-11-16T01:26:11.212Z"
+            "isDelete": true,
+            "createDate": "2023-11-16T01:26:11.212Z",
+            "updateDate": "2023-11-18T01:00:04.448Z"
         },
         {
             "id": 1700097971213,
@@ -634,8 +665,9 @@
             "variant_1_id": 1699689442075,
             "price": 200000,
             "quantity": 2,
-            "isDelete": false,
-            "createDate": "2023-11-16T01:26:11.213Z"
+            "isDelete": true,
+            "createDate": "2023-11-16T01:26:11.213Z",
+            "updateDate": "2023-11-18T01:00:04.451Z"
         },
         {
             "id": 1700097971214,
@@ -643,8 +675,165 @@
             "variant_1_id": 1700041985109,
             "price": 220000,
             "quantity": 2,
+            "isDelete": true,
+            "createDate": "2023-11-16T01:26:11.214Z",
+            "updateDate": "2023-11-18T01:00:04.452Z"
+        },
+        {
+            "id": 1700269375747,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268568815,
+            "variant_2_id": 1699689424058,
+            "price": 100000,
+            "quantity": 2,
             "isDelete": false,
-            "createDate": "2023-11-16T01:26:11.214Z"
+            "createDate": "2023-11-18T01:02:55.747Z"
+        },
+        {
+            "id": 1700269375748,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268568815,
+            "variant_2_id": 1699689433343,
+            "price": 120000,
+            "quantity": 2,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.748Z"
+        },
+        {
+            "id": 1700269375749,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268568815,
+            "variant_2_id": 1699689442075,
+            "price": 140000,
+            "quantity": 3,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.749Z"
+        },
+        {
+            "id": 1700269375750,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268568815,
+            "variant_2_id": 1700041985109,
+            "price": 160000,
+            "quantity": 1,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.750Z"
+        },
+        {
+            "id": 1700269375751,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268607872,
+            "variant_2_id": 1699689424058,
+            "price": 140000,
+            "quantity": 2,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.751Z"
+        },
+        {
+            "id": 1700269375752,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268607872,
+            "variant_2_id": 1699689433343,
+            "price": 160000,
+            "quantity": 0,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.752Z"
+        },
+        {
+            "id": 1700269375753,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268607872,
+            "variant_2_id": 1699689442075,
+            "price": 180000,
+            "quantity": 1,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.753Z"
+        },
+        {
+            "id": 1700269375754,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268607872,
+            "variant_2_id": 1700041985109,
+            "price": 200000,
+            "quantity": 1,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.754Z"
+        },
+        {
+            "id": 1700269375755,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268629222,
+            "variant_2_id": 1699689424058,
+            "price": 200000,
+            "quantity": 3,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.755Z"
+        },
+        {
+            "id": 1700269375759,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268629222,
+            "variant_2_id": 1699689433343,
+            "price": 220000,
+            "quantity": 0,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.759Z"
+        },
+        {
+            "id": 1700269375760,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268629222,
+            "variant_2_id": 1699689442075,
+            "price": 240000,
+            "quantity": 0,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.760Z"
+        },
+        {
+            "id": 1700269375761,
+            "product_id": 1700049145062,
+            "variant_1_id": 1700268629222,
+            "variant_2_id": 1700041985109,
+            "price": 260000,
+            "quantity": 1,
+            "isDelete": false,
+            "createDate": "2023-11-18T01:02:55.761Z"
+        },
+        {
+            "product_id": 1700277087208,
+            "price": 7000,
+            "quantity": 1,
+            "id": 1700277087514,
+            "createDate": "2023-11-18T03:11:27.514Z",
+            "isDelete": true,
+            "updateDate": "2023-11-18T03:12:41.002Z"
+        },
+        {
+            "id": 1700277161004,
+            "product_id": 1700277087208,
+            "variant_1_id": 1699689424058,
+            "price": 7000,
+            "quantity": 1,
+            "isDelete": false,
+            "createDate": "2023-11-18T03:12:41.004Z"
+        },
+        {
+            "id": 1700277161011,
+            "product_id": 1700277087208,
+            "variant_1_id": 1699689433343,
+            "price": 9000,
+            "quantity": 2,
+            "isDelete": false,
+            "createDate": "2023-11-18T03:12:41.011Z"
+        },
+        {
+            "id": 1700277161013,
+            "product_id": 1700277087208,
+            "variant_1_id": 1699689442075,
+            "price": 11000,
+            "quantity": 1,
+            "isDelete": false,
+            "createDate": "2023-11-18T03:12:41.013Z"
         }
     ],
     "product_categories": [
@@ -879,9 +1068,10 @@
         {
             "id": 1699679275775,
             "name": "Storage",
-            "description": "iPhone storage",
+            "description": "Computer storage",
             "createDate": "2023-11-11T05:07:55.774Z",
-            "isDelete": false
+            "isDelete": false,
+            "updateDate": "2023-11-18T00:51:00.706Z"
         },
         {
             "id": 1699680676072,
@@ -1020,6 +1210,40 @@
             "id": 1700041985109,
             "createDate": "2023-11-15T09:53:05.109Z",
             "isDelete": false
+        },
+        {
+            "name": "Processor",
+            "description": "Intel Core Processors",
+            "id": 1700268521441,
+            "createDate": "2023-11-18T00:48:41.441Z",
+            "isDelete": false
+        },
+        {
+            "name": "Intel Core i5",
+            "description": "",
+            "parent_variant_id": 1700268521441,
+            "id": 1700268568815,
+            "createDate": "2023-11-18T00:49:28.815Z",
+            "isDelete": false,
+            "updateDate": "2023-11-18T07:03:29.433Z"
+        },
+        {
+            "name": "Intel Core i7",
+            "description": "",
+            "parent_variant_id": 1700268521441,
+            "id": 1700268607872,
+            "createDate": "2023-11-18T00:50:07.872Z",
+            "isDelete": false,
+            "updateDate": "2023-11-18T07:03:37.642Z"
+        },
+        {
+            "name": "Intel Core i9",
+            "description": "",
+            "parent_variant_id": 1700268521441,
+            "id": 1700268629222,
+            "createDate": "2023-11-18T00:50:29.222Z",
+            "isDelete": false,
+            "updateDate": "2023-11-18T07:03:45.737Z"
         }
     ],
     "carts": [
@@ -1033,11 +1257,30 @@
     "cart_items": [
         {
             "cart_id": 1700196528385,
-            "product_id": 1700049145062,
-            "product_class_id": 1700097971213,
+            "product_id": 1699891224183,
+            "product_class_id": 1699891766529,
             "quantity": 1,
-            "id": 1700224520018,
-            "createDate": "2023-11-17T12:35:20.018Z",
+            "id": 1700229759152,
+            "createDate": "2023-11-17T14:02:39.152Z",
+            "isDelete": false,
+            "updateDate": "2023-11-17T16:22:50.134Z"
+        },
+        {
+            "cart_id": 1700196528385,
+            "product_id": 1700049145062,
+            "product_class_id": 1700269375753,
+            "quantity": 1,
+            "id": 1700292639793,
+            "createDate": "2023-11-18T07:30:39.793Z",
+            "isDelete": false
+        },
+        {
+            "cart_id": 1700196528385,
+            "product_id": 1700277087208,
+            "product_class_id": 1700277161011,
+            "quantity": 1,
+            "id": 1700292680986,
+            "createDate": "2023-11-18T07:31:20.986Z",
             "isDelete": false
         }
     ]

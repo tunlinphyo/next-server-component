@@ -7,12 +7,13 @@ import { ArrowLongRightIcon } from '@heroicons/react/24/outline'
 import { CartIconSkeleton, NavigationSkeleton, PageFooter, PageHeader, UserLinkSkeleton } from '@/components/user/utils/utils.client'
 import { Suspense } from 'react'
 import { ServerCartIcon, ServerNavigation, ServerUser } from './user.server'
+import { ScrollView } from '@/components/user/scroll-view/scroll-view.client'
 
 export default async function Layout({ children }: ChildrenProp) {
     return (
         <>
             <main id="user" className={styles.main}>
-                <div className={styles.scrollView}>
+                <ScrollView>
                     <div className={styles.safeView}>
                         <PageHeader
                             navigations={
@@ -31,7 +32,7 @@ export default async function Layout({ children }: ChildrenProp) {
                         {children}
                         <PageFooter />
                     </div>
-                </div>
+                </ScrollView>
             </main>
             <Link href="/admin" className='site-change-link'>
                 go to admin <ArrowLongRightIcon />

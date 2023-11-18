@@ -70,6 +70,9 @@ export async function addToCart(prevState: any, formData: FormData) {
     const user = await getUser()
 
     const class_id = Number(formData.get('class_id'))
+    const pathname = String(formData.get('pathname'))
+
+    console.log('PATH_NAME', pathname)
 
     if (user) {
         const cart = await getCart(user.id)
@@ -97,6 +100,6 @@ export async function addToCart(prevState: any, formData: FormData) {
         await setCookieCartItems(carts)
     }
 
-    revalidatePath('/products')
+    revalidatePath(pathname)
     return { code: 'Success!' }
 }
