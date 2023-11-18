@@ -28,7 +28,10 @@ export async function deleteCartItem(class_id: number) {
     if (user) {
         const cart = await getCart(user.id)
         const cartItem = await getCartItem(cart.id, class_id)
-        if (!cartItem) return { code: 'Cart Item do not exist!' }
+        if (!cartItem) {
+            revalidatePath('/cart', "page")
+            return { code: 'Cart Item do not exist!' }
+        }
         const id = await removeCartItem(cartItem.id)
         console.log('DELETED_ID', id)
     } else {
@@ -37,7 +40,7 @@ export async function deleteCartItem(class_id: number) {
         await setCookieCartItems(deletedCart)
     }
 
-    revalidatePath('/cart')
+    revalidatePath('/cart', "page")
     return { code: 'Cart item deleted!' }
 }
 
@@ -50,10 +53,13 @@ export async function increaseQuantity(class_id: number) {
     if (user) {
         const cart = await getCart(user.id)
         const cartItem = await getCartItem(cart.id, class_id)
-        if (!cartItem) return { code: 'Cart Item do not exist!' }
+        if (!cartItem) {
+            revalidatePath('/cart', "page")
+            return { code: 'Cart Item do not exist!' }
+        }
         if (productClass.quantity == 0) {
             await removeCartItem(cartItem.id)
-            revalidatePath('/cart')
+            revalidatePath('/cart', "page")
             return { code: 'Poduct is out of stock!' }
         }
         await updateCartItem({ ...cartItem, quantity: Math.min(cartItem.quantity + 1, productClass.quantity) })
@@ -68,7 +74,7 @@ export async function increaseQuantity(class_id: number) {
         await setCookieCartItems(updatedCart)
     }
 
-    revalidatePath('/cart')
+    revalidatePath('/cart', "page")
     return { code: 'Qunatity increase!' }
 }
 
@@ -81,13 +87,16 @@ export async function decreaseQuantity(class_id: number) {
     if (user) {
         const cart = await getCart(user.id)
         const cartItem = await getCartItem(cart.id, class_id)
-        if (!cartItem) return { code: 'Cart Item do not exist!' }
+        if (!cartItem) {
+            revalidatePath('/cart', "page")
+            return { code: 'Cart Item do not exist!' }
+        }
         if (productClass.quantity == 0) {
             await removeCartItem(cartItem.id)
-            revalidatePath('/cart')
+            revalidatePath('/cart', "page")
             return { code: 'Poduct is out of stock!' }
         }
-        await updateCartItem({ ...cartItem, quantity: Math.min(cartItem.quantity - 1, 1) })
+        await updateCartItem({ ...cartItem, quantity: Math.max(cartItem.quantity - 1, 1) })
     } else {
         const carts = await getCookieCartItems()
         const updatedCart = carts.map(cart => {
@@ -99,7 +108,7 @@ export async function decreaseQuantity(class_id: number) {
         await setCookieCartItems(updatedCart)
     }
 
-    revalidatePath('/cart')
+    revalidatePath('/cart', "page")
     return { code: 'Qunatity decrease!' }
 }
 

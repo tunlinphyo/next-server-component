@@ -6,7 +6,6 @@ import { ChildrenProp } from "@/libs/definations"
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { hideModal } from './modals.utils'
-import clsx from 'clsx'
 
 type ModalProps = ChildrenProp & {
     open: boolean;

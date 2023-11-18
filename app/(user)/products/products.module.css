@@ -1,6 +1,9 @@
 
 .products {
+    width: 100%;
+    height: auto;
     margin: 0;
+    margin-top: var(--space-4);
     padding: 0 var(--space-3);
     list-style: none;
 
@@ -12,7 +15,7 @@
 .product {
     width: 100%;
     height: 100%;
-    min-height: 220px;
+    /* min-height: 220px; */
     border-radius: var(--space-4);
     background-color: rgb(var(--background-accent-rgb));
     padding: var(--space-3);
@@ -40,7 +43,7 @@
 .productImage img {
     width: 100%;
     height: 100%;
-    aspect-ratio: 1 /1;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
 }
 .productImage svg {
@@ -53,6 +56,7 @@
     flex: 1;
 }
 .productDetail h4 {
+    min-height: 30px;
     font-size: .9rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -78,6 +82,10 @@
     padding: 0;
     font-size: .8rem;
     text-transform: uppercase;
+    cursor: pointer;
+}
+.addToCartForm input[type=radio] {
+    display: none;
 }
 .buttonSkeleton {
     background-color: var(--foreground-50);
@@ -85,6 +93,7 @@
 .addToCart:hover {
     outline: 2px solid var(--primary-600);
 }
+.addToCartDisabled,
 .addToCart:disabled {
     opacity: .7;
     pointer-events: none;
@@ -95,4 +104,38 @@
 .variantsContiner {
     flex: 1;
     font-size: .9rem;
+}
+
+/* .buttonContainer {
+    border-radius: var(--space-4);
+    background-color: rgb(var(--background-rgb));
+} */
+
+.bottomSheetButton {
+    width: 100%;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-start;
+    text-align: left;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-3);
+    font-size: 1em;
+    border-radius: var(--space-3);
+    cursor: pointer;
+}
+.bottomSheetButton:hover {
+    background-color: rgb(var(--background-accent-rgb));
+    outline: 2px solid var(--primary-600);
+}
+.bottomSheetDisabled {
+    opacity: .5;
+    pointer-events: none;
+}
+.bottomSheetButton svg {
+    width: 1.2rem;
+    color: var(--foreground-500);
 }

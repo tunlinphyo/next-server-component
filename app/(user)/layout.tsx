@@ -8,6 +8,7 @@ import { CartIconSkeleton, NavigationSkeleton, PageFooter, PageHeader, UserLinkS
 import { Suspense } from 'react'
 import { ServerCartIcon, ServerNavigation, ServerUser } from './user.server'
 import { ScrollView } from '@/components/user/scroll-view/scroll-view.client'
+import { ToastGroup } from '@/components/user/toast/toast.client'
 
 export default async function Layout({ children }: ChildrenProp) {
     return (
@@ -33,6 +34,7 @@ export default async function Layout({ children }: ChildrenProp) {
                         <PageFooter />
                     </div>
                 </ScrollView>
+                <ToastGroup />
             </main>
             <Link href="/admin" className='site-change-link'>
                 go to admin <ArrowLongRightIcon />

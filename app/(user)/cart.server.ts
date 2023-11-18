@@ -42,11 +42,15 @@ export async function getCartItem(cart_id: number, product_class_id: number) {
 }
 
 export async function updateCartItem(data: Partial<DBCartItemType>) {
+    const productClass = await GET_ONE<ProductClassType>('product_class', { id: data.product_class_id, isDelete: false })
+    if (productClass && data.quantity) {
+        const updatedQuantity = Math.min(productClass.quantity, data.quantity)
+        data = { ...data, quantity: updatedQuantity }
+    }
     return await PATCH<DBCartItemType>('cart_items', data)
 }
 
-export async function getCartItems(cart_id: number, withDetail: boolean = false) {
-    const errors: string[] = []
+export async function getCartItems(cart_id: number) {
     const dbItems = await GET<DBCartItemType>('cart_items', { cart_id })
 
     return dbItems || []
@@ -113,13 +117,21 @@ export async function handleUserCart(userId: number) {
     if (!cookieCartItems.length) return
 
     let cart = await getCart(userId)
-    _createCartItems(cart.id, cookieCartItems)
+    const cartItems = await getCartItems(cart.id)
+    _createCartItems(cart.id, cartItems, cookieCartItems)
 }
 
-async function _createCartItems(cartId: number, items: CookieCartType[]) {
+async function _createCartItems(cartId: number, cartItems: DBCartItemType[], items: CookieCartType[]) {
     for await (const item of items) {
         try {
-            await createCartItem(cartId, item.id, item.quantity)
+            const oldItem = cartItems.find(cartItem => cartItem.product_class_id == item.id)
+            const productClass = await GET_ONE<ProductClassType>('product_class', { id: item.id, isDelete: false })
+            if (!productClass) continue
+            if (oldItem) {
+                await updateCartItem({ ...oldItem, quantity: oldItem.quantity + item.quantity })
+            } else {
+                await createCartItem(cartId, item.id, item.quantity)
+            }
         } catch(error) {
             console.log(error, item)
         }

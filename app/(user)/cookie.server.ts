@@ -14,7 +14,7 @@ export async function getCookieUser() {
 
 export async function setCookieUser(user: UserType) {
     const cookieStore = cookies()
-    cookieStore.set(COOKIE_USER, JSON.stringify(user), { secure: true })
+    cookieStore.set(COOKIE_USER, JSON.stringify(user))
     return true
 }
 

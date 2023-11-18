@@ -9,11 +9,11 @@ import { formatPrice } from '@/libs/utils'
 import { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { decreaseQuantity, deleteCartItem, increaseQuantity } from './cart.actions'
-import { appToast } from '@/libs/toasts'
 import { EmptyCard, TextSkeleton } from '@/components/user/utils/utils.client'
 import clsx from 'clsx'
 import { usePathname, useSearchParams } from 'next/navigation'
 import EmptyImage from '@/app/assets/icons/empty.svg'
+import { useToast } from '@/components/user/toast/toast.index'
 
 export function CartForm({ isLogined, isCartItems }: { isLogined: boolean, isCartItems: boolean }) {
     const pathname = usePathname()
@@ -116,9 +116,10 @@ const initState = {
 
 export function IncreaseFrom({ id, quantity, max }: { id: number; quantity: number; max: number }) {
     const [ state, onAction ] = useFormState(increaseQuantity.bind(null, id), { code: '' })
+    const { showToast } = useToast()
 
     useEffect(() => {
-        if (state.code) appToast(state.code)
+        if (state.code) showToast(state.code)
     }, [ state ])
 
     return (
@@ -130,9 +131,10 @@ export function IncreaseFrom({ id, quantity, max }: { id: number; quantity: numb
 
 export function DecreaseFrom({ id, quantity }: { id: number; quantity: number }) {
     const [ state, onAction ] = useFormState(decreaseQuantity.bind(null, id), { code: '' })
+    const { showToast } = useToast()
 
     useEffect(() => {
-        if (state.code) appToast(state.code)
+        if (state.code) showToast(state.code)
     }, [ state ])
 
     return (
@@ -143,14 +145,15 @@ export function DecreaseFrom({ id, quantity }: { id: number; quantity: number })
 }
 
 export function DeleteForm({ id }: { id: number }) {
-    // const [ state, onAction ] = useFormState(deleteCartItem.bind(null, id), { code: '' })
+    const [ state, onAction ] = useFormState(deleteCartItem.bind(null, id), { code: '' })
+    const { showToast } = useToast()
 
-    // useEffect(() => {
-    //     if (state.code) appToast(state.code)
-    // }, [ state ])
+    useEffect(() => {
+        if (state.code) showToast(state.code)
+    }, [ state ])
 
     return (
-        <form action={deleteCartItem.bind(null, id)}>
+        <form action={onAction}>
             <DelButton />
         </form>
     )

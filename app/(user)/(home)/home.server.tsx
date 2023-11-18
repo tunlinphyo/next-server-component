@@ -1,12 +1,18 @@
 "use server"
 
-import { getHomeProduct } from "./home.actions"
-import { ProductSlide } from "./home.client"
+import { getCategories, getHomeProduct } from "./home.actions"
+import { Categories, ProductSlide } from "./home.client"
+
+export async function ServerCategories() {
+    const categories = await getCategories()
+
+    return (
+        <Categories categories={categories} />
+    )
+}
 
 export async function ServerLatestProducts() {
     const products = await getHomeProduct()
-
-    console.log(products)
 
     return (
         <ProductSlide products={products} />

@@ -2,7 +2,7 @@
 
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
 import { PER_PAGE } from "@/libs/const"
-import { GET, QUERY } from "@/libs/db"
+import { GET, GET_ONE, QUERY } from "@/libs/db"
 import { ProductClassType, ProductType, VariantType } from "@/libs/definations"
 import { wait } from "@/libs/utils"
 import { revalidatePath } from 'next/cache'
@@ -66,13 +66,19 @@ export async function getProducts(page: number, query: string ) {
     return result
 }
 
+export async function formTest(prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData)
+
+    console.log("FORM_DATA____________", data)
+    revalidatePath(String(data.pathname))
+    return { message: 'Success' }
+}
+
 export async function addToCart(prevState: any, formData: FormData) {
     const user = await getUser()
 
     const class_id = Number(formData.get('class_id'))
     const pathname = String(formData.get('pathname'))
-
-    console.log('PATH_NAME', pathname)
 
     if (user) {
         const cart = await getCart(user.id)
@@ -89,9 +95,16 @@ export async function addToCart(prevState: any, formData: FormData) {
     } else {
         let carts = await getCookieCartItems()
         const is = carts.find(item => item.id == class_id)
+        const productClass = await GET_ONE<ProductClassType>('product_class', { id: class_id, isDelete: false })
+        if (!productClass) return { code: 'Product could not find' }
+        if (!productClass.quantity) return { code: 'Out of stock' }
+
         if (is) {
             carts = carts.map(item => {
-                if (item.id == class_id) return { ...item, quantity: item.quantity + 1 }
+                if (item.id == class_id) return { 
+                    ...item, 
+                    quantity: Math.min(item.quantity + 1, productClass.quantity) 
+                }
                 return item
             })
         } else {
@@ -100,6 +113,6 @@ export async function addToCart(prevState: any, formData: FormData) {
         await setCookieCartItems(carts)
     }
 
-    revalidatePath(pathname)
+    revalidatePath(pathname, "page")
     return { code: 'Success!' }
 }

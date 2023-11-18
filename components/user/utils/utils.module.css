@@ -1,11 +1,15 @@
 
 .page {
-    display: flex;
+    width: 100%;
+    /* display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: var(--space-4);
-    padding-top: var(--space-4);
+    gap: var(--space-4); */
+    padding-top: var(--space-3);
+}
+.page > * {
+    margin-top: var(--space-4);
 }
 
 .header {
@@ -26,7 +30,7 @@
 .pageTitle {
     font-size: 2.5rem;
     font-weight: 900;
-    padding: var(--space-5) var(--space-4) 0;
+    padding: var(--space-4) var(--space-4) 0;
     width: min-content;
     color: var(--foreground-900);
 }
@@ -230,4 +234,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.budge {
+    font-size: .7rem;
+    font-weight: 600;
+    padding: .2em .6em;
+    border-radius: 3em;
+    background-color: var(--primary-100);
+    color: var(--primary-600);
+    min-width: 40px;
+    text-align: center;
 }

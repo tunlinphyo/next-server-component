@@ -178,7 +178,6 @@ export async function onProductCreate(prevState: any, formData: FormData) {
     }
 
     const product = await POST<ProductType>('products', newProduct)
-    console.log('NEW_PRODUCT', product)
 
     await wait(300) // add not do duplicate id
     const newProductClass: Partial<ProductClassType> = {
@@ -187,7 +186,6 @@ export async function onProductCreate(prevState: any, formData: FormData) {
         quantity: productData.quantity
     }
     const productClass = await POST<ProductClassType>('product_class', newProductClass)
-    console.log('PRODUCT_CLASS', productClass)
 
     revalidatePath('/admin/product/products')
     redirect(`/admin/product/products/${product.id}/edit`)

@@ -8,7 +8,7 @@ export function getStockAndPrices(classList: ProductClassType[]) {
     }
 
     return {
-        stockTotal: total,
+        stockTotal: Math.max(total, 0),
         minPrice: Math.min(...prices),
         maxPrice: Math.max(...prices)
     }

@@ -24,7 +24,7 @@ export async function handleSignIn(prevState: any, formData: FormData) {
     console.log('USER', user)
 
     const cookieStore = cookies()
-    cookieStore.set('admin', JSON.stringify(user), { secure: true })
+    cookieStore.set('admin', JSON.stringify(user), { secure: false })
     redirect('/admin')
 }
 

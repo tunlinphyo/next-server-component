@@ -2,8 +2,16 @@
 
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
 import { GET } from "@/libs/db"
-import { ProductClassType, ProductType, VariantType } from "@/libs/definations"
+import { CategoryType, ProductClassType, ProductType, VariantType } from "@/libs/definations"
 import { wait } from "@/libs/utils"
+
+export async function getCategories() {
+    await wait()
+
+    const categories = await GET<CategoryType>('product_categories', { isDelete: false, parent_category_id: undefined })
+
+    return categories
+}
 
 export async function getHomeProduct() {
     await wait()

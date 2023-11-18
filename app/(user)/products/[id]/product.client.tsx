@@ -9,6 +9,7 @@ import { formatPrice } from '@/libs/utils';
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from '@/components/user/table/table.client';
 import React from 'react';
 import { TextSkeleton } from '@/components/user/utils/utils.client';
+import { Budge } from '@/components/user/utils/utils.client';
 
 export function ProductDetail({ product, minPrice, maxPrice }: {
     product: ProductType;
@@ -18,6 +19,15 @@ export function ProductDetail({ product, minPrice, maxPrice }: {
     const lines = product.description.split(/\r?\n/);
     return (
         <div className={styles.productDetail}>
+            <ul className={styles.categories}>
+                {
+                    product.categories?.map(item => (
+                        <li key={item.id}>
+                            <Budge>{ item.name }</Budge>
+                        </li>
+                    ))
+                }
+            </ul>
             <div className={styles.productPrice}>
                 { formatPrice(minPrice) }
                 { minPrice != maxPrice && <span>~</span> }

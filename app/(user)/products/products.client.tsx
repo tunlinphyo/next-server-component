@@ -9,11 +9,11 @@ import { TextSkeleton } from '@/components/user/utils/utils.client'
 import Link from 'next/link'
 import { useFormState, useFormStatus } from 'react-dom'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { appToast } from '@/libs/toasts'
-import { addToCart } from './products.action'
+import { addToCart, formTest } from './products.action'
 import clsx from 'clsx'
 import { BottomSheetButton, BottomSheetContainer, Modal } from '@/components/user/modals/modals.client'
 import { usePathname } from 'next/navigation'
+import { useToast } from '@/components/user/toast/toast.index'
 
 type AddToCartFormProps = {
     productClass: ProductClassType[];
@@ -70,12 +70,13 @@ export function OutofStockButton() {
     )
 }
 
-export function AddToCartButton() {
+export function AddToCartButton({ id, onChange }: { id: number; onChange: () => void }) {
     const { pending } = useFormStatus()
     return (
-        <button className={styles.addToCart} disabled={pending}>
+        <label className={clsx(styles.addToCart, pending && styles.addToCartDisabled)}>
+            <input type='radio' name='class_id' defaultValue={id} onChange={onChange} />
             add to cart { pending ? <ArrowPathIcon className="icon-loading" /> : <ShoppingBagIcon /> }
-        </button>
+        </label>
     )
 }
 
@@ -85,51 +86,69 @@ export function ModalOpenButton({ loading, onClick }: { loading: boolean; onClic
         <button
             type="button"
             className={styles.addToCart}
-            disabled={pending || loading}
+            disabled={(loading || pending)}
             onClick={onClick}
         >
-            add to cart { (pending || loading) ? <ArrowPathIcon className="icon-loading" /> : <ShoppingBagIcon /> }
+            add to cart { (loading || pending) ? <ArrowPathIcon className="icon-loading" /> : <ShoppingBagIcon /> }
         </button>
     )
 
 }
 
 export function AddToCartForm({ productClass }: AddToCartFormProps) {
-    const formEl = useRef<HTMLFormElement | null>(null)
     const [ state, onAction ] = useFormState(addToCart, { code: '' })
     const [ modal, setModal ] = useState(false)
-    const [ classId, setClassId ] = useState(productClass[0].id)
     const pathname = usePathname()
+    const formRef = useRef<HTMLFormElement | null>(null)
+    const { showToast } = useToast()
+
+    const handleChange = useCallback(() => {
+        console.log("CLICK")
+        setModal(false)
+        formRef.current?.requestSubmit()
+    }, [])
 
     useEffect(() => {
-        if (state.code) appToast(state.code)
+        if (state.code) {
+            showToast(state.code)
+            formRef.current?.reset()
+        }
     }, [ state ])
 
-    const handleSubmit = useCallback((id: number) => {
-        setClassId(id)
-        setTimeout(() => {
-                if (formEl.current) {
-                formEl.current.requestSubmit()
-                setModal(false)
-            }
-        }, 0)
-    }, [ classId ])
-
     return (
-        <>
-            <form ref={formEl} action={onAction}>
-                <input type="hidden" name="class_id" defaultValue={classId} />
-                <input type="hidden" name="pathname" defaultValue={pathname} />
-                {
-                    (productClass.length == 1 && !productClass[0].variant_1_id)
-                        ? <AddToCartButton /> : <ModalOpenButton loading={modal} onClick={() => setModal(true)} />
-                }
-            </form>
+        <form ref={formRef} action={onAction} className={styles.addToCartForm}>
+            <input type='hidden' name='pathname' defaultValue={pathname} />
+            {
+                (productClass.length == 1 && !productClass[0].variant_1_id)
+                    ? (
+                        <AddToCartButton id={productClass[0].id} onChange={handleChange} />
+                    ) : (
+                        <>
+                            <ModalOpenButton loading={modal} onClick={() => setModal(true)} />
+                            {
+                                productClass.map(item => (
+                                    <input 
+                                        key={item.id}
+                                        id={`class_id_${item.id}`}
+                                        type="radio" 
+                                        name="class_id" 
+                                        defaultValue={item.id} 
+                                        disabled={!item.quantity}
+                                        onChange={handleChange} />
+                                ))
+                            }
+                        </>
+                    )
+            }
             <Modal open={modal}>
                 <BottomSheetContainer onClose={() => setModal(false)}>
                     {
                         productClass.map(item => (
-                            <BottomSheetButton onClick={() => handleSubmit(item.id)} key={item.id} disabled={!item.quantity}>
+                            <label 
+                                key={item.id}
+                                htmlFor={`class_id_${item.id}`}
+                                className={clsx(styles.bottomSheetButton, !item.quantity && styles.bottomSheetDisabled )}
+                            >
                                 <ListBulletIcon />
                                 <span className={styles.variantsContiner}>
                                     <span>{ item.variant1?.name }</span>
@@ -137,14 +156,71 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
                                     <span>{ item.variant2?.name }</span>
                                 </span>
                                 <span>{ formatPrice(item.price) }</span>
-                            </BottomSheetButton>
+                            </label>
                         ))
                     }
                 </BottomSheetContainer>
             </Modal>
-        </>
+        </form>
     )
 }
+
+// export function AddToCartFormBackup({ productClass }: AddToCartFormProps) {
+//     const [ modal, setModal ] = useState(false)
+//     const [ loading, setLoading ] = useState(false)
+//     const pathname = usePathname()
+//     const { showToast } = useToast()
+
+//     const openModal = () => {
+//         setLoading(true)
+//         setModal(true)
+//     }
+
+//     const closeModal = () => {
+//         setModal(false)
+//         setLoading(false)
+//     }
+
+//     const handleSubmit = async (id: number) => {
+//         setModal(false)
+//         setLoading(true)
+//         const result = await addToCart(id, pathname)
+//         setLoading(false)
+//         if (result.code) showToast(result.code)
+//     }
+
+//     return (
+//         <>
+//             <div className={styles.buttonContainer}>
+//                 {
+//                     (productClass.length == 1 && !productClass[0].variant_1_id)
+//                         ? <ModalOpenButton loading={loading} onClick={() => handleSubmit(productClass[0].id)} /> 
+//                         : <ModalOpenButton loading={loading} onClick={openModal} />
+//                 }
+//             </div>
+//             <Modal open={modal}>
+//                 <BottomSheetContainer onClose={closeModal}>
+//                     {
+//                         productClass.map(item => (
+//                             <BottomSheetButton 
+//                                 onClick={() => handleSubmit(item.id)} 
+//                                 key={item.id} 
+//                                 disabled={!item.quantity}>
+//                                 <ListBulletIcon />
+//                                 <span className={styles.variantsContiner}>
+//                                     <span>{ item.variant1?.name }</span>
+//                                     { item.variant2 && ' - ' } 
+//                                     <span>{ item.variant2?.name }</span>
+//                                 </span>
+//                                 <span>{ formatPrice(item.price) }</span>
+//                             </BottomSheetButton>
+//                         ))
+//                     }
+//                 </BottomSheetContainer>
+//             </Modal>
+//         </>
+//     )
+// }
 
 export function ProductsSkeleton({ count }: { count: number }) {
     const products = new Array(count).fill(1)

@@ -235,7 +235,7 @@
         {
             "id": 1699884265581,
             "name": "IPad Mini 6",
-            "description": "this is iPad mini 6",
+            "description": "iPad mini is meticulously designed to be absolutely beautiful. An all-new enclosure features a new, larger edge-to-edge screen, along with narrow borders and elegant rounded corners.\r\n\r\nThe 8.3-inch Liquid Retina display features True Tone, P3 wide color, and ultralow reflectivity, making text sharp and colors vivid, wherever you are.\r\n\r\nApple Pencil attaches magnetically to the side of iPad mini, so it’s always with you and ready for a spur-of-the-moment sketch or spontaneous brainstorming session.\r\n\r\nTouch ID is integrated into the top button for fast, easy, and secure authentication. Use your fingerprint to unlock your iPad or quickly and securely make a payment.\r\n\r\nThe new A15 Bionic chip makes iPad mini just as powerful as it is portable. Whether you’re tearing through your inbox or editing photos with Photoshop, it has the power to do it all. Use advanced apps, capture brilliant content, and bring your creative projects to life, anywhere.",
             "category_ids": [
                 1699617210548,
                 1699876021958,
@@ -245,12 +245,19 @@
             "isDelete": false,
             "variant_1_id": 1699884318983,
             "variant_2_id": 1699679275775,
-            "updateDate": "2023-11-15T04:37:00.743Z",
+            "updateDate": "2023-11-18T15:48:51.960Z",
             "images": [
-                "/uploads/1699972392735.jpeg",
-                "/uploads/1699972409966.jpeg",
-                "/uploads/1699972414716.jpeg",
-                "/uploads/1699972418999.jpeg"
+                "/uploads/1700322297520.jpeg",
+                "/uploads/1700322309175.jpeg",
+                "/uploads/1700322313720.jpeg",
+                "/uploads/1700322328029.jpeg",
+                "/uploads/1700322333587.jpeg",
+                "/uploads/1700322339405.jpeg",
+                "/uploads/1700322345743.jpeg",
+                "/uploads/1700322350165.jpeg",
+                "/uploads/1700322355369.jpeg",
+                "/uploads/1700322363355.jpeg",
+                "/uploads/1700322369593.jpeg"
             ]
         },
         {
@@ -264,13 +271,12 @@
             ],
             "createDate": "2023-11-13T15:33:33.813Z",
             "isDelete": false,
-            "updateDate": "2023-11-14T14:08:49.949Z",
             "images": []
         },
         {
             "id": 1699891224183,
             "name": "Magic Keyboard (iPad Pro 12)",
-            "description": "magic keyboard for iPad Pro 12 inches",
+            "description": "iPad keyboards provide a great typing experience and lightweight, durable protection for your iPad. And they attach to iPad magnetically — no need for switches, plugs, and pairing.\r\n\r\nThe Magic Keyboard is an amazing companion for iPad Pro and iPad Air. It features a great typing experience, a trackpad that opens up new ways to work with iPadOS, a USB‑C port for pass‑through charging, and front and back protection. The Magic Keyboard features a floating cantilever design, allowing you to attach it magnetically and smoothly adjust it to the perfect viewing angle for you.",
             "category_ids": [
                 1699617210548,
                 1699876021958,
@@ -283,7 +289,7 @@
             "isDelete": false,
             "variant_1_id": 1699891265320,
             "variant_2_id": 0,
-            "updateDate": "2023-11-15T09:36:02.368Z",
+            "updateDate": "2023-11-18T11:33:32.195Z",
             "images": [
                 "/uploads/1699970897480.jpeg",
                 "/uploads/1699970901904.jpeg",
@@ -295,9 +301,15 @@
         },
         {
             "name": "Pixel Watch",
-            "description": "this is google pixel watch",
+            "description": "Google for your convenience.\r\nStay healthy with Fitbit.\r\nfor you.\r\n\r\n*** 6 months of Fitbit Premium free.\r\n*** 1 month free of YouTube Music Premium.\r\n\r\nGoogle's useful features to help you be more productive.\r\n\r\nFamiliar Google apps like Gmail, Google Calendar, and Google Wallet are designed specifically for Google Pixel Watch 2, giving you instant access to the information you need.",
             "images": [
-                "/uploads/1700041707074.jpeg"
+                "/uploads/1700316048547.webp",
+                "/uploads/1700316058273.webp",
+                "/uploads/1700316066850.webp",
+                "/uploads/1700316075955.webp",
+                "/uploads/1700316084076.webp",
+                "/uploads/1700316091410.webp",
+                "/uploads/1700316099304.webp"
             ],
             "category_ids": [
                 1699632069657,
@@ -306,11 +318,11 @@
             "id": 1699972943635,
             "createDate": "2023-11-14T14:42:23.635Z",
             "isDelete": false,
-            "updateDate": "2023-11-17T07:47:17.816Z"
+            "updateDate": "2023-11-18T14:04:24.429Z"
         },
         {
             "name": "Surface Laptop Studio",
-            "description": "Microsoft surface laptop studio",
+            "description": "Over twice the computing power makes this device the most powerful Surface yet. Seamlessly transition from a powerful touchscreen laptop to a perfectly angled display for entertainment, to a creative canvas for drawing. With Windows 11, Surface Laptop Studio 2 is the ultimate powerhouse all-in-one laptop.",
             "images": [
                 "/uploads/1700268333415.webp",
                 "/uploads/1700268342675.webp",
@@ -328,7 +340,7 @@
             "id": 1700049145062,
             "createDate": "2023-11-15T11:52:25.062Z",
             "isDelete": false,
-            "updateDate": "2023-11-18T01:00:21.562Z",
+            "updateDate": "2023-11-18T15:40:08.203Z",
             "variant_1_id": 1700268521441,
             "variant_2_id": 1699679275775
         },
@@ -564,10 +576,10 @@
             "id": 1699889614123,
             "product_id": 1699889613813,
             "price": 5000,
-            "quantity": 10,
+            "quantity": 0,
             "createDate": "2023-11-13T15:33:34.123Z",
             "isDelete": false,
-            "updateDate": "2023-11-14T15:09:19.962Z"
+            "updateDate": "2023-11-18T14:04:56.677Z"
         },
         {
             "id": 1699891081895,
@@ -634,11 +646,11 @@
         {
             "product_id": 1699972943635,
             "price": 5000,
-            "quantity": 0,
+            "quantity": 5,
             "id": 1699972943943,
             "createDate": "2023-11-14T14:42:23.943Z",
             "isDelete": false,
-            "updateDate": "2023-11-17T07:47:17.844Z"
+            "updateDate": "2023-11-18T14:04:24.435Z"
         },
         {
             "product_id": 1700049145062,
@@ -687,7 +699,8 @@
             "price": 100000,
             "quantity": 2,
             "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.747Z"
+            "createDate": "2023-11-18T01:02:55.747Z",
+            "updateDate": "2023-11-18T12:12:17.082Z"
         },
         {
             "id": 1700269375748,
@@ -697,7 +710,8 @@
             "price": 120000,
             "quantity": 2,
             "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.748Z"
+            "createDate": "2023-11-18T01:02:55.748Z",
+            "updateDate": "2023-11-18T12:12:17.085Z"
         },
         {
             "id": 1700269375749,
@@ -707,7 +721,8 @@
             "price": 140000,
             "quantity": 3,
             "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.749Z"
+            "createDate": "2023-11-18T01:02:55.749Z",
+            "updateDate": "2023-11-18T12:12:17.087Z"
         },
         {
             "id": 1700269375750,
@@ -716,8 +731,9 @@
             "variant_2_id": 1700041985109,
             "price": 160000,
             "quantity": 1,
-            "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.750Z"
+            "isDelete": true,
+            "createDate": "2023-11-18T01:02:55.750Z",
+            "updateDate": "2023-11-18T12:12:17.061Z"
         },
         {
             "id": 1700269375751,
@@ -726,8 +742,9 @@
             "variant_2_id": 1699689424058,
             "price": 140000,
             "quantity": 2,
-            "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.751Z"
+            "isDelete": true,
+            "createDate": "2023-11-18T01:02:55.751Z",
+            "updateDate": "2023-11-18T12:12:17.063Z"
         },
         {
             "id": 1700269375752,
@@ -737,7 +754,8 @@
             "price": 160000,
             "quantity": 0,
             "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.752Z"
+            "createDate": "2023-11-18T01:02:55.752Z",
+            "updateDate": "2023-11-18T12:12:17.089Z"
         },
         {
             "id": 1700269375753,
@@ -747,7 +765,8 @@
             "price": 180000,
             "quantity": 1,
             "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.753Z"
+            "createDate": "2023-11-18T01:02:55.753Z",
+            "updateDate": "2023-11-18T12:12:17.090Z"
         },
         {
             "id": 1700269375754,
@@ -756,8 +775,9 @@
             "variant_2_id": 1700041985109,
             "price": 200000,
             "quantity": 1,
-            "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.754Z"
+            "isDelete": true,
+            "createDate": "2023-11-18T01:02:55.754Z",
+            "updateDate": "2023-11-18T12:12:17.072Z"
         },
         {
             "id": 1700269375755,
@@ -766,8 +786,9 @@
             "variant_2_id": 1699689424058,
             "price": 200000,
             "quantity": 3,
-            "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.755Z"
+            "isDelete": true,
+            "createDate": "2023-11-18T01:02:55.755Z",
+            "updateDate": "2023-11-18T12:12:17.074Z"
         },
         {
             "id": 1700269375759,
@@ -777,7 +798,8 @@
             "price": 220000,
             "quantity": 0,
             "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.759Z"
+            "createDate": "2023-11-18T01:02:55.759Z",
+            "updateDate": "2023-11-18T12:12:17.093Z"
         },
         {
             "id": 1700269375760,
@@ -787,7 +809,8 @@
             "price": 240000,
             "quantity": 0,
             "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.760Z"
+            "createDate": "2023-11-18T01:02:55.760Z",
+            "updateDate": "2023-11-18T12:12:17.094Z"
         },
         {
             "id": 1700269375761,
@@ -796,8 +819,9 @@
             "variant_2_id": 1700041985109,
             "price": 260000,
             "quantity": 1,
-            "isDelete": false,
-            "createDate": "2023-11-18T01:02:55.761Z"
+            "isDelete": true,
+            "createDate": "2023-11-18T01:02:55.761Z",
+            "updateDate": "2023-11-18T12:12:17.081Z"
         },
         {
             "product_id": 1700277087208,
@@ -1257,30 +1281,31 @@
     "cart_items": [
         {
             "cart_id": 1700196528385,
-            "product_id": 1699891224183,
-            "product_class_id": 1699891766529,
+            "product_id": 1699972943635,
+            "product_class_id": 1699972943943,
             "quantity": 1,
-            "id": 1700229759152,
-            "createDate": "2023-11-17T14:02:39.152Z",
+            "id": 1700316728647,
+            "createDate": "2023-11-18T14:12:08.647Z",
             "isDelete": false,
-            "updateDate": "2023-11-17T16:22:50.134Z"
-        },
-        {
-            "cart_id": 1700196528385,
-            "product_id": 1700049145062,
-            "product_class_id": 1700269375753,
-            "quantity": 1,
-            "id": 1700292639793,
-            "createDate": "2023-11-18T07:30:39.793Z",
-            "isDelete": false
+            "updateDate": "2023-11-18T15:31:46.190Z"
         },
         {
             "cart_id": 1700196528385,
             "product_id": 1700277087208,
-            "product_class_id": 1700277161011,
+            "product_class_id": 1700277161004,
             "quantity": 1,
-            "id": 1700292680986,
-            "createDate": "2023-11-18T07:31:20.986Z",
+            "id": 1700317105117,
+            "createDate": "2023-11-18T14:18:25.117Z",
+            "isDelete": false,
+            "updateDate": "2023-11-18T15:29:53.646Z"
+        },
+        {
+            "cart_id": 1700196528385,
+            "product_id": 1700049145062,
+            "product_class_id": 1700269375747,
+            "quantity": 1,
+            "id": 1700321702621,
+            "createDate": "2023-11-18T15:35:02.621Z",
             "isDelete": false
         }
     ]

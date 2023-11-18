@@ -45,7 +45,7 @@
 .categories,
 .latestProducts {
     width: 100%;
-    margin-top: calc(var(--space-3) * -1);
+    margin-top: var(--space-1)!important;
 }
 .slideContainer {
     width: 100%;
@@ -72,6 +72,9 @@
     background-color: var(--primary-100);
     border-radius: 15px;
 }
+.categoryItemSkeleton {
+    background-color: var(--foreground-50);
+}
 .slideItemStart {
     min-width: 75%;
     background-color: transparent;
@@ -90,12 +93,15 @@
     width: 100%;
     height: 48px;
     display: grid;
-    grid-template-columns: 1.5rem minmax(0, 1fr);
+    grid-template-columns: 1.4rem minmax(0, 1fr);
     align-items: center;
     padding: 0 var(--space-3);
     gap: var(--space-3);
     color: var(--primary-600);
     font-size: .9rem;
+}
+.category svg {
+    width: 1.4rem;
 }
 
 .goButton {
@@ -119,6 +125,7 @@
 
 .introCard {
     width: 100%;
+    min-height: 290px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -129,11 +136,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: var(--space-3);
 }
 .introMedia img {
     width: 100%;
     height: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 4 / 2;
     object-fit: contain;
 }
 .introMessage {

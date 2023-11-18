@@ -13,16 +13,19 @@ import ProfilePicture from '@/app/assets/icons/profile.svg'
 type PageHeaderProps = ChildrenProp & {
     navigations: React.ReactNode;
 }
-
 type NavigationsProps = ChildrenProp & {
     toggle: boolean;
 }
-
 type EmptyCartProps = {
     image: string;
     text: string;
     children?: React.ReactNode;
 }
+type BudgeProps = ChildrenProp & {
+    size?: 'default' | 'small' | 'large';
+    theme?: 'default' | 'primary' | 'danger';
+}
+
 
 export function PageContainer({ children }: ChildrenProp) {
     return (
@@ -155,6 +158,13 @@ export function EmptyCard({ image, text, children }: EmptyCartProps) {
     )
 }
 
+export function Budge({ children, size, theme }: BudgeProps) {
+    return (
+        <div className={clsx(styles.budge)}>
+            { children }
+        </div>
+    )
+}
 
 export function NavigationSkeleton() {
     return (

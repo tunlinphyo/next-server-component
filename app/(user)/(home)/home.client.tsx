@@ -3,31 +3,36 @@
 import clsx from 'clsx'
 import { Product } from '../products/products.client'
 import styles from './home.module.css'
-import { ProductType } from "@/libs/definations"
+import { CategoryType, ProductType } from "@/libs/definations"
 import Link from 'next/link'
 import { ArrowRightIcon, TicketIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import IntroImg from '@/app/assets/icons/welcome.svg'
+import { useToast } from '@/components/user/toast/toast.index'
 
 export function SearchBar() {
+    const { showToast } = useToast()
+
+    const handleClick = () => {
+        showToast("TOAST TEST")
+    }
     return (
-        <div className={styles.searchContainer}>
+        <div className={styles.searchContainer} onClick={handleClick}>
             <div className={styles.searchBar}></div>
         </div>
     )
 }
 
-export function Categories() {
-    const categories = [1,2,3,4,5,6]
+export function Categories({ categories }: { categories: CategoryType[] }) {
     return (
         <div className={styles.categories}>
             <div className={styles.slideContainer}>
                 {
                     categories.map(item => (
-                        <div className={clsx(styles.slideItem, styles.categoryItem)} key={item}>
-                            <Link href={`/products`} className={styles.category}>
+                        <div className={clsx(styles.slideItem, styles.categoryItem)} key={item.id}>
+                            <Link href={`/products?category=${item.id}`} className={styles.category}>
                                 <TicketIcon />
-                                Category
+                                { item.name }
                             </Link>
                         </div>
                     ))
@@ -60,9 +65,27 @@ export function ProductSlide({ products }: { products: ProductType[] }) {
                     ))
                 }
                 <div className={clsx(styles.slideItem, styles.slideItemEnd)}>
-                    <Link href="/products" className={styles.goButton}>
+                    <Link href="/products?order=latest" className={styles.goButton}>
                         <ArrowRightIcon />
                     </Link>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export function CategorySkeleton() {
+    return (
+        <div className={clsx(styles.categories, "skeleton")}>
+            <div className={styles.slideContainer}>
+                <div className={clsx(styles.slideItem, styles.categoryItem, styles.categoryItemSkeleton)}>
+                    <div className={styles.category} />
+                </div>
+                <div className={clsx(styles.slideItem, styles.categoryItem, styles.categoryItemSkeleton)}>
+                    <div className={styles.category} />
+                </div>
+                <div className={clsx(styles.slideItem, styles.categoryItem, styles.categoryItemSkeleton)}>
+                    <div className={styles.category} />
                 </div>
             </div>
         </div>
