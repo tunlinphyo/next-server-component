@@ -1,136 +1,134 @@
 "use server"
 
 import { PER_PAGE } from "@/libs/const"
-import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
-import { VariantType } from "@/libs/definations"
-import { getZodErrors, wait } from "@/libs/utils"
+import { getZodErrors } from "@/libs/utils"
 import { CreateVariantSchema, VariantSchema } from "./variant.schema"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { createDBVariant, getDBVariants, getDBVariant, updateDBVariant, getDBVariantsBy } from "@/libs/prisma/variant"
+import { Prisma } from "@prisma/client"
+import { VariantInterface } from "@/libs/prisma/definations"
 
 export async function getVariantPageLength(id?: number) {
-    await wait(50)
+    let query: Prisma.VariantAggregateArgs
 
-    const query: Partial<VariantType> = {
-        isDelete: false
-    }
     if (id) {
-        query.parent_variant_id = id
+        query = {
+            _count: { id: true },
+            where: { isDelete: false, parentId: id }
+        }
     } else {
-        query.parent_variant_id = undefined
+        query = {
+            _count: { id: true },
+            where: { isDelete: false, parentId: null }
+        }
     }
+    const result = await getDBVariantsBy(query) as { _count: { id: number } }
 
-    const variants = await GET<VariantType>('product_variants', query)
-    return Math.ceil(variants.length / PER_PAGE)
+    console.log("COUNT", result)
+
+    return Math.ceil(result._count.id / PER_PAGE)
 }
 
 export async function getPariantVariants(page: number = 1) {
-    await wait()
-
-    const variants = await GET<VariantType>('product_variants', { parent_variant_id: undefined, isDelete: false })
     const index = page - 1
     const start = index ? index * PER_PAGE : 0
-    const end = start + PER_PAGE
-    const sortedVariants = variants.sort((a, b) => {
-        if (a.createDate < b.createDate) return 1
-        if (a.createDate > b.createDate) return -1
-        return 0
-    })
-    const paginated = sortedVariants.slice(start, end)
-    const result: VariantType[] = []
-    for await (const variant of paginated) {
-        const childs = await GET<VariantType>('product_variants', { parent_variant_id: variant.id, isDelete: false })
-        variant.child_count = childs.length
-        result.push(variant)
+    const query: Prisma.VariantFindManyArgs = {
+        where: { isDelete: false, parentId: null },
+        include: {
+            parent: true,
+            children: true
+        },
+        skip: start,
+        take: PER_PAGE,
+        orderBy: { createDate: "asc" }
     }
-    return result
+    
+    return await getDBVariants(query)
 }
 
 export async function getChildVariants(id: number, page: number = 1) {
-    await wait()
-
-    const variants = await GET<VariantType>('product_variants', { parent_variant_id: id, isDelete: false })
-    const index = page - 1
-    const start = index ? index * PER_PAGE : 0
-    const end = start + PER_PAGE
-    const sortedCategories = variants.sort((a, b) => {
-        if (a.createDate > b.createDate) return 1
-        if (a.createDate < b.createDate) return -1
-        return 0
-    })
-    const paginated = sortedCategories.slice(start, end)
-    const result: VariantType[] = []
-    for await (const varinat of paginated) {
-        const parent = await GET_ONE<VariantType>('product_variants', { id: varinat.parent_variant_id, isDelete: false })
-        varinat.parent_variant = parent
-        result.push(varinat)
+    const query: Prisma.VariantFindManyArgs = {
+        where: { isDelete: false, parentId: id },
+        include: {
+            parent: true,
+            children: true
+        },
+        // skip: start,
+        // take: PER_PAGE,
+        orderBy: { createDate: "asc" }
     }
-    return result
+
+    return await getDBVariants(query)
 }
 
 export async function getVariant(id: number) {
-    await wait()
-
-    const variant = await GET_ONE<VariantType>('product_variants', { id, isDelete: false })
-    if (variant && variant.parent_variant_id) {
-        const parent = await GET_ONE<VariantType>('product_variants', { id: variant.parent_variant_id, isDelete: false })
-        variant.parent_variant = parent
-    }
-    return variant
+    return await getDBVariant({ 
+        where: { id },
+        include: {
+            parent: true
+        }
+    }) as VariantInterface
 }
 
-export async function deleteVariant(id: number) {
-    await wait()
-
-    const childVariants = await GET<VariantType>('product_variants', { parent_variant_id: id, isDelete: false })
-    if (childVariants.length) return { code: 'Can not delete a variant with children' }
-    try {
-        await DELETE<VariantType>('product_variants', id)
-        revalidatePath('/admin/product/variants')
-        redirect('/admin/product/variants')
-    } catch(e) {
-        console.log('CAN REDIRECT ON SELF PAGE', e)
-        return { code: '' }
+export async function deleteVariant(id: number, pathname: string) {
+    const getQuery: Prisma.VariantFindUniqueArgs = {
+        where: { id },
+        include: {
+            children: true
+        }
     }
+    const variant = await getDBVariant(getQuery) as VariantInterface
+    if (!variant) return { code: 'Variant could not find' }
+    if (variant.children?.length) return { code: 'Can not delete a variant with children' }
+
+    const delQuery: Prisma.VariantUpdateArgs = {
+        where: { id },
+        data: { isDelete: true }
+    }
+
+    const delVariant = await updateDBVariant(delQuery)
+    revalidatePath(pathname)
+    redirect(pathname)
 }
 
 export async function onVariantCreate(prevState: any, formData: FormData) {
-    await wait()
-
     const result = CreateVariantSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
         return getZodErrors(result.error.issues)
     }
 
-    const newVariant = await POST<VariantType>('product_variants', result.data)
-    if (newVariant.parent_variant_id) {
-        revalidatePath(`/admin/product/variants/${newVariant.parent_variant_id}/edit`)
-        redirect(`/admin/product/variants/${newVariant.parent_variant_id}/edit`)
+    const query: Prisma.VariantCreateArgs = {
+        data: result.data
+    }
+
+    const variant = await createDBVariant(query)
+    if (variant.parentId) {
+        revalidatePath(`/admin/product/variants/${variant.parentId}/edit`)
+        redirect(`/admin/product/variants/${variant.parentId}/edit`)
     } else {
         revalidatePath('/admin/product/variants')
-        redirect(`/admin/product/variants/${newVariant.id}/edit`)
+        redirect(`/admin/product/variants/${variant.id}/edit`)
     }
 }
 
 export async function onVariantEdit(prevState: any, formData: FormData) {
-    await wait()
-
     const result = VariantSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
         return getZodErrors(result.error.issues)
     }
 
-    const isName = await GET_ONE<VariantType>('product_variants', { name: result.data.name, isDelete: false })
-    if (isName && isName.id !== result.data.id) {
-        return { name: 'Variant name is already in used' }
+    const query: Prisma.VariantUpdateArgs = {
+        where: { id: result.data.id },
+        data: result.data
     }
 
-    const updatedVariant = await PATCH<VariantType>('product_variants', result.data)
-    if (updatedVariant?.parent_variant_id) {
-        revalidatePath(`/admin/product/variants/${updatedVariant.parent_variant_id}/edit`)
-        redirect(`/admin/product/variants/${updatedVariant.parent_variant_id}/edit`)
+    const variant = await updateDBVariant(query)
+    if (variant.parentId) {
+        revalidatePath(`/admin/product/variants/${variant.parentId}/edit`)
+        redirect(`/admin/product/variants/${variant.parentId}/edit`)
     } else {
         revalidatePath('/admin/product/variants')
         redirect('/admin/product/variants')

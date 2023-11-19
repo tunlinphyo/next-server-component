@@ -3,13 +3,12 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { LoginSchema } from "./auth.schema"
-import { wait } from "@/libs/utils"
 import { getDBUser } from "@/libs/prisma/user"
 import { User } from "@prisma/client"
+import { UserType } from "@/libs/prisma/definations"
 
 
 export async function handleSignIn(prevState: any, formData: FormData) {
-    await wait()
     const result = LoginSchema.safeParse( Object.fromEntries(formData))
 
     if (!result.success) {
@@ -19,15 +18,20 @@ export async function handleSignIn(prevState: any, formData: FormData) {
 
     const user:User | null = await getDBUser({ where: { email: result.data.email } })
 
-    console.log("DB_USER", user)
-
     if (!user) return { message: 'Invalid email' }
     if (!user.isAdmin) return { message: 'Unauth user' }
     if (user.password !== result.data.password) return { message: 'Invalid passowrd' }
-    console.log('USER', user)
+
+    const cookieUser: UserType = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        isDelete: user.isDelete
+    }
 
     const cookieStore = cookies()
-    cookieStore.set('admin', JSON.stringify(user), { secure: false })
+    cookieStore.set('admin', JSON.stringify(cookieUser), { secure: false })
     redirect('/admin')
 }
 

@@ -1,10 +1,11 @@
 'use client'
 
-import { VariantType } from "@/libs/definations"
+// import { VariantType } from "@/libs/definations"
 import { useFormState } from "react-dom"
 import { onVariantEdit } from "../../variant.action"
 import { DisplayInput, Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
+import { VariantInterface } from "@/libs/prisma/definations"
 
 
 const initState = {
@@ -13,7 +14,7 @@ const initState = {
   parent_category_id: '',
 }
 
-export function VariantEditForm({ variant }: { variant: VariantType }) {
+export function VariantEditForm({ variant }: { variant: VariantInterface }) {
     const [ state, onAction ] = useFormState(onVariantEdit, initState)
     return (
         <Form action={onAction} footer={
@@ -24,8 +25,8 @@ export function VariantEditForm({ variant }: { variant: VariantType }) {
         }>
             <input type="hidden" name="id" defaultValue={variant.id} />
             {
-                variant.parent_variant && <>
-                    <DisplayInput defaultValue={variant.parent_variant.name}>
+                variant.parentId && <>
+                    <DisplayInput defaultValue={variant.parent?.name as string}>
                         Parent Name
                     </DisplayInput>
                     <div />

@@ -1,10 +1,10 @@
 'use client'
 
-import { VariantType } from "@/libs/definations"
 import { useFormState } from "react-dom"
 import { onVariantCreate } from "../variant.action"
 import { DisplayInput, Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
+import { VariantInterface } from "@/libs/prisma/definations"
 
 const initState = {
     name: '',
@@ -12,7 +12,7 @@ const initState = {
     parent_varant_id: ''
 }
 
-export function VariantCreateForm({ parent }: { parent?: VariantType }) {
+export function VariantCreateForm({ parent }: { parent?: VariantInterface }) {
     const [ state, onAction ] = useFormState(onVariantCreate, initState)
     return (
         <Form action={onAction} footer={
@@ -23,7 +23,7 @@ export function VariantCreateForm({ parent }: { parent?: VariantType }) {
         }>
             {
                 parent && <>
-                    <input type="hidden" name="parent_variant_id" defaultValue={parent.id} />
+                    <input type="hidden" name="parentId" defaultValue={parent.id} />
                     <DisplayInput defaultValue={parent.name}>
                         Parent Name
                     </DisplayInput>

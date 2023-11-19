@@ -12,10 +12,81 @@ datasource db {
 }
 
 model User {
-    id          Int     @id @default(autoincrement())
-    name        String? @db.VarChar(255)
-    email       String  @unique @db.VarChar(255)
-    password    String  @db.VarChar(255)
-    isDelete    Boolean @db.Boolean
-    isAdmin     Boolean @db.Boolean
+    id              Int             @id @default(autoincrement())
+    name            String          @db.VarChar(255)
+    email           String          @unique @db.VarChar(255)
+    password        String          @db.VarChar(255)
+    createDate      DateTime        @default(now())
+    updateDate      DateTime?       @updatedAt
+    isDelete        Boolean         @default(false)
+    isAdmin         Boolean         @db.Boolean
+}
+
+model Variant {
+    id              Int             @id @default(autoincrement())
+    name            String          @db.VarChar(255)
+    description     String?         @db.VarChar(255)
+    parent          Variant?        @relation("ParentChild", fields: [parentId], references: [id])
+    children        Variant[]       @relation("ParentChild")
+    parentId        Int?
+    createDate      DateTime        @default(now())
+    updateDate      DateTime?       @updatedAt
+    isDelete        Boolean         @default(false)
+    proucts1        Product[]       @relation("VariantOne")
+    proucts2        Product[]       @relation("VariantTwo")
+    class1          ProductClass[]  @relation("ClassVariantOne")
+    class2          ProductClass[]  @relation("ClassVariantTwo")
+}
+
+model Category {
+    id              Int             @id @default(autoincrement())
+    name            String          @db.VarChar(255)
+    description     String?         @db.VarChar(255)
+    parent          Category?       @relation("ParentChild", fields: [parentId], references: [id])
+    children        Category[]      @relation("ParentChild")
+    parentId        Int?
+    createDate      DateTime        @default(now())
+    updateDate      DateTime?       @updatedAt
+    isDelete        Boolean         @default(false)
+    products        ProductCategory[]
+}
+
+model ProductCategory {
+    product         Product         @relation(fields: [productId], references: [id])
+    productId       Int
+    category        Category        @relation(fields: [categoryId], references: [id])
+    categoryId      Int
+    createDate      DateTime        @default(now())
+
+    @@id([productId, categoryId])
+}
+
+model Product {
+    id              Int             @id @default(autoincrement())
+    name            String          @db.VarChar(255)
+    description     String          @db.Text
+    variant1        Variant?        @relation("VariantOne", fields: [variant1Id], references: [id])
+    variant1Id      Int?        
+    variant2        Variant?        @relation("VariantTwo", fields: [variant2Id], references: [id])
+    variant2Id      Int?   
+    createDate      DateTime        @default(now())
+    updateDate      DateTime?       @updatedAt
+    isDelete        Boolean         @default(false)
+    productClasses  ProductClass[]   
+    categories      ProductCategory[]
+}
+
+model ProductClass {
+    id              Int             @id @default(autoincrement())
+    product         Product         @relation(fields: [productId], references: [id])
+    productId       Int
+    variant1        Variant?        @relation("ClassVariantOne", fields: [variant1Id], references: [id])
+    variant1Id      Int?        
+    variant2        Variant?        @relation("ClassVariantTwo", fields: [variant2Id], references: [id])
+    variant2Id      Int?   
+    price           Float           
+    quantity        Int
+    createDate      DateTime        @default(now())
+    updateDate      DateTime?       @updatedAt
+    isDelete        Boolean         @default(false)
 }

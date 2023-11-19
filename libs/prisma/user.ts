@@ -6,6 +6,6 @@ export async function getDBUsers() {
     return await prisma.user.findMany()
 }
 
-export async function getDBUser(query: Prisma.UserFindUniqueArgs<DefaultArgs>) {
+export async function getDBUser(query: Prisma.UserFindUniqueArgs) {
     return await prisma.user.findUnique(query)
 }

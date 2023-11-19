@@ -1,8 +1,10 @@
 'use server'
 
 import { wait } from "@/libs/utils"
-import { CategoryType, VariantType, ProductType } from '@/libs/definations'
+import { CategoryType, ProductType } from '@/libs/definations'
 import { GET } from '@/libs/db';
+import { getDBVariantsBy } from "@/libs/prisma/variant";
+import { Prisma } from "@prisma/client";
 
 export async function getTotalProductCategory() {
     await wait()
@@ -13,11 +15,13 @@ export async function getTotalProductCategory() {
 }
 
 export async function getTotalProductVariant() {
-    await wait()
+    let query: Prisma.VariantAggregateArgs = {
+        _count: { id: true },
+        where: { isDelete: false }
+    }
+    const result = await getDBVariantsBy(query) as { _count: { id: number } }
 
-    const categories = await GET<VariantType>("product_variants", { isDelete: false })
-
-    return categories.length
+    return result._count.id
 }
 
 export async function getTotalProducts() {
