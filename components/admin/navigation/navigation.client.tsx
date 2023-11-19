@@ -44,7 +44,7 @@ export function Logout() {
     return (
         <li>
             <form action={handleSignOut}>
-                <button className={styles.logout}>
+                <button className={clsx(styles.logout, styles.overwrite)}>
                     <ArrowRightOnRectangleIcon />
                     Logout
                 </button>

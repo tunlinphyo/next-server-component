@@ -6,7 +6,7 @@ import { GET_ONE } from "@/libs/db"
 import { UserType } from "@/libs/definations"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
-import { handleSignIn } from "../user.actions"
+import { handleSignIn } from "../../user.actions"
 
 export async function onLogin(prevProp: any, formData: FormData) {
     await wait()

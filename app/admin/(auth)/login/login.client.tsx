@@ -25,7 +25,7 @@ export function LoginForm() {
                 { code && code.message }
             </small>
             <Input name="email" defaultValue="admin@gmail.com">Name</Input>
-            <Input type="password" name="password" defaultValue="password">Passowrd</Input>
+            <Input type="password" name="password" defaultValue="1234567">Passowrd</Input>
         </Form>
     )
 }

@@ -9,9 +9,9 @@ import { TextSkeleton } from '@/components/user/utils/utils.client'
 import Link from 'next/link'
 import { useFormState, useFormStatus } from 'react-dom'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { addToCart, formTest } from './products.action'
+import { addToCart } from './products.action'
 import clsx from 'clsx'
-import { BottomSheetButton, BottomSheetContainer, Modal } from '@/components/user/modals/modals.client'
+import { BottomSheetContainer, Modal } from '@/components/user/modals/modals.client'
 import { usePathname } from 'next/navigation'
 import { useToast } from '@/components/user/toast/toast.index'
 
@@ -103,43 +103,42 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
     const { showToast } = useToast()
 
     const handleChange = useCallback(() => {
-        console.log("CLICK")
         setModal(false)
         formRef.current?.requestSubmit()
+        formRef.current?.reset()
     }, [])
 
     useEffect(() => {
-        if (state.code) {
-            showToast(state.code)
-            formRef.current?.reset()
-        }
+        if (state.code) showToast(state.code)
     }, [ state ])
 
     return (
-        <form ref={formRef} action={onAction} className={styles.addToCartForm}>
-            <input type='hidden' name='pathname' defaultValue={pathname} />
-            {
-                (productClass.length == 1 && !productClass[0].variant_1_id)
-                    ? (
-                        <AddToCartButton id={productClass[0].id} onChange={handleChange} />
-                    ) : (
-                        <>
-                            <ModalOpenButton loading={modal} onClick={() => setModal(true)} />
-                            {
-                                productClass.map(item => (
-                                    <input 
-                                        key={item.id}
-                                        id={`class_id_${item.id}`}
-                                        type="radio" 
-                                        name="class_id" 
-                                        defaultValue={item.id} 
-                                        disabled={!item.quantity}
-                                        onChange={handleChange} />
-                                ))
-                            }
-                        </>
-                    )
-            }
+        <>
+            <form ref={formRef} action={onAction} className={styles.addToCartForm}>
+                <input type='hidden' name='pathname' defaultValue={pathname} />
+                {
+                    (productClass.length == 1 && !productClass[0].variant_1_id)
+                        ? (
+                            <AddToCartButton id={productClass[0].id} onChange={handleChange} />
+                        ) : (
+                            <>
+                                <ModalOpenButton loading={modal} onClick={() => setModal(true)} />
+                                {
+                                    productClass.map(item => (
+                                        <input 
+                                            key={item.id}
+                                            id={`class_id_${item.id}`}
+                                            type="radio" 
+                                            name="class_id" 
+                                            defaultValue={item.id} 
+                                            disabled={!item.quantity}
+                                            onChange={handleChange} />
+                                    ))
+                                }
+                            </>
+                        )
+                }
+            </form>
             <Modal open={modal}>
                 <BottomSheetContainer onClose={() => setModal(false)}>
                     {
@@ -161,7 +160,7 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
                     }
                 </BottomSheetContainer>
             </Modal>
-        </form>
+        </>
     )
 }
 

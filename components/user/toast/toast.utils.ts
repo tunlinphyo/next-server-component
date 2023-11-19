@@ -1,4 +1,9 @@
 
+import { atom } from "jotai"
+
+export const ToastGroupAtom = atom<HTMLElement | null>(null)
+export const readonlyToastGroup = atom((get) => get(ToastGroupAtom))
+
 export function createToast(text:string) {
     const node = document.createElement('output')
 

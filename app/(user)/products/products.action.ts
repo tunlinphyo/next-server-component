@@ -66,14 +66,6 @@ export async function getProducts(page: number, query: string ) {
     return result
 }
 
-export async function formTest(prevState: any, formData: FormData) {
-    const data = Object.fromEntries(formData)
-
-    console.log("FORM_DATA____________", data)
-    revalidatePath(String(data.pathname))
-    return { message: 'Success' }
-}
-
 export async function addToCart(prevState: any, formData: FormData) {
     const user = await getUser()
 

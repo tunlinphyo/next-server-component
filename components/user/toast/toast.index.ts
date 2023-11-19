@@ -1,9 +1,9 @@
 'use client'
 
-import { atom, useAtom } from "jotai"
-import { addToast, createToast, removeToast } from "./toast.utils"
+import { useAtom } from "jotai"
+import { ToastGroupAtom, addToast, createToast, readonlyToastGroup, removeToast } from "./toast.utils"
+import { useAtomValue } from "jotai/react"
 
-const ToastGroupAtom = atom<HTMLElement | null>(null)
 
 export function useInitToast() {
     const [ _, setToastGroup ] = useAtom(ToastGroupAtom)
@@ -12,7 +12,7 @@ export function useInitToast() {
 }
 
 export function useToast() {
-    const [ ToastGroup ] = useAtom(ToastGroupAtom)
+    const ToastGroup = useAtomValue(readonlyToastGroup)
 
     function showToast(text: string) {
         if (!ToastGroup) return

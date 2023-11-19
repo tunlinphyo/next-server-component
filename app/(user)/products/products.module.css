@@ -24,7 +24,7 @@
     justify-content: flex-start;
     align-items: stretch;
 }
-.product:hover:not(:has(button:hover)) {
+.product:hover:not(:has(button:hover, label:hover)) {
     outline: 2px solid var(--primary-600);
 }
 
@@ -83,6 +83,7 @@
     font-size: .8rem;
     text-transform: uppercase;
     cursor: pointer;
+    pointer-events: auto;
 }
 .addToCartForm input[type=radio] {
     display: none;

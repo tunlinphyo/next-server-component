@@ -52,7 +52,7 @@
     color: var(--primary-600);
     background-color: var(--primary-100);
 }
-.logout {
+.logout.overwrite {
     width: 100%;
     height: 38px;
     display: flex;
@@ -69,7 +69,7 @@
     text-transform: initial;
 }
 .navs a svg,
-.logout svg {
+.logout.overwrite svg {
     width: 1rem;
 }
 .flexSpace {

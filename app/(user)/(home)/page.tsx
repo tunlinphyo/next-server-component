@@ -3,6 +3,11 @@ import { PageContainer, PageSubTitle, PageTitle } from '@/components/user/utils/
 import { Suspense } from 'react'
 import { ServerCategories, ServerLatestProducts } from './home.server'
 import { CategorySkeleton, ProductSlideSkeleton, SearchBar } from './home.client'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: 'Home'
+}
 
 export default async function Home() {
     return (

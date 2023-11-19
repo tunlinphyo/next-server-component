@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "@prisma/client": "^5.6.0",
     "@vercel/postgres": "^0.5.1",
     "clsx": "^2.0.0",
     "formidable": "^3.5.1",
@@ -35,6 +36,7 @@
     "@types/react-dom": "^18",
     "@types/react-dropzone": "^5.1.0",
     "@types/sortablejs": "^1.15.5",
+    "prisma": "^5.6.0",
     "typescript": "^5"
   }
 }

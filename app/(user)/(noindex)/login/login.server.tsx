@@ -1,7 +1,7 @@
 'use server'
 
 import { redirect } from "next/navigation"
-import { isLogined } from "../user.actions"
+import { isLogined } from "../../user.actions"
 import { LoginForm } from "./login.client"
 
 export async function ServerLogin() {

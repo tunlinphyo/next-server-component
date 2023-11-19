@@ -2,9 +2,9 @@
 
 import { CartItemType, CookieCartType } from "@/libs/definations"
 import { revalidatePath } from "next/cache"
-import { getUser } from "../user.actions"
-import { getCart, getCartItem, getCartItemsWithDetails, getProduct, getProductClass, removeCartItem, updateCartItem } from "../cart.server"
-import { getCookieCartItems, setCookieCartItems } from "../cookie.server"
+import { getUser } from "../../user.actions"
+import { getCart, getCartItem, getCartItemsWithDetails, getProduct, getProductClass, removeCartItem, updateCartItem } from "../../cart.server"
+import { getCookieCartItems, setCookieCartItems } from "../../cookie.server"
 
 export async function getCartData() {
     const user = await getUser()

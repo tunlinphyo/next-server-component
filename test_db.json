@@ -1281,31 +1281,21 @@
     "cart_items": [
         {
             "cart_id": 1700196528385,
-            "product_id": 1699972943635,
-            "product_class_id": 1699972943943,
-            "quantity": 1,
-            "id": 1700316728647,
-            "createDate": "2023-11-18T14:12:08.647Z",
+            "product_id": 1699884265581,
+            "product_class_id": 1699884492274,
+            "quantity": 2,
+            "id": 1700354418993,
+            "createDate": "2023-11-19T00:40:18.993Z",
             "isDelete": false,
-            "updateDate": "2023-11-18T15:31:46.190Z"
+            "updateDate": "2023-11-19T05:18:06.900Z"
         },
         {
             "cart_id": 1700196528385,
             "product_id": 1700277087208,
             "product_class_id": 1700277161004,
             "quantity": 1,
-            "id": 1700317105117,
-            "createDate": "2023-11-18T14:18:25.117Z",
-            "isDelete": false,
-            "updateDate": "2023-11-18T15:29:53.646Z"
-        },
-        {
-            "cart_id": 1700196528385,
-            "product_id": 1700049145062,
-            "product_class_id": 1700269375747,
-            "quantity": 1,
-            "id": 1700321702621,
-            "createDate": "2023-11-18T15:35:02.621Z",
+            "id": 1700370126381,
+            "createDate": "2023-11-19T05:02:06.381Z",
             "isDelete": false
         }
     ]

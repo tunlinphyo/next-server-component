@@ -110,3 +110,12 @@ export function localCompare(value: string, key: string) {
 export function encodeURL(urlParameter: string) {
     return encodeURIComponent(urlParameter)
 }
+
+export function getRandomElements<T>(arr: T[], count: number): T[] {
+    if (count >= arr.length) {
+        return arr.slice()
+    }
+  
+    const shuffledArray = arr.sort(() => Math.random() - 0.5);
+    return shuffledArray.slice(0, count);
+}

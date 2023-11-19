@@ -1,7 +1,7 @@
 'use server'
 
 import { wait } from "@/libs/utils"
-import { handleSignOut } from "../user.actions"
+import { handleSignOut } from "../../user.actions"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 

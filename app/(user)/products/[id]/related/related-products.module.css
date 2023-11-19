@@ -1,0 +1,23 @@
+.relatedProducts {
+    width: 100%;
+    margin-top: var(--space-3);
+}
+.slideContainer {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    
+    display: flex;
+    overflow-x: auto;
+    gap: var(--space-3);
+
+    scroll-snap-type: x mandatory;
+    scroll-snap-stop: always;
+}
+
+.slideItem {
+    min-width: 180px;
+    background-color: rgb(var(--background-accent-rgb));
+    border-radius: var(--space-4);
+
+    scroll-snap-align: center;
+}

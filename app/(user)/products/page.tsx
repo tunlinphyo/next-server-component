@@ -6,6 +6,12 @@ import { ProductsSkeleton } from './products.client'
 import { PaginationSkileton } from '@/components/user/pagination/pagination.client'
 import { Pagination } from '@/components/user/pagination/pagination.server'
 import { getProductPageLength } from './products.action'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: 'Products',
+    description: 'Product list page'
+}
 
 export default async function Home({ searchParams }: {
     searchParams?: {

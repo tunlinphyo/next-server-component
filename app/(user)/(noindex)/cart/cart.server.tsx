@@ -1,6 +1,6 @@
 'use server'
 
-import { isLogined } from "../user.actions"
+import { isLogined } from "../../user.actions"
 import { getCartData } from "./cart.actions"
 import { CartForm, CartList } from "./cart.client"
 
