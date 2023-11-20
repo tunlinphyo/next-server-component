@@ -4,7 +4,7 @@
             "id": 1699514821966,
             "name": "Admin",
             "email": "admin@gmail.com",
-            "password": "password",
+            "password": "1234567",
             "isDelete": false
         },
         {
@@ -205,11 +205,14 @@
             ],
             "variant_1_id": 1699679275775,
             "variant_2_id": 0,
-            "updateDate": "2023-11-15T04:29:33.197Z",
+            "updateDate": "2023-11-20T10:52:06.117Z",
             "images": [
-                "/uploads/1700022532496.jpeg",
-                "/uploads/1700022537230.jpeg",
-                "/uploads/1700022541805.jpeg"
+                "/uploads/1700477497401.avif",
+                "/uploads/1700477507586.avif",
+                "/uploads/1700477511398.webp",
+                "/uploads/1700477515200.webp",
+                "/uploads/1700477519386.webp",
+                "/uploads/1700477523004.avif"
             ]
         },
         {
@@ -1283,11 +1286,11 @@
             "cart_id": 1700196528385,
             "product_id": 1699884265581,
             "product_class_id": 1699884492274,
-            "quantity": 2,
+            "quantity": 1,
             "id": 1700354418993,
             "createDate": "2023-11-19T00:40:18.993Z",
             "isDelete": false,
-            "updateDate": "2023-11-19T05:18:06.900Z"
+            "updateDate": "2023-11-20T10:46:34.039Z"
         },
         {
             "cart_id": 1700196528385,

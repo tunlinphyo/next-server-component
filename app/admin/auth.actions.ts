@@ -3,9 +3,9 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { LoginSchema } from "./auth.schema"
+import { GET_ONE } from "@/libs/db"
+import { UserType } from "@/libs/definations"
 import { wait } from "@/libs/utils"
-import { getDBUser } from "@/libs/prisma/user"
-import { User } from "@prisma/client"
 
 
 export async function handleSignIn(prevState: any, formData: FormData) {
@@ -17,17 +17,13 @@ export async function handleSignIn(prevState: any, formData: FormData) {
     }
     console.log('USER_DATA', result.data)
 
-    const user:User | null = await getDBUser({ where: { email: result.data.email } })
-
-    console.log("DB_USER", user)
-
+    const user = await GET_ONE<UserType>('users', { email: result.data.email, isDelete: false })
     if (!user) return { message: 'Invalid email' }
-    if (!user.isAdmin) return { message: 'Unauth user' }
     if (user.password !== result.data.password) return { message: 'Invalid passowrd' }
     console.log('USER', user)
 
     const cookieStore = cookies()
-    cookieStore.set('admin', JSON.stringify(user), { secure: false })
+    cookieStore.set('admin', JSON.stringify(user))
     redirect('/admin')
 }
 
