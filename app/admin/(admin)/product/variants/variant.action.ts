@@ -4,7 +4,7 @@ import { PER_PAGE } from "@/libs/const"
 import { getZodErrors } from "@/libs/utils"
 import { CreateVariantSchema, VariantSchema } from "./variant.schema"
 import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
+import { RedirectType, redirect } from "next/navigation"
 import { createDBVariant, getDBVariants, getDBVariant, updateDBVariant, getDBVariantsBy } from "@/libs/prisma/variant"
 import { Prisma } from "@prisma/client"
 import { VariantInterface } from "@/libs/prisma/definations"
@@ -89,7 +89,7 @@ export async function deleteVariant(id: number, pathname: string) {
 
     const delVariant = await updateDBVariant(delQuery)
     revalidatePath(pathname)
-    redirect(pathname)
+    // redirect(pathname)
 }
 
 export async function onVariantCreate(prevState: any, formData: FormData) {
@@ -106,10 +106,10 @@ export async function onVariantCreate(prevState: any, formData: FormData) {
     const variant = await createDBVariant(query)
     if (variant.parentId) {
         revalidatePath(`/admin/product/variants/${variant.parentId}/edit`)
-        redirect(`/admin/product/variants/${variant.parentId}/edit`)
+        redirect(`/admin/product/variants/${variant.parentId}/edit`, RedirectType.replace)
     } else {
         revalidatePath('/admin/product/variants')
-        redirect(`/admin/product/variants/${variant.id}/edit`)
+        redirect(`/admin/product/variants/${variant.id}/edit`, RedirectType.replace)
     }
 }
 
@@ -128,9 +128,9 @@ export async function onVariantEdit(prevState: any, formData: FormData) {
     const variant = await updateDBVariant(query)
     if (variant.parentId) {
         revalidatePath(`/admin/product/variants/${variant.parentId}/edit`)
-        redirect(`/admin/product/variants/${variant.parentId}/edit`)
+        redirect(`/admin/product/variants/${variant.parentId}/edit`, RedirectType.replace)
     } else {
         revalidatePath('/admin/product/variants')
-        redirect('/admin/product/variants')
+        redirect('/admin/product/variants', RedirectType.replace)
     }
 }
