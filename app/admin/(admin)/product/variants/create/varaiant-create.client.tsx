@@ -4,7 +4,7 @@ import { useFormState } from "react-dom"
 import { onVariantCreate } from "../variant.action"
 import { DisplayInput, Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
-import { VariantInterface } from "@/libs/prisma/definations"
+import { VariantWithParent } from "../variant.interface"
 
 const initState = {
     name: '',
@@ -12,7 +12,7 @@ const initState = {
     parent_varant_id: ''
 }
 
-export function VariantCreateForm({ parent }: { parent?: VariantInterface }) {
+export function VariantCreateForm({ parent }: { parent?: VariantWithParent }) {
     const [ state, onAction ] = useFormState(onVariantCreate, initState)
     return (
         <Form action={onAction} footer={

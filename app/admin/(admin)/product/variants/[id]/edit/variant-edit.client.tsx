@@ -5,7 +5,7 @@ import { useFormState } from "react-dom"
 import { onVariantEdit } from "../../variant.action"
 import { DisplayInput, Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
-import { VariantInterface } from "@/libs/prisma/definations"
+import { VariantWithParent } from "../../variant.interface"
 
 
 const initState = {
@@ -14,7 +14,7 @@ const initState = {
   parent_category_id: '',
 }
 
-export function VariantEditForm({ variant }: { variant: VariantInterface }) {
+export function VariantEditForm({ variant }: { variant: VariantWithParent }) {
     const [ state, onAction ] = useFormState(onVariantEdit, initState)
     return (
         <Form action={onAction} footer={
@@ -42,7 +42,7 @@ export function VariantEditForm({ variant }: { variant: VariantInterface }) {
             <Input
                 name="description"
                 error={state?.description}
-                defaultValue={variant.description}
+                defaultValue={variant.description as string}
             >
                 Description (optional)
             </Input>
