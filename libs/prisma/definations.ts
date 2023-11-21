@@ -8,15 +8,3 @@ export interface UserType {
     isDelete: boolean;
     isAdmin: boolean;
 }
-
-export interface VariantInterface {
-    id: number;
-    name: string;
-    description: string;
-    parent?: VariantInterface;
-    children?: VariantInterface[];
-    parentId?: number;
-    createDate: Date;
-    updateDate?: Date;
-    isDelete: boolean; 
-}

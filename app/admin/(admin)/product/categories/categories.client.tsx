@@ -8,8 +8,9 @@ import { formatDate } from "@/libs/utils";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { deleteCategory } from "./categories.actions";
 import { Budge } from "@/components/admin/utils/utils.client";
+import { CategoryWithParentAndChildCount } from "./categories.interface";
 
-export function CategoryTable({ categories, child }: { categories: CategoryType[], child?: boolean }) {
+export function CategoryTable({ categories, child }: { categories: CategoryWithParentAndChildCount[], child?: boolean }) {
     return (
         <Table>
             <TableHeader>
@@ -28,16 +29,16 @@ export function CategoryTable({ categories, child }: { categories: CategoryType[
                                 <IdContainer id={cate.id} />    
                             </TableData>
                             <TableData>{ cate.name }</TableData>
-                            { child && <TableData>{ cate.parent_category && cate.parent_category.name }</TableData> }
+                            { child && <TableData>{ cate.parent?.name }</TableData> }
                             <TableData>
-                                <Budge>{ cate.child_count }</Budge>
+                                <Budge>{ cate._count.children }</Budge>
                             </TableData>
                             <TableData>{ formatDate(cate.createDate) }</TableData>
                             <TableData end={true}>
                                 <LinkIcon
                                     href={
                                         child
-                                            ? `/admin/product/categories/${cate.id}/edit?parent=${cate.parent_category_id}`
+                                            ? `/admin/product/categories/${cate.id}/edit?parent=${cate.parent?.id}`
                                             : `/admin/product/categories/${cate.id}/edit`
                                     }
                                     theme="primary">

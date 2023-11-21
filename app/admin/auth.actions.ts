@@ -3,9 +3,9 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { LoginSchema } from "./auth.schema"
-import { getDBUser } from "@/libs/prisma/user"
 import { User } from "@prisma/client"
 import { UserType } from "@/libs/prisma/definations"
+import prisma from "@/libs/prisma"
 
 
 export async function handleSignIn(prevState: any, formData: FormData) {
@@ -16,7 +16,7 @@ export async function handleSignIn(prevState: any, formData: FormData) {
     }
     console.log('USER_DATA', result.data)
 
-    const user:User | null = await getDBUser({ where: { email: result.data.email } })
+    const user:User | null = await prisma.user.findUnique({ where: { email: result.data.email } })
 
     if (!user) return { message: 'Invalid email' }
     if (!user.isAdmin) return { message: 'Unauth user' }

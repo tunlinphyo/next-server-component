@@ -5,13 +5,14 @@ import { useFormState } from "react-dom"
 import { onCategoryEdit } from "../../categories.actions"
 import { DisplayInput, Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
+import { CategoryWithParent } from "../../categories.interface"
 
 const initState = {
     name: '',
     parent_category_id: '',
 }
 
-export function CategoryEditForm({ category }: { category: CategoryType }) {
+export function CategoryEditForm({ category }: { category: CategoryWithParent }) {
     const [ state, onAction ] = useFormState(onCategoryEdit, initState)
     return (
         <Form action={onAction} footer={
@@ -21,6 +22,19 @@ export function CategoryEditForm({ category }: { category: CategoryType }) {
             </FormFooter>
         }>
             <input name="id" type="hidden" defaultValue={category.id} />
+            {
+                category.parent && (
+                    <>
+                        <input type="hidden" name="parentId" defaultValue={category.parent.id} />
+                        <DisplayInput
+                            defaultValue={category.parent.name}
+                        >
+                            Parent Name
+                        </DisplayInput>
+                        <div />
+                    </>
+                )
+            }
             <Input
                 name="name"
                 error={state?.name}
@@ -28,15 +42,13 @@ export function CategoryEditForm({ category }: { category: CategoryType }) {
             >
                 Name
             </Input>
-            {
-                category.parent_category && (
-                    <DisplayInput
-                        defaultValue={category.parent_category.name}
-                    >
-                        Parent Name
-                    </DisplayInput>
-                )
-            }
+            <Input
+                name="description"
+                error={state?.description}
+                defaultValue={category.description || ''}
+            >
+                Description (optional)
+            </Input>
         </Form>
     )
 }

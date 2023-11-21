@@ -20,20 +20,29 @@ export function CategoryCreateForm({ parent }: { parent?: CategoryType }) {
                 <FormCreatButton icon={<CheckCircleIcon />}>Create Category</FormCreatButton>
             </FormFooter>
         }>
+            {
+                parent && <>
+                    <>
+                    <input type="hidden" name="parentId" defaultValue={parent.id} />
+                    <DisplayInput defaultValue={parent.name}>
+                        Parent Name
+                    </DisplayInput>
+                    <div />
+                    </>
+                </>
+            }
             <Input
                 name="name"
                 error={state?.name}
             >
                 Name
             </Input>
-            {
-                parent && <>
-                    <input type="hidden" name="parent_category_id" defaultValue={parent.id} />
-                    <DisplayInput defaultValue={parent.name}>
-                        Parent Name
-                    </DisplayInput>
-                </>
-            }
+            <Input
+                name="description"
+                error={state?.description}
+            >
+                Description (optional)
+            </Input>
         </Form>
     )
 }

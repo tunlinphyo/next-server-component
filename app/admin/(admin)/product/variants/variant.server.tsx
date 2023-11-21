@@ -1,17 +1,17 @@
 'use server'
 
-import { getChildVariants, getPariantVariants } from "./variant.action"
+import { getVariants } from "./variant.action"
 import { VariantTable } from "./variant.client"
 
 export async function VariantList({ page }: { page: number }) {
-    const variants = await getPariantVariants(page)
+    const variants = await getVariants(null, page)
     return (
         <VariantTable variants={variants} />
     )
 }
 
 export async function ChildVariantList({ page, id }: { page: number, id: number }) {
-    const variants = await getChildVariants(id, page)
+    const variants = await getVariants(id, page)
     return (
         <VariantTable variants={variants} child={true} />
     )

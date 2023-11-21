@@ -1,18 +1,21 @@
 'use server'
 
 import { wait } from "@/libs/utils"
-import { CategoryType, ProductType } from '@/libs/definations'
+import { ProductType } from '@/libs/definations'
 import { GET } from '@/libs/db';
-import { getDBVariantsBy } from "@/libs/prisma/variant";
 import { Prisma } from "@prisma/client";
 import { VariantCount } from "./variants/variant.interface";
+import prisma from "@/libs/prisma";
+import { CategoryCount } from "./categories/categories.interface";
 
 export async function getTotalProductCategory() {
-    await wait()
+    let query: Prisma.CategoryAggregateArgs = {
+        _count: { id: true },
+        where: { isDelete: false }
+    }
+    const result = await prisma.category.aggregate(query) as CategoryCount
 
-    const categories = await GET<CategoryType>('product_categories', { isDelete: false })
-
-    return categories.length
+    return result._count.id
 }
 
 export async function getTotalProductVariant() {
@@ -20,7 +23,7 @@ export async function getTotalProductVariant() {
         _count: { id: true },
         where: { isDelete: false }
     }
-    const result = await getDBVariantsBy(query) as VariantCount
+    const result = await prisma.variant.aggregate(query) as VariantCount
 
     return result._count.id
 }

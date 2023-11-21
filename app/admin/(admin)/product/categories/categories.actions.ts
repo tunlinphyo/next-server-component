@@ -7,91 +7,79 @@ import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
 import { revalidatePath } from "next/cache"
 import { RedirectType, redirect } from "next/navigation"
 import { PER_PAGE } from "@/libs/const"
+import { Prisma } from "@prisma/client"
+import prisma from "@/libs/prisma"
+import { CategoryCount, CategoryWithParent, CategoryWithParentAndChildCount } from "./categories.interface"
 
 export async function getCategoryPageLength(id?: number) {
-    await wait(50)
+    let query: Prisma.CategoryAggregateArgs
 
-    const query: Partial<CategoryType> = {
-        isDelete: false
-    }
     if (id) {
-        query.parent_category_id = id
+        query = {
+            _count: { id: true },
+            where: { isDelete: false, parentId: id }
+        }
     } else {
-        query.parent_category_id = undefined
+        query = {
+            _count: { id: true },
+            where: { isDelete: false, parentId: null }
+        }
     }
+    const result = await prisma.category.aggregate(query) as CategoryCount
 
-    const categories = await GET<CategoryType>('product_categories', query)
-    return Math.ceil(categories.length / PER_PAGE)
+    return Math.ceil(result._count.id / PER_PAGE)
 }
 
-export async function getParentCategories(page: number = 1) {
-    await wait()
-
-    const categories = await GET<CategoryType>('product_categories', { parent_category_id: undefined, isDelete: false })
+export async function getCategories(id: number | null, page: number = 1) {
     const index = page - 1
     const start = index ? index * PER_PAGE : 0
-    const end = start + PER_PAGE
-    const sortedCategories = categories.sort((a, b) => {
-        if (a.createDate < b.createDate) return 1
-        if (a.createDate > b.createDate) return -1
-        return 0
-    })
-    const paginated = sortedCategories.slice(start, end)
-    const result: CategoryType[] = []
-    for await (const category of paginated) {
-        category.child_count = await _getChildrenCategoryCount(category.id, 0)
-        result.push(category)
+    const query: Prisma.CategoryFindManyArgs = {
+        where: { isDelete: false, parentId: id },
+        include: {
+            _count: {
+                select: { children: true }
+            }
+        },
+        skip: start,
+        take: PER_PAGE,
+        orderBy: { createDate: "desc" }
     }
-    return result
-}
 
-export async function getChildCategories(id: number, page = 1) {
-    await wait()
-
-    const categories = await GET<CategoryType>('product_categories', { parent_category_id: id, isDelete: false })
-    const index = page - 1
-    const start = index ? index * PER_PAGE : 0
-    const end = start + PER_PAGE
-    const sortedCategories = categories.sort((a, b) => {
-        if (a.createDate < b.createDate) return 1
-        if (a.createDate > b.createDate) return -1
-        return 0
-    })
-    const paginated = sortedCategories.slice(start, end)
-    const result: CategoryType[] = []
-    for await (const category of paginated) {
-        const parent = await GET_ONE<CategoryType>('product_categories', { id: category.parent_category_id, isDelete: false })
-        category.parent_category = parent
-        category.child_count = await _getChildrenCategoryCount(category.id, 0)
-        result.push(category)
-    }
-    return result
+    return await prisma.category.findMany(query) as CategoryWithParentAndChildCount[]
 }
 
 export async function getCategory(id: number) {
-    await wait()
-
-    const category = await GET_ONE<CategoryType>('product_categories', { id, isDelete: false })
-    if (category && category.parent_category_id) {
-        const parent = await GET_ONE<CategoryType>('product_categories', { id: category.parent_category_id, isDelete: false })
-        category.parent_category = parent
-    }
-    return category
+    return await prisma.category.findUnique({
+        where: { id },
+        include: {
+            parent: {
+                select: { id: true, name: true }
+            }
+        }
+    }) as CategoryWithParent
 }
 
 export async function deleteCategory(id: number) {
-    await wait()
-
-    const childCategories = await GET<CategoryType>('product_categories', { parent_category_id: id, isDelete: false })
-    if (childCategories.length) return { code: 'Can not delete a category with children' }
-    try {
-        await DELETE<CategoryType>('product_categories', id)
-        revalidatePath('/admin/product/categories')
-        redirect('/admin/product/categories')
-    } catch(e) {
-        console.log('CAN REDIRECT ON SELF PAGE', e)
-        return { code: '' }
+    const getQuery: Prisma.CategoryFindUniqueArgs = {
+        where: { id },
+        include: {
+            _count: {
+                select: { children: true }
+            }
+        }
     }
+    const category = await prisma.category.findUnique(getQuery) as CategoryWithParentAndChildCount
+    if (!category) return { code: 'Category could not find' }
+    if (category._count.children) return { code: 'Can not delete a category with children' }
+
+
+    const delQuery: Prisma.CategoryUpdateArgs = {
+        where: { id },
+        data: { isDelete: true }
+    }
+
+    const delCategory = await prisma.category.update(delQuery)
+    revalidatePath('/admin/product/categories')
 }
 
 export async function onCategoryCreate(prevState: any, formData: FormData) {
@@ -103,18 +91,13 @@ export async function onCategoryCreate(prevState: any, formData: FormData) {
         return getZodErrors(result.error.issues)
     }
 
-    const isName = await GET_ONE<CategoryType>('product_categories', { name: result.data.name, isDelete: false })
-    if (isName) {
-        return { name: 'Category name is already in used' }
-    }
-
-    const newCategory = await POST<CategoryType>('product_categories', result.data)
-    if (newCategory.parent_category_id) {
-        revalidatePath(`/admin/product/categories/${newCategory.parent_category_id}/edit`)
-        redirect(`/admin/product/categories/${newCategory.parent_category_id}/edit`)
+    const category = await prisma.category.create({ data: result.data })
+    if (category.parentId) {
+        revalidatePath(`/admin/product/categories/${category.parentId}/edit`)
+        // redirect(`/admin/product/categories/${category.parentId}/edit`)
     } else {
         revalidatePath('/admin/product/categories')
-        redirect('/admin/product/categories')
+        // redirect('/admin/product/categories')
     }
 }
 
@@ -127,27 +110,18 @@ export async function onCategoryEdit(prevState: any, formData: FormData) {
         return getZodErrors(result.error.issues)
     }
 
-    const isName = await GET_ONE<CategoryType>('product_categories', { name: result.data.name, isDelete: false })
-    if (isName && isName.id !== result.data.id) {
-        return { name: 'Category name is already in used' }
+    const query: Prisma.CategoryUpdateArgs = {
+        where: { id: result.data.id },
+        data: result.data
     }
 
-    const updatedCategory = await PATCH<CategoryType>('product_categories', result.data)
-    console.log('UPDATED', updatedCategory)
-    if (updatedCategory?.parent_category_id) {
-        revalidatePath(`/admin/product/categories/${updatedCategory.parent_category_id}/edit`)
-        redirect(`/admin/product/categories/${updatedCategory.parent_category_id}/edit`, RedirectType.replace)
+    const category = await prisma.category.update(query)
+    if (category.parentId) {
+        revalidatePath(`/admin/product/categories/${category.parentId}/edit`)
+        // redirect(`/admin/product/categories/${category.parentId}/edit`, RedirectType.replace)
     } else {
         revalidatePath('/admin/product/categories')
-        redirect('/admin/product/categories')
+        // redirect('/admin/product/categories')
     }
 }
 
-async function _getChildrenCategoryCount(id: number, count = 0) {
-    const children = await GET<CategoryType>('product_categories', { parent_category_id: id, isDelete: false })
-    count += children.length
-    for await (const child of children) {
-        count = await _getChildrenCategoryCount(child.id, count)
-    }
-    return count
-}
