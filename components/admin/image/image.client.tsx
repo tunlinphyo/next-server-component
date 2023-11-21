@@ -4,8 +4,9 @@ import Image from 'next/image'
 import styles from './image.module.css'
 import { PhotoIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
+import { ProductImage } from '@prisma/client'
 
-export function ThumbnailImages({ images }: { images: string[] | undefined }) {
+export function ThumbnailImages({ images }: { images: ProductImage[] | undefined }) {
     if (!images || images?.length == 0) {
         return (
             <div className={styles.images}>
@@ -20,11 +21,11 @@ export function ThumbnailImages({ images }: { images: string[] | undefined }) {
     return (
         <div className={styles.thumbImages}>
             {
-                list.map((item, index) => (
+                list.map(item => (
                     <Image
                         className={clsx(styles.thumbImg, styles.withImg)}
-                        key={index}
-                        src={item}
+                        key={item.id}
+                        src={item.imgUrl}
                         width={32}
                         height={32}
                         alt='image' />

@@ -3,16 +3,16 @@
 import { LinkIcon } from "@/components/admin/button/button.client";
 import { FromDeleteButton, IdContainer } from "@/components/admin/form/form.client";
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client";
-import { ProductType } from "@/libs/definations";
 import { formatPrice } from "@/libs/utils";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { deleteProduct } from "./products.actions";
 import { Budge } from "@/components/admin/utils/utils.client";
 import { ThumbnailImages } from "@/components/admin/image/image.client";
 import styles from './products.module.css'
+import { ProductWithPriceAndStock } from "./products.interface";
 
 
-export function ProductTable({ products }: { products: ProductType[] }) {
+export function ProductTable({ products }: { products: ProductWithPriceAndStock[] }) {
     return (
         <Table>
             <colgroup>
@@ -59,7 +59,7 @@ export function ProductTable({ products }: { products: ProductType[] }) {
     )
 }
 
-export function ProductData({ product }: { product: ProductType }) {
+export function ProductData({ product }: { product: ProductWithPriceAndStock }) {
     return (
         <div className={styles.productData}>
             <h4 className={styles.productName}>{ product.name }</h4>

@@ -18,7 +18,10 @@ type ImageUploadProps = {
 
 type AvatarUploadProps = {
     name: string;
-    defaultValue?: string;
+    defaultValue?: {
+        id: number;
+        imgUrl: string;
+    };
     children?: React.ReactNode;
 }
 

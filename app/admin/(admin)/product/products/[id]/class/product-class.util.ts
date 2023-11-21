@@ -1,4 +1,5 @@
 import { FormArrayType, ProductClassType } from "@/libs/definations";
+import { ProductClassEdit } from "../../products.interface";
 
 export interface FormProductClassType {
     id: string;
@@ -10,7 +11,7 @@ export interface FormProductClassType {
     quantity: string;
 }
 
-export function generateClasses(classes: ProductClassType[], variant1: FormArrayType[], variant2?: FormArrayType[]) {
+export function generateClasses(classes: ProductClassEdit[], variant1: FormArrayType[], variant2?: FormArrayType[]) {
     console.log(classes)
     if (!variant1) return []
     if (variant2) {
@@ -35,7 +36,7 @@ export function generateClasses(classes: ProductClassType[], variant1: FormArray
         }
         return combinations
     }
-    return variant1.map((item, index) => {
+    return variant1.map(item => {
         const oldClass = _getClass(classes, item.id)
         const formData: FormProductClassType = {
             id: oldClass ? String(oldClass.id) : '',
@@ -48,12 +49,12 @@ export function generateClasses(classes: ProductClassType[], variant1: FormArray
     })
 }
 
-function _getClass(classes: ProductClassType[], variantId1: number, variantId2?: number) {
+function _getClass(classes: ProductClassEdit[], variantId1: number, variantId2?: number) {
     if (!variantId2) {
-        return classes.find(item => item.variant_1_id == variantId1)
+        return classes.find(item => item.variant1Id == variantId1)
     }
     return classes.find(item => (
-        item.variant_1_id == variantId1
-        && item.variant_2_id == variantId2
+        item.variant1Id == variantId1
+        && item.variant2Id == variantId2
     ))
 }

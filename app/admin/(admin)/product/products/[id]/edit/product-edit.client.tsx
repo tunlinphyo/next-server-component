@@ -1,6 +1,6 @@
 'use client'
 
-import { FormCategoryType, ProductClassType, ProductType } from "@/libs/definations"
+import { ProductClassType, ProductType } from "@/libs/definations"
 import { useFormState } from "react-dom"
 import { onProductEdit } from "../../products.actions"
 import { Form, FormCreatButton, FormFooter, IdContainer, Input, Textarea } from "@/components/admin/form/form.client"
@@ -8,17 +8,17 @@ import { ArrowPathIcon, CheckCircleIcon, PencilIcon, PlusIcon } from "@heroicons
 import { CategorySelect } from "@/components/admin/form/category/category.client"
 import styles from "./product-edit.module.css"
 import { useRouter } from "next/navigation"
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { appToast } from "@/libs/toasts"
 import { formatPrice } from "@/libs/utils"
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client"
 import { appConfirm } from "@/libs/modals"
 import { ImageUpload } from "@/components/admin/form/files/files.client"
 import { Budge } from "@/components/admin/utils/utils.client"
+import { FormCategoryType, ProductEdit } from "../../products.interface"
 
 type ProductEditProps = {
-    product: ProductType;
-    classes: ProductClassType[];
+    product: ProductEdit;
     categories: FormCategoryType[];
 }
 
@@ -33,7 +33,7 @@ const initState = {
     message: ''
 }
 
-export function ProductEditForm({ product, classes, categories }: ProductEditProps) {
+export function ProductEditForm({ product, categories }: ProductEditProps) {
     const [ state, onAction ] = useFormState(onProductEdit, initState)
 
     useEffect(() => {
@@ -55,13 +55,14 @@ export function ProductEditForm({ product, classes, categories }: ProductEditPro
             >
                 Name
             </Input>
-            <ImageUpload
+            {/* <ImageUpload
                 name="images"
                 defaultValue={product.images}
             >
                 Images (optional)
-            </ImageUpload>
+            </ImageUpload> */}
             <Textarea
+                rows={10}
                 name="description"
                 defaultValue={product.description}
                 error={state?.description}
@@ -69,13 +70,13 @@ export function ProductEditForm({ product, classes, categories }: ProductEditPro
                 Description
             </Textarea>
             {
-                (classes.length == 1 && !classes[0].variant_1_id) ? <>
+                (product.productClasses.length == 1 && !product.productClasses[0].variant1Id) ? <>
                     <input type="hidden" name="is_variant" defaultValue="0" />
-                    <input type="hidden" name="class_id" defaultValue={classes[0].id} />
+                    <input type="hidden" name="class_id" defaultValue={product.productClasses[0].id} />
                     <Input
                         type="number"
                         name="price"
-                        defaultValue={String(product.price)}
+                        defaultValue={String(product.productClasses[0].price)}
                         error={state?.price}
                     >
                         Price
@@ -83,7 +84,7 @@ export function ProductEditForm({ product, classes, categories }: ProductEditPro
                     <Input
                         type="number"
                         name="quantity"
-                        defaultValue={String(product.quantity)}
+                        defaultValue={String(product.productClasses[0].quantity)}
                         error={state?.quantity}
                     >
                         Quantity
@@ -93,16 +94,16 @@ export function ProductEditForm({ product, classes, categories }: ProductEditPro
             <CategorySelect
                 name="category_ids"
                 list={categories}
-                defaultValue={product.category_ids}
+                defaultValue={product.categories.map(item => item.categoryId)}
             >
                 Categories
             </CategorySelect>
-            <ClassForm product={product} classes={classes} />
+            <ClassForm product={product} />
         </Form>
     )
 }
 
-export function ClassForm({ product, classes }: { product: ProductType, classes: ProductClassType[] }) {
+export function ClassForm({ product }: { product: ProductEdit }) {
     const { push } = useRouter()
     const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         const isSave = await appConfirm('Save product before continue?', {
@@ -117,7 +118,7 @@ export function ClassForm({ product, classes }: { product: ProductType, classes:
         push(`/admin/product/products/${product.id}/class`)
     }
     return (
-            classes.length == 1 && !classes[0].variant_1_id ? (
+            product.productClasses.length == 1 && !product.productClasses[0].variant1Id ? (
                 <div className={styles.variants}>
                     <button type="button" onClick={handleClick}>
                         Add variant <PlusIcon />
@@ -147,7 +148,9 @@ export function ClassForm({ product, classes }: { product: ProductType, classes:
                         </TableHeader>
                         <TableBody>
                             {
-                                classes.map(item => (
+                                product.productClasses
+                                .filter(item => !item.isDelete)
+                                .map(item => (
                                     <TableRow key={item.id}>
                                         <TableData>
                                             <IdContainer id={item.id} />

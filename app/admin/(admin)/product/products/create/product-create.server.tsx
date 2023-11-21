@@ -1,12 +1,11 @@
 'use server'
 
-import { wait } from "@/libs/utils"
 import { ProductCreateForm } from "./product-create.client"
-import { getAllCategories } from "../products.actions"
+import { getCategories } from "../products.actions"
 
 
 export async function CreateProduct() {
-    const categories = await getAllCategories()
+    const categories = await getCategories()
     return (
         <ProductCreateForm categories={categories} />
     )

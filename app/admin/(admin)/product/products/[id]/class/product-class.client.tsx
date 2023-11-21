@@ -10,12 +10,12 @@ import styles from './product-class.module.css'
 import { useEffect } from "react"
 import { appToast } from "@/libs/toasts"
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@/components/admin/table/table.client"
+import { ProductEdit } from "../../products.interface"
 
 type ProductClassesProp = {
-    product: ProductType;
+    product: ProductEdit;
     variant1: FormArrayType[];
     variant2?: FormArrayType[];
-    classes: ProductClassType[];
 }
 
 const initState = {
@@ -35,14 +35,14 @@ export function VariantSelectForm({ id, variants }: {  id: number, variants: For
         }>
             <input type="hidden" name="id" defaultValue={id} />
             <Select
-                name="variant_1_id"
+                name="variant1Id"
                 list={variants}
-                error={state?.variant_1_id}
+                error={state?.variant1Id}
             >Variant One</Select>
             <Select
-                name="variant_2_id"
+                name="variant2Id"
                 list={variants}
-                error={state?.variant_2_id}
+                error={state?.variant2Id}
             >Variant Two</Select>
         </Form>
     )
@@ -52,8 +52,8 @@ const classInitState = {
     message: '',
 }
 
-export function ClassCreateEditForm({ product, variant1, variant2, classes }: ProductClassesProp) {
-    const list = generateClasses(classes, variant1, variant2)
+export function ClassCreateEditForm({ product, variant1, variant2 }: ProductClassesProp) {
+    const list = generateClasses(product.productClasses, variant1, variant2)
     const [ state, onAction ] = useFormState(onClassEdit, classInitState)
 
     useEffect(() => {
@@ -79,7 +79,7 @@ export function ClassCreateEditForm({ product, variant1, variant2, classes }: Pr
                     </colgroup>
                     <TableHeader>
                         <TableHead>
-                            <input type="hidden" name="product_id" defaultValue={product.id} />
+                            <input type="hidden" name="productId" defaultValue={product.id} />
                         </TableHead>
                         <TableHead>{ product.variant1?.name }</TableHead>
                         <TableHead>{ product.variant2?.name }</TableHead>
@@ -101,14 +101,14 @@ export function ClassCreateEditForm({ product, variant1, variant2, classes }: Pr
                                     </TableData>
                                     <TableData>
                                         { item.name1 }
-                                        <input type="hidden" name={`variant_1_id_${index}`} defaultValue={item.variant1} />
+                                        <input type="hidden" name={`variant1Id_${index}`} defaultValue={item.variant1} />
                                     </TableData>
                                     <TableData>
                                         {
                                             item.variant2 && (
                                                 <>
                                                     {item.name2}
-                                                    <input type="hidden" name={`variant_2_id_${index}`} defaultValue={item.variant2} />
+                                                    <input type="hidden" name={`variant2Id_${index}`} defaultValue={item.variant2} />
                                                 </>
                                             )
                                         }

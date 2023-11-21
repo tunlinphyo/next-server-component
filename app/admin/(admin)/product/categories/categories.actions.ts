@@ -1,33 +1,24 @@
 'use server'
 
-import { CategoryType } from "@/libs/definations"
 import { CategorySchema, CreateCategorySchema } from "./categories.schema"
 import { getZodErrors, wait } from "@/libs/utils"
-import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
 import { revalidatePath } from "next/cache"
-import { RedirectType, redirect } from "next/navigation"
 import { PER_PAGE } from "@/libs/const"
 import { Prisma } from "@prisma/client"
 import prisma from "@/libs/prisma"
-import { CategoryCount, CategoryWithParent, CategoryWithParentAndChildCount } from "./categories.interface"
+import { CategoryWithParent, CategoryWithParentAndChildCount } from "./categories.interface"
+import { redirect } from "next/navigation"
 
 export async function getCategoryPageLength(id?: number) {
-    let query: Prisma.CategoryAggregateArgs
-
-    if (id) {
-        query = {
-            _count: { id: true },
-            where: { isDelete: false, parentId: id }
-        }
-    } else {
-        query = {
-            _count: { id: true },
-            where: { isDelete: false, parentId: null }
+    const query: Prisma.CategoryCountArgs = {
+        where: {
+            isDelete: false,
+            parentId: id ?? null
         }
     }
-    const result = await prisma.category.aggregate(query) as CategoryCount
+    const count = await prisma.category.count(query)
 
-    return Math.ceil(result._count.id / PER_PAGE)
+    return Math.ceil(count / PER_PAGE)
 }
 
 export async function getCategories(id: number | null, page: number = 1) {
@@ -83,8 +74,6 @@ export async function deleteCategory(id: number) {
 }
 
 export async function onCategoryCreate(prevState: any, formData: FormData) {
-    await wait()
-
     const result = CreateCategorySchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
@@ -94,7 +83,7 @@ export async function onCategoryCreate(prevState: any, formData: FormData) {
     const category = await prisma.category.create({ data: result.data })
     if (category.parentId) {
         revalidatePath(`/admin/product/categories/${category.parentId}/edit`)
-        // redirect(`/admin/product/categories/${category.parentId}/edit`)
+        redirect(`/admin/product/categories/${category.parentId}/edit`)
     } else {
         revalidatePath('/admin/product/categories')
         // redirect('/admin/product/categories')
@@ -102,8 +91,6 @@ export async function onCategoryCreate(prevState: any, formData: FormData) {
 }
 
 export async function onCategoryEdit(prevState: any, formData: FormData) {
-    await wait()
-
     const result = CategorySchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {

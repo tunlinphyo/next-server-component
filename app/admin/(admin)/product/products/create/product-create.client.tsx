@@ -4,9 +4,9 @@ import { useFormState } from "react-dom"
 import { onProductCreate } from "../products.actions"
 import { Form, FormCreatButton, FormFooter, Input, Textarea } from "@/components/admin/form/form.client"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
-import { FormCategoryType } from "@/libs/definations"
 import { CategorySelect } from "@/components/admin/form/category/category.client"
 import { ImageUpload } from "@/components/admin/form/files/files.client"
+import { FormCategoryType } from "../products.interface"
 
 const initState = {
     name: '',
@@ -35,11 +35,11 @@ export function ProductCreateForm({ categories }: { categories: FormCategoryType
             >
                 Name
             </Input>
-            <ImageUpload
+            {/* <ImageUpload
                 name="images"
             >
                 Images (optional)
-            </ImageUpload>
+            </ImageUpload> */}
             <Textarea
                 name="description"
                 error={state?.description}

@@ -1,6 +1,6 @@
-import { ProductClassType } from "@/libs/definations"
+import { ProductClass } from "@prisma/client"
 
-export function getStockAndPrices(classList: ProductClassType[]) {
+export function getStockAndPrices(classList: ProductClass[]) {
     let prices: number[] = [], total: number = 0
     for (const item of classList) {
         total += item.quantity

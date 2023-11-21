@@ -66,14 +66,15 @@ model Product {
     name            String          @db.VarChar(255)
     description     String          @db.Text
     variant1        Variant?        @relation("VariantOne", fields: [variant1Id], references: [id])
-    variant1Id      Int?        
+    variant1Id      Int?
     variant2        Variant?        @relation("VariantTwo", fields: [variant2Id], references: [id])
-    variant2Id      Int?   
+    variant2Id      Int?
     createDate      DateTime        @default(now())
     updateDate      DateTime?       @updatedAt
     isDelete        Boolean         @default(false)
-    productClasses  ProductClass[]   
+    productClasses  ProductClass[]
     categories      ProductCategory[]
+    images          ProductImage[]
 }
 
 model ProductClass {
@@ -81,12 +82,19 @@ model ProductClass {
     product         Product         @relation(fields: [productId], references: [id])
     productId       Int
     variant1        Variant?        @relation("ClassVariantOne", fields: [variant1Id], references: [id])
-    variant1Id      Int?        
+    variant1Id      Int?
     variant2        Variant?        @relation("ClassVariantTwo", fields: [variant2Id], references: [id])
-    variant2Id      Int?   
-    price           Float           
+    variant2Id      Int?
+    price           Float
     quantity        Int
     createDate      DateTime        @default(now())
     updateDate      DateTime?       @updatedAt
     isDelete        Boolean         @default(false)
+}
+
+model ProductImage {
+    id              Int             @id @default(autoincrement())
+    product         Product         @relation(fields: [productId], references: [id])
+    productId       Int
+    imgUrl          String
 }

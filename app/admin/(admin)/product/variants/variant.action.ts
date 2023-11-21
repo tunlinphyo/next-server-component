@@ -6,26 +6,19 @@ import { CreateVariantSchema, VariantSchema } from "./variant.schema"
 import { revalidatePath } from "next/cache"
 import { RedirectType, redirect } from "next/navigation"
 import { Prisma } from "@prisma/client"
-import { VariantCount, VariantWithChildCount, VariantWithParent, VariantWithParentAndChildCount } from "./variant.interface"
+import { VariantWithChildCount, VariantWithParent, VariantWithParentAndChildCount } from "./variant.interface"
 import prisma from "@/libs/prisma"
 
 export async function getVariantPageLength(id?: number) {
-    let query: Prisma.VariantAggregateArgs
-
-    if (id) {
-        query = {
-            _count: { id: true },
-            where: { isDelete: false, parentId: id }
-        }
-    } else {
-        query = {
-            _count: { id: true },
-            where: { isDelete: false, parentId: null }
+    const query: Prisma.VariantCountArgs = {
+        where: {
+            isDelete: false,
+            parentId: id ?? null
         }
     }
-    const result = await prisma.variant.aggregate(query) as VariantCount
+    const result = await prisma.variant.count(query)
 
-    return Math.ceil(result._count.id / PER_PAGE)
+    return Math.ceil(result / PER_PAGE)
 }
 
 export async function getVariants(id: number | null, page: number = 1) {

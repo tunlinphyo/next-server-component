@@ -1,22 +1,19 @@
 'use server'
 
 import { redirect } from "next/navigation"
-import { getActiveClasses, getAllCategories, getProduct } from "../../products.actions"
+import { getCategories, getProduct } from "../../products.actions"
 import { ProductEditForm } from "./product-edit.client"
 import { FormDates } from "@/components/admin/form/form.client"
 
 export async function ProductEdit({ id }: { id: number }) {
-    const [product, classes] = await Promise.all([
-        getProduct(id),
-        getActiveClasses(id)
-    ])
+    const product = await getProduct(id)
+    console.log('PRODUCT', product)
     if (!product) redirect('/admin/product/products')
-    const categories = await getAllCategories()
+    const categories = await getCategories()
     return (
         <>
             <ProductEditForm
                 product={product}
-                classes={classes}
                 categories={categories}
             />
             <FormDates createDate={product.createDate} updateDate={product.updateDate} />

@@ -2,18 +2,43 @@
 
 import { getCheckboxValues, getFormDataBy, getZodErrors, isObjectEmpty, wait } from "@/libs/utils"
 import { CreateProductSchema, EditProductClassSchema, EditProductSchema, ProductClassSchema, VariantSchema } from "./products.schema"
-import { CategoryType, FormArrayType, FormCategoryType, NestedObject, ProductClassType, ProductType, VariantType } from "@/libs/definations"
+import { CategoryType, FormArrayType, NestedObject, ProductClassType, ProductType, VariantType } from "@/libs/definations"
 import { DELETE, GET, GET_ONE, PATCH, POST, QUERY } from "@/libs/db"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { PER_PAGE } from "@/libs/const"
 import { getStockAndPrices } from "./products.utils"
 import { deleteImage } from "@/libs/images"
+import { Prisma, ProductClass } from "@prisma/client"
+import prisma from "@/libs/prisma"
+import { CategoryChildRecursive } from "../categories/categories.interface"
+import { VariantChildRecursive } from "../variants/variant.interface"
+import { FormCategoryType, ProductEdit, ProductWithPriceAndStock } from "./products.interface"
 
-export async function getAllCategories() {
-    await wait()
+export async function getCategories() {
+    function recursive(level: number): any {
+        if (level === 0) {
+            return {
+                include: {
+                    children: true
+                }
+            };
+        }
+        return {
+            include: {
+                children: recursive(level - 1)
+            }
+        }
+    }
+    const query: Prisma.CategoryFindManyArgs = {
+        where: { parentId: null },
+        include: {
+            children: recursive(4)
+        }
+    }
+    const categories = await prisma.category.findMany(query) as CategoryChildRecursive[]
 
-    const getFormCategory = (category: CategoryType, children?: CategoryType[]): FormCategoryType => {
+    const getFormCategory = (category: CategoryChildRecursive, children?: CategoryChildRecursive[]): FormCategoryType => {
         return {
             id: category.id,
             name: category.name,
@@ -23,33 +48,21 @@ export async function getAllCategories() {
         }
     }
 
-    const categories = await GET<CategoryType>('product_categories', { parent_category_id: undefined, isDelete: false })
-
     const formCategories: FormCategoryType[] = []
     for await (const category of categories) {
-        const cateogryWithChildren = await _getChildCategories(category)
-        const formCategory = getFormCategory(cateogryWithChildren, cateogryWithChildren.children)
+        const formCategory = getFormCategory(category, category.children)
         formCategories.push(formCategory)
     }
 
     return formCategories
 }
 
-async function _getChildCategories(category: CategoryType) {
-    const children = await GET<CategoryType>('product_categories', { parent_category_id: category.id, isDelete: false })
-    if (children.length) {
-        category.children = []
-        for await (const child of children) {
-            category.children.push(await _getChildCategories(child))
-        }
+export async function getVariants(id?: number) {
+    const query: Prisma.VariantFindManyArgs = {
+        where: { parentId: id ?? null, isDelete: false },
     }
-    return category
-}
 
-export async function getAllVariants(parent_variant_id?: number) {
-    await wait()
-
-    const variants = await GET<VariantType>('product_variants', { parent_variant_id, isDelete: false })
+    const variants = await prisma.variant.findMany(query)
     return variants.map(item => {
         return {
             id: item.id,
@@ -58,87 +71,72 @@ export async function getAllVariants(parent_variant_id?: number) {
     })
 }
 
-export async function getProductPageLength(query: string) {
-    await wait()
+export async function getProductPageLength(key: string) {
+    const query: Prisma.ProductCountArgs = {
+        where: {
+            AND: [
+                { isDelete: false },
+                {
+                    name: { startsWith: key || '' }
+                }
+            ],
+        }
+    }
 
-    const q = query || ''
-    const options = { name: q, description: q }
+    const count = await prisma.product.count(query)
 
-    const products = await QUERY<ProductType>('products', options)
-    return Math.ceil(products.length / PER_PAGE)
+    return Math.ceil(count / PER_PAGE)
 }
 
-export async function getProducts(page: number, query: string ) {
-    await wait()
-
-    const q = query || ''
-    const options = { name: q, description: q }
-
-    const products = await QUERY<ProductType>('products', options)
+export async function getProducts(page: number, key: string) {
     const index = page - 1
     const start = index ? index * PER_PAGE : 0
-    const end = start + PER_PAGE
-    const sortedProducts = products.sort((a, b) => {
-        if (a.createDate < b.createDate) return 1
-        if (a.createDate > b.createDate) return -1
-        return 0
-    })
-    const paginated = sortedProducts.slice(start, end)
-    const result: ProductType[] = []
-    for await (const product of paginated) {
-        const productClasses = await GET<ProductClassType>('product_class', { product_id: product.id, isDelete: false })
-        const { stockTotal, minPrice, maxPrice } = getStockAndPrices(productClasses)
-        if (productClasses.length) {
-            // product.classes = productClasses
-            product.price = minPrice
-            product.minPrice = minPrice
-            product.maxPrice = maxPrice
-            product.quantity = stockTotal
-        }
-        result.push(product)
+    const query: Prisma.ProductFindManyArgs = {
+        where: {
+            AND: [
+                { isDelete: false },
+                {
+                    name: { startsWith: key || '' }
+                }
+            ]
+        },
+        include: {
+            images: true,
+            productClasses: true
+        },
+        skip: start,
+        take: PER_PAGE,
+        orderBy: { createDate: "desc" }
+    }
+    const result = await prisma.product.findMany(query) as ProductWithPriceAndStock[]
+    for await (const product of result) {
+        const { stockTotal, minPrice, maxPrice } = getStockAndPrices(product.productClasses)
+        product.minPrice = minPrice
+        product.maxPrice = maxPrice
+        product.quantity = stockTotal
     }
     return result
 }
 
 export async function getProduct(id: number) {
-    await wait()
-
-    const product = await GET_ONE<ProductType>('products', { id, isDelete: false })
-    if (!product) return undefined
-    if (product.variant_1_id) {
-        const variant1 = await GET_ONE<VariantType>('product_variants', { id: product.variant_1_id })
-        product.variant1 = variant1
+    const query: Prisma.ProductFindUniqueArgs = {
+        where: { id },
+        include: {
+            variant1: true,
+            variant2: true,
+            images: true,
+            productClasses: {
+                include: {
+                    variant1: true,
+                    variant2: true,
+                }
+            },
+            categories: true,
+        }
     }
-    if (product.variant_2_id) {
-        const variant2 = await GET_ONE<VariantType>('product_variants', { id: product.variant_2_id })
-        product.variant2 = variant2
-    }
-    const classes = await GET<ProductClassType>('product_class', { product_id: product?.id, isDelete: false })
-    if (classes.length == 0) return undefined
-    product.price = classes[0].price
-    product.quantity = classes[0].quantity
-    product.classes = classes
+    const product = await prisma.product.findUnique(query) as ProductEdit
 
     return product
-}
-
-export async function getActiveClasses(id: number) {
-    await wait()
-
-    const classes = await GET<ProductClassType>('product_class', { product_id: id, isDelete: false })
-
-    for await (const item of classes) {
-        if (item.variant_1_id) {
-            const variant = await GET_ONE<VariantType>('product_variants', { id: item.variant_1_id })
-            item.variant1 = variant
-        }
-        if (item.variant_2_id) {
-            const variant = await GET_ONE<VariantType>('product_variants', { id: item.variant_2_id })
-            item.variant2 = variant
-        }
-    }
-
-    return classes
 }
 
 export async function deleteProduct(id: number) {
@@ -146,7 +144,7 @@ export async function deleteProduct(id: number) {
         await DELETE<ProductType>('products', id)
         revalidatePath('/admin/product/products')
         redirect('/admin/product/products')
-    } catch(e) {
+    } catch (e) {
         console.log('CAN REDIRECT ON SELF PAGE', e)
         return { code: '' }
     }
@@ -154,7 +152,6 @@ export async function deleteProduct(id: number) {
 
 export async function onProductCreate(prevState: any, formData: FormData) {
     const data = Object.fromEntries(formData)
-    console.log('FORM_DATA_FROM_CREATE', data)
     const category_ids = formData.getAll('category_ids').map(item => Number(item))
     const result = CreateProductSchema.safeParse({ ...data, category_ids })
 
@@ -163,37 +160,45 @@ export async function onProductCreate(prevState: any, formData: FormData) {
     }
 
     const productData = result.data
-    const imagesToDelete = formData.getAll('delete_images') as string[]
-    const images = formData.getAll('images') as string[]
+    // const imagesToDelete = formData.getAll('delete_images') as string[]
+    // const images = formData.getAll('images') as string[]
 
-    for await (const img of imagesToDelete) {
-        await deleteImage(img)
-    }
+    // for await (const img of imagesToDelete) {
+    //     await deleteImage(img)
+    // }
 
-    const newProduct: Partial<ProductType> = {
-        name: productData.name,
-        description: productData.description,
-        images,
-        category_ids,
-    }
 
-    const product = await POST<ProductType>('products', newProduct)
+    const tResult = await prisma.$transaction(async (prisma) => {
+        const product = await prisma.product.create({
+            data: {
+                name: productData.name,
+                description: productData.description,
+            }
+        })
+        const productCategories = await prisma.productCategory.createMany({
+            data: (productData.category_ids || []).map(categoryId => ({
+                productId: product.id,
+                categoryId,
+            })),
+        });
+        const productClass = await prisma.productClass.create({
+            data: {
+                productId: product.id,
+                price: productData.price,
+                quantity: productData.quantity
+            }
+        })
 
-    await wait(300) // add not do duplicate id
-    const newProductClass: Partial<ProductClassType> = {
-        product_id: product.id,
-        price: productData.price,
-        quantity: productData.quantity
-    }
-    const productClass = await POST<ProductClassType>('product_class', newProductClass)
+        return { product, productCategories, productClass }
+    })
+
+    if (!tResult.product) return { code: 'Product can not create' }
 
     revalidatePath('/admin/product/products')
-    redirect(`/admin/product/products/${product.id}/edit`)
+    redirect(`/admin/product/products/${tResult.product.id}/edit`)
 }
 
 export async function onProductEdit(initState: any, formData: FormData) {
-    await wait()
-
     const data = Object.fromEntries(formData)
     const category_ids = formData.getAll('category_ids').map(item => Number(item))
     const result = EditProductSchema.safeParse({ ...data, category_ids })
@@ -220,29 +225,48 @@ export async function onProductEdit(initState: any, formData: FormData) {
     }
     if (!isObjectEmpty(errors)) return errors
 
-    const imagesToDelete = formData.getAll('delete_images') as string[]
-    const images = formData.getAll('images') as string[]
+    // const imagesToDelete = formData.getAll('delete_images') as string[]
+    // const images = formData.getAll('images') as string[]
 
-    for await (const img of imagesToDelete) {
-        await deleteImage(img)
-    }
+    // for await (const img of imagesToDelete) {
+    //     await deleteImage(img)
+    // }
 
-    const editData: Partial<ProductType> = {
-        ...result.data,
-        images,
-    }
-
-    await PATCH<ProductType>('products', editData)
-    if (!isVariant && classResult.success) {
-        const productClass = await GET_ONE<ProductClassType>('product_class', {
-            id: classResult.data.id,
-            product_id: result.data.id,
-            isDelete: false
+    const tResult = await prisma.$transaction(async (prisma) => {
+        const product = await prisma.product.update({
+            where: { id: result.data.id },
+            data: {
+                name: result.data.name,
+                description: result.data.description,
+            }
         })
-        if (!productClass) return { message: 'Product class do not exit' }
-        console.log("CLASS", classResult.data)
-        await PATCH<ProductClassType>('product_class', classResult.data)
-    }
+        let productClass: any
+        if (!isVariant && classResult.success) {
+            productClass = await prisma.productClass.update({
+                where: { id: classResult.data.id },
+                data: {
+                    price: classResult.data.price,
+                    quantity: classResult.data.quantity
+                }
+            })
+        }
+        await prisma.productCategory.deleteMany({
+            where: { productId: result.data.id },
+        })
+        const productCategories = await prisma.productCategory.createMany({
+            data: (result.data.category_ids || []).map(categoryId => ({
+                productId: result.data.id,
+                categoryId,
+            })),
+        });
+
+        return { product, productCategories, productClass }
+    })
+
+    console.log(tResult)
+
+    if (!tResult.product) return { code: 'Product can not update' }
+
     revalidatePath(`/admin/product/products/${result.data.id}/edit`)
     return { message: 'success' }
 }
@@ -257,7 +281,13 @@ export async function onVariantCreate(prevState: any, formData: FormData) {
         return getZodErrors(result.error.issues)
     }
 
-    const product = await PATCH<ProductType>('products', result.data)
+    const product = await prisma.product.update({
+        where: { id: result.data.id },
+        data: {
+            variant1Id: result.data.variant1Id,
+            variant2Id: result.data.variant2Id
+        }
+    })
 
     console.log("VARIANT_DATA", product)
     if (!product) return { message: 'Variant creation error' }
@@ -265,28 +295,26 @@ export async function onVariantCreate(prevState: any, formData: FormData) {
 }
 
 export async function onClassEdit(prevState: any, formData: FormData) {
-    await wait()
-
     const indexs = getCheckboxValues(formData, 'index')
     if (!indexs.length) {
         return { message: 'Please add at lease one variant' }
     }
 
-    const product_id = formData.get('product_id')
-    const oldClasses = await GET<ProductClassType>('product_class', { product_id, isDelete: false })
+    const productId = Number(formData.get('productId'))
+    console.log(productId, indexs)
 
     const errors: NestedObject = {}
-    const newClasses: Partial<ProductClassType>[] = []
+    const newClasses: Partial<ProductClass>[] = []
     for await (const index of indexs) {
         const result = getFormDataBy(formData, index)
 
-        const data: Partial<ProductClassType> = {
+        const data: Partial<ProductClass> = {
             id: result.id ? Number(result.id) : undefined,
-            product_id: Number(product_id),
-            variant_1_id: Number(result.variant_1_id),
-            variant_2_id: result.variant_2_id ? Number(result.variant_2_id) : undefined,
-            price: result.price ? Number(result.price) : undefined,
-            quantity: result.price ? Number(result.quantity) : undefined,
+            productId,
+            variant1Id: Number(result.variant1Id),
+            variant2Id: result.variant2Id ? Number(result.variant2Id) : null,
+            price: result.price ? Number(result.price) : 0,
+            quantity: result.price ? Number(result.quantity) : 0,
             isDelete: false,
         }
 
@@ -300,30 +328,35 @@ export async function onClassEdit(prevState: any, formData: FormData) {
         }
     }
 
-    console.log("ERRORS", errors)
+    console.log("CLASS_DATA______", errors, newClasses)
 
     if (!isObjectEmpty(errors)) {
         return errors
     }
 
-    // DELETE ALL CLASS
-    for await (const oldClass of oldClasses) {
-        await PATCH<ProductClassType>('product_class', { ...oldClass, isDelete: true })
-    }
-
-    // ADD OR UPDATE CLASS
-    for await (const classData of newClasses) {
-        let newClass: ProductClassType | undefined
-        if (classData.id) {
-            newClass = await PATCH<ProductClassType>('product_class', classData)
-        } else {
-            newClass = await POST<ProductClassType>('product_class', classData)
+    const tResult = await prisma.$transaction(async (prisma) => {
+        const mainVariant = await prisma.productClass.findFirst({
+            where: { productId, variant1Id: undefined }
+        })
+        if (mainVariant) {
+            const disableVariant = await prisma.productClass.update({
+                where: { id: mainVariant.id },
+                data: { isDelete: true }
+            })
         }
-        console.log('NEW_CLASS', newClass)
-    }
+        const deleteAllVariants = await prisma.productClass.deleteMany({
+            where: { productId, variant1Id: { not: null } },
+        })
+        const productCategories = await prisma.productClass.createMany({
+            data: newClasses.map(newClass => newClass as ProductClass),
+        });
+        return { mainVariant, deleteAllVariants, productCategories }
+    })
 
-    revalidatePath(`/admin/product/products/${product_id}/edit`)
-    revalidatePath(`/admin/product/products/${product_id}/class`)
+    console.log('RESULT', tResult)
+
+    revalidatePath(`/admin/product/products/${productId}/edit`)
+    revalidatePath(`/admin/product/products/${productId}/class`)
     return { message: 'Product class updated' }
 }
 

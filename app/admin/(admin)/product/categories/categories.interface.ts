@@ -1,11 +1,4 @@
-import { Category } from "@prisma/client";
-
-
-export interface CategoryCount {
-    _count: {
-        id: number;
-    };
-}
+import { Category } from "@prisma/client"
 
 export interface CategoryWithParent extends Category {
     parent?: {
@@ -18,4 +11,8 @@ export interface CategoryWithParentAndChildCount extends CategoryWithParent, Cat
     _count: {
         children: number;
     }
+}
+
+export interface CategoryChildRecursive extends Category {
+    children: CategoryChildRecursive[]
 }
