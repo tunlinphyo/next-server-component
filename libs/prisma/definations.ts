@@ -2,9 +2,9 @@
 
 export interface UserType {
     id: number;
-    name: string | null;
+    name: string;
     email: string;
-    password?: string;
     isDelete: boolean;
     isAdmin: boolean;
+    expiredAt: Date;
 }

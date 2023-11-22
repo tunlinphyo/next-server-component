@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     const onAdmin = nextUrl.pathname.startsWith('/admin')
     const onAdminLogin = nextUrl.pathname == '/admin/login'
     const adminCookie = cookies.get('admin')
-    const isAdminLogined = isAdmin(adminCookie)
+    const isAdminLogined = isAdmin(adminCookie?.value)
 
     if (onAdmin) {
         if (onAdminLogin) {

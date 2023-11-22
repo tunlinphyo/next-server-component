@@ -6,6 +6,8 @@ import { LoginSchema } from "./auth.schema"
 import { User } from "@prisma/client"
 import { UserType } from "@/libs/prisma/definations"
 import prisma from "@/libs/prisma"
+import { decryptCookieValue, encryptCookieValue } from "@/auth"
+import { ONE_DAY } from "@/libs/const"
 const bcrypt = require('bcrypt')
 
 export async function handleSignIn(prevState: any, formData: FormData) {
@@ -23,16 +25,22 @@ export async function handleSignIn(prevState: any, formData: FormData) {
     const passwordsMatch = await bcrypt.compare(result.data.password, user.password);
     if (!passwordsMatch) return { message: 'Invalid passowrd' }
 
+    const currentDate = new Date()
+    const newDate = new Date(currentDate.getTime() + ONE_DAY)
+
     const cookieUser: UserType = {
         id: user.id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        isDelete: user.isDelete
+        isDelete: user.isDelete,
+        expiredAt: newDate,
     }
 
+    const hashedValue = encryptCookieValue(JSON.stringify(cookieUser))
+
     const cookieStore = cookies()
-    cookieStore.set('admin', JSON.stringify(cookieUser), { secure: false })
+    cookieStore.set('admin', hashedValue, { secure: false })
     redirect('/admin')
 }
 

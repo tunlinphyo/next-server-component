@@ -1,6 +1,6 @@
 'use client'
 
-import { ChildrenProp, ProductType } from "@/libs/definations"
+import { ChildrenProp } from "@/libs/definations"
 import styles from './dashboard.module.css'
 import { Budge, TextSkeleton } from "@/components/admin/utils/utils.client";
 import { Table, TableBody, TableData, TableHead, TableHeader, TableRow, TableSkeleton } from "@/components/admin/table/table.client";
@@ -9,6 +9,7 @@ import { ArrowTopRightOnSquareIcon, ClockIcon } from "@heroicons/react/24/outlin
 import { ProductData } from "../product/products/products.client";
 import { LinkIcon } from "@/components/admin/button/button.client";
 import { timeAgo } from "@/libs/relative-time";
+import { ProductWithPriceAndStock } from "../product/products/products.interface";
 
 type SummaryCardProps = ChildrenProp & {
     icon: any;
@@ -36,12 +37,11 @@ export function DashboardSummaryCard({ children, icon, title }: SummaryCardProps
     )
 }
 
-export function DashboardSummarySkileton() {
+export function DashboardSummarySkileton({ icon, title }: { icon: any; title: string;}) {
     return (
         <div className={styles.card}>
             <div className={styles.cardHeader}>
-                <div className={styles.iconSkileton} />
-                <TextSkeleton fontSizeEm={.7} />
+                { icon } { title }
             </div>
             <div className={styles.cardBody}>
                 <TextSkeleton fontSizeEm={.9} />
@@ -50,7 +50,7 @@ export function DashboardSummarySkileton() {
     )
 }
 
-export function ProductTable({ lastDate, products }: { lastDate: Date, products: ProductType[] }) {
+export function ProductTable({ lastDate, products }: { lastDate: Date, products: ProductWithPriceAndStock[] }) {
     return (
         <div className={styles.tableCard}>
             <div className={styles.tableContainer}>
@@ -72,7 +72,7 @@ export function ProductTable({ lastDate, products }: { lastDate: Date, products:
                     <TableBody>
                         {
                             products.map((product) => (
-                                <TableRow key={product.id}> 
+                                <TableRow key={product.id}>
                                     <TableData>
                                         <ThumbnailImages images={product.images} />
                                     </TableData>
