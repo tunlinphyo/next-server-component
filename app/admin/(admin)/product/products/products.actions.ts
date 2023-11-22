@@ -362,24 +362,26 @@ export async function onClassEdit(prevState: any, formData: FormData) {
     if (!isObjectEmpty(errors)) {
         return errors
     }
+    const allClasses = await prisma.productClass.findMany({
+        where: { productId }
+    })
+    const mainClass = allClasses.find(item => !item.variant1Id)
+    const oldClasses = allClasses.filter(item => (
+        newClasses.find(newItem => newItem.variant1Id === item.variant1Id && newItem.variant2Id === item.variant2Id)
+    ))
 
     const tResult = await prisma.$transaction(async (prisma) => {
-        const mainVariant = await prisma.productClass.findFirst({
-            where: { productId, variant1Id: undefined }
+        const disabledClass = await prisma.productClass.update({
+            where: { id: mainClass?.id },
+            data: { isDelete: true }
         })
-        if (mainVariant) {
-            const disableVariant = await prisma.productClass.update({
-                where: { id: mainVariant.id },
-                data: { isDelete: true }
-            })
-        }
         const deleteAllVariants = await prisma.productClass.deleteMany({
             where: { productId, variant1Id: { not: null } },
         })
         const productCategories = await prisma.productClass.createMany({
             data: newClasses.map(newClass => newClass as ProductClass),
         });
-        return { mainVariant, deleteAllVariants, productCategories }
+        return { disabledClass, deleteAllVariants, productCategories }
     })
 
     console.log('RESULT', tResult)
