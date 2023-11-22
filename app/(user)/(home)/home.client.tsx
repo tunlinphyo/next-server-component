@@ -9,6 +9,8 @@ import { ArrowRightIcon, TicketIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import IntroImg from '@/app/assets/icons/welcome.svg'
 import { useToast } from '@/components/user/toast/toast.index'
+import { ProductWithPriceAndStock } from '@/app/admin/(admin)/product/products/products.interface'
+import { Category } from '@prisma/client'
 
 export function SearchBar() {
     const { showToast } = useToast()
@@ -23,7 +25,7 @@ export function SearchBar() {
     )
 }
 
-export function Categories({ categories }: { categories: CategoryType[] }) {
+export function Categories({ categories }: { categories: Category[] }) {
     return (
         <div className={styles.categories}>
             <div className={styles.slideContainer}>
@@ -42,7 +44,7 @@ export function Categories({ categories }: { categories: CategoryType[] }) {
     )
 }
 
-export function ProductSlide({ products }: { products: ProductType[] }) {
+export function ProductSlide({ products }: { products: ProductWithPriceAndStock[] }) {
 
     return (
         <div className={styles.latestProducts}>

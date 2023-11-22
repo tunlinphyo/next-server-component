@@ -9,59 +9,63 @@ import { revalidatePath } from 'next/cache'
 import { getUser } from "../user.actions"
 import { createCartItem, getCart, getCartItem, updateCartItem } from "../cart.server"
 import { getCookieCartItems, setCookieCartItems } from "../cookie.server"
+import prisma from "@/libs/prisma"
+import { Prisma } from "@prisma/client"
+import { ProductWithPriceAndStock } from "@/app/admin/(admin)/product/products/products.interface"
 
 
-export async function getProductPageLength(query: string) {
-    await wait()
-
-    const q = query || ''
-    const options = { name: q, description: q }
-
-    const products = await QUERY<ProductType>('products', options)
-    return Math.ceil(products.length / PER_PAGE)
+export async function getProductPageLength(key: string) {
+    const count = await prisma.product.count({
+        where: {
+            AND: [
+                { isDelete: false },
+                {
+                    name: {
+                        startsWith: key ? `%${key}%` : '',
+                        mode: 'insensitive',
+                    }
+                }
+            ],
+        }
+    })
+    return Math.ceil(count / PER_PAGE)
 }
 
-export async function getProducts(page: number, query: string ) {
-    await wait()
-
-    const q = query || ''
-    const options = { name: q, description: q }
-
-    const products = await QUERY<ProductType>('products', options)
+export async function getProducts(page: number, key: string ) {
     const index = page - 1
     const start = index ? index * PER_PAGE : 0
-    const end = start + PER_PAGE
-    const sortedProducts = products.sort((a, b) => {
-        if (a.createDate < b.createDate) return 1
-        if (a.createDate > b.createDate) return -1
-        return 0
-    })
-    const paginated = sortedProducts.slice(start, end)
-    const result: ProductType[] = []
-
-    const variants = await GET<VariantType>('product_variants', { isDelete: false })
-
-    for await (const product of paginated) {
-        const productClasses = await GET<ProductClassType>('product_class', { product_id: product.id, isDelete: false })
-        const { stockTotal, minPrice, maxPrice } = getStockAndPrices(productClasses)
-
-        for await (const pClass of productClasses) {
-            if (pClass.variant_1_id) {
-                pClass.variant1 = variants.find(item => item.id == pClass.variant_1_id)
+    const query: Prisma.ProductFindManyArgs = {
+        where: {
+            AND: [
+                { isDelete: false },
+                {
+                    name: {
+                        startsWith: key ? `%${key}%` : '',
+                        mode: 'insensitive',
+                    }
+                }
+            ]
+        },
+        include: {
+            images: true,
+            productClasses: {
+                where: { isDelete: false },
+                include: {
+                    variant1: true,
+                    variant2: true,
+                }
             }
-            if (pClass.variant_2_id) {
-                pClass.variant2 = variants.find(item => item.id == pClass.variant_2_id)
-            }
-        }
-
-        if (productClasses.length) {
-            product.classes = productClasses
-            product.price = minPrice
-            product.minPrice = minPrice
-            product.maxPrice = maxPrice
-            product.quantity = stockTotal
-        }
-        result.push(product)
+        },
+        skip: start,
+        take: PER_PAGE,
+        orderBy: { createDate: "desc" }
+    }
+    const result = await prisma.product.findMany(query) as ProductWithPriceAndStock[]
+    for await (const product of result) {
+        const { stockTotal, minPrice, maxPrice } = getStockAndPrices(product.productClasses)
+        product.minPrice = minPrice
+        product.maxPrice = maxPrice
+        product.quantity = stockTotal
     }
     return result
 }
@@ -93,9 +97,9 @@ export async function addToCart(prevState: any, formData: FormData) {
 
         if (is) {
             carts = carts.map(item => {
-                if (item.id == class_id) return { 
-                    ...item, 
-                    quantity: Math.min(item.quantity + 1, productClass.quantity) 
+                if (item.id == class_id) return {
+                    ...item,
+                    quantity: Math.min(item.quantity + 1, productClass.quantity)
                 }
                 return item
             })

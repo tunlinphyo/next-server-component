@@ -14,12 +14,13 @@ import clsx from 'clsx'
 import { BottomSheetContainer, Modal } from '@/components/user/modals/modals.client'
 import { usePathname } from 'next/navigation'
 import { useToast } from '@/components/user/toast/toast.index'
+import { ProductClassEdit, ProductWithPriceAndStock } from '@/app/admin/(admin)/product/products/products.interface'
 
 type AddToCartFormProps = {
-    productClass: ProductClassType[];
+    productClass: ProductClassEdit[];
 }
 
-export function Products({ products }: { products: ProductType[] }) {
+export function Products({ products }: { products: ProductWithPriceAndStock[] }) {
     return (
         <ul className={styles.products}>
             {
@@ -33,13 +34,13 @@ export function Products({ products }: { products: ProductType[] }) {
     )
 }
 
-export function Product({ product }: { product: ProductType }) {
+export function Product({ product }: { product: ProductWithPriceAndStock }) {
     return (
         <div className={styles.product}>
             <Link href={`/products/${product.id}`} className={styles.productImage}>
                 {
                     (product.images && product.images.length)
-                        ? <Image src={product.images[0]} width={200} height={200} alt='product image' />
+                        ? <Image src={product.images[0].imgUrl} width={200} height={200} alt='product image' />
                         : <PhotoIcon />
                 }
             </Link>
@@ -53,8 +54,8 @@ export function Product({ product }: { product: ProductType }) {
             </Link>
             <div className={styles.productAction}>
                 {
-                    product.classes && product.quantity
-                        ? <AddToCartForm productClass={product.classes} />
+                    product.productClasses && product.quantity
+                        ? <AddToCartForm productClass={product.productClasses} />
                         : <OutofStockButton />
                 }
             </div>
@@ -117,7 +118,7 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
             <form ref={formRef} action={onAction} className={styles.addToCartForm}>
                 <input type='hidden' name='pathname' defaultValue={pathname} />
                 {
-                    (productClass.length == 1 && !productClass[0].variant_1_id)
+                    (productClass.length == 1 && !productClass[0].variant1Id)
                         ? (
                             <AddToCartButton id={productClass[0].id} onChange={handleChange} />
                         ) : (
@@ -125,12 +126,12 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
                                 <ModalOpenButton loading={modal} onClick={() => setModal(true)} />
                                 {
                                     productClass.map(item => (
-                                        <input 
+                                        <input
                                             key={item.id}
                                             id={`class_id_${item.id}`}
-                                            type="radio" 
-                                            name="class_id" 
-                                            defaultValue={item.id} 
+                                            type="radio"
+                                            name="class_id"
+                                            defaultValue={item.id}
                                             disabled={!item.quantity}
                                             onChange={handleChange} />
                                     ))
@@ -143,7 +144,7 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
                 <BottomSheetContainer onClose={() => setModal(false)}>
                     {
                         productClass.map(item => (
-                            <label 
+                            <label
                                 key={item.id}
                                 htmlFor={`class_id_${item.id}`}
                                 className={clsx(styles.bottomSheetButton, !item.quantity && styles.bottomSheetDisabled )}
@@ -151,7 +152,7 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
                                 <ListBulletIcon />
                                 <span className={styles.variantsContiner}>
                                     <span>{ item.variant1?.name }</span>
-                                    { item.variant2 && ' - ' } 
+                                    { item.variant2 && ' - ' }
                                     <span>{ item.variant2?.name }</span>
                                 </span>
                                 <span>{ formatPrice(item.price) }</span>
@@ -193,7 +194,7 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
 //             <div className={styles.buttonContainer}>
 //                 {
 //                     (productClass.length == 1 && !productClass[0].variant_1_id)
-//                         ? <ModalOpenButton loading={loading} onClick={() => handleSubmit(productClass[0].id)} /> 
+//                         ? <ModalOpenButton loading={loading} onClick={() => handleSubmit(productClass[0].id)} />
 //                         : <ModalOpenButton loading={loading} onClick={openModal} />
 //                 }
 //             </div>
@@ -201,14 +202,14 @@ export function AddToCartForm({ productClass }: AddToCartFormProps) {
 //                 <BottomSheetContainer onClose={closeModal}>
 //                     {
 //                         productClass.map(item => (
-//                             <BottomSheetButton 
-//                                 onClick={() => handleSubmit(item.id)} 
-//                                 key={item.id} 
+//                             <BottomSheetButton
+//                                 onClick={() => handleSubmit(item.id)}
+//                                 key={item.id}
 //                                 disabled={!item.quantity}>
 //                                 <ListBulletIcon />
 //                                 <span className={styles.variantsContiner}>
 //                                     <span>{ item.variant1?.name }</span>
-//                                     { item.variant2 && ' - ' } 
+//                                     { item.variant2 && ' - ' }
 //                                     <span>{ item.variant2?.name }</span>
 //                                 </span>
 //                                 <span>{ formatPrice(item.price) }</span>

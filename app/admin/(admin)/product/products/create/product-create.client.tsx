@@ -65,7 +65,7 @@ export function ProductCreateForm({ categories }: { categories: FormCategoryType
                 name="category_ids"
                 list={categories}
             >
-                Categories
+                Categories (optional)
             </CategorySelect>
         </Form>
     )

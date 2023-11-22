@@ -1,9 +1,9 @@
 'use client'
 
 import { Form, FormCreatButton, FormFooter, FromDeleteButton, Input, Select } from "@/components/admin/form/form.client"
-import { FormArrayType, ProductClassType, ProductType } from "@/libs/definations"
+import { FormArrayType } from "@/libs/definations"
 import { useFormState } from "react-dom"
-import { onClassEdit, onVariantCreate, onVariantDelete } from "../../products.actions"
+import { onClassEdit, onVariantCreate, onVariantDelete } from "../../product-class.actions"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { generateClasses } from "./product-class.util"
 import styles from './product-class.module.css'
@@ -19,12 +19,16 @@ type ProductClassesProp = {
 }
 
 const initState = {
-    variant_1_id: '',
-    variant_2_id: '',
+    variant1Id: '',
+    variant2Id: '',
 }
 
 export function VariantSelectForm({ id, variants }: {  id: number, variants: FormArrayType[] }) {
     const [ state, onAction ] = useFormState(onVariantCreate, initState)
+
+    useEffect(() => {
+        if (state?.message) appToast(state.message)
+    }, [ state ])
 
     return (
         <Form action={onAction} footer={
@@ -37,12 +41,18 @@ export function VariantSelectForm({ id, variants }: {  id: number, variants: For
             <Select
                 name="variant1Id"
                 list={variants}
-                error={state?.variant1Id}
+                error={
+                    // @ts-ignore
+                    state?.variant1Id
+                }
             >Variant One</Select>
             <Select
                 name="variant2Id"
                 list={variants}
-                error={state?.variant2Id}
+                error={
+                    // @ts-ignore
+                    state?.variant2Id
+                }
             >Variant Two</Select>
         </Form>
     )
@@ -57,7 +67,6 @@ export function ClassCreateEditForm({ product, variant1, variant2 }: ProductClas
     const [ state, onAction ] = useFormState(onClassEdit, classInitState)
 
     useEffect(() => {
-        console.log("ERRORS", state)
         if (state.message) appToast(state.message)
     }, [ state ])
 

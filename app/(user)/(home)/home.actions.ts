@@ -1,56 +1,42 @@
 'use server'
 
+import { ProductWithPriceAndStock } from "@/app/admin/(admin)/product/products/products.interface"
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
 import { GET } from "@/libs/db"
 import { CategoryType, ProductClassType, ProductType, VariantType } from "@/libs/definations"
+import prisma from "@/libs/prisma"
 import { wait } from "@/libs/utils"
+import { Prisma } from "@prisma/client"
 
 export async function getCategories() {
-    await wait()
-
-    const categories = await GET<CategoryType>('product_categories', { isDelete: false, parent_category_id: undefined })
-
-    return categories
+    return prisma.category.findMany({
+        where: { isDelete: false, parentId: null }
+    })
 }
 
 export async function getHomeProduct() {
-    await wait()
-
-    const getDate = (product: ProductType) => product.updateDate || product.createDate
-
-    const products = await GET<ProductType>('products', { isDelete: false })
-    const sortedProducts = products.sort((a, b) => {
-        if (getDate(a) < getDate(b)) return 1
-        if (getDate(a) > getDate(b)) return -1
-        return 0
-    })
-
-    const variants = await GET<VariantType>('product_variants', { isDelete: false })
-
-    const latest = sortedProducts.slice(0, 5)
-    const result: ProductType[] = []
-    for await (const product of latest) {
-        const productClasses = await GET<ProductClassType>('product_class', { product_id: product.id, isDelete: false })
-        const { stockTotal, minPrice, maxPrice } = getStockAndPrices(productClasses)
-        
-        if (productClasses.length) {
-            
-            for await (const pClass of productClasses) {
-                if (pClass.variant_1_id) {
-                    pClass.variant1 = variants.find(item => item.id == pClass.variant_1_id)
-                }
-                if (pClass.variant_2_id) {
-                    pClass.variant2 = variants.find(item => item.id == pClass.variant_2_id)
+    const query: Prisma.ProductFindManyArgs = {
+        where: { isDelete: false },
+        include: {
+            images: true,
+            productClasses: {
+                where: { isDelete: false },
+                include: {
+                    variant1: true,
+                    variant2: true,
                 }
             }
-    
-            product.classes = productClasses
-            product.price = minPrice
-            product.minPrice = minPrice
-            product.maxPrice = maxPrice
-            product.quantity = stockTotal
-        }
-        result.push(product)
+        },
+        skip: 0,
+        take: 5,
+        orderBy: { createDate: "desc" }
+    }
+    const result = await prisma.product.findMany(query) as ProductWithPriceAndStock[]
+    for await (const product of result) {
+        const { stockTotal, minPrice, maxPrice } = getStockAndPrices(product.productClasses)
+        product.minPrice = minPrice
+        product.maxPrice = maxPrice
+        product.quantity = stockTotal
     }
     return result
 }

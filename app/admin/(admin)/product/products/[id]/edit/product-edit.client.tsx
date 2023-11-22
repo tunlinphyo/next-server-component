@@ -96,7 +96,7 @@ export function ProductEditForm({ product, categories }: ProductEditProps) {
                 list={categories}
                 defaultValue={product.categories.map(item => item.categoryId)}
             >
-                Categories
+                Categories (optional)
             </CategorySelect>
             <ClassForm product={product} />
         </Form>
@@ -148,9 +148,7 @@ export function ClassForm({ product }: { product: ProductEdit }) {
                         </TableHeader>
                         <TableBody>
                             {
-                                product.productClasses
-                                .filter(item => !item.isDelete)
-                                .map(item => (
+                                product.productClasses.map(item => (
                                     <TableRow key={item.id}>
                                         <TableData>
                                             <IdContainer id={item.id} />

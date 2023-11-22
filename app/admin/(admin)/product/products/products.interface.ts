@@ -27,3 +27,16 @@ export interface ProductEdit extends Product {
     productClasses: ProductClassEdit[];
     categories: ProductCategory[];
 }
+
+export interface ClassEdit {
+    productId: number
+    variant1Id: number;
+    variant2Id: number | undefined;
+    price: number;
+    quantity: number;
+    isDelete: false;
+}
+
+export interface ClassCreate extends ClassEdit {
+    id: number;
+}

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { isAdmin } from './auth'
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
@@ -8,7 +9,7 @@ export function middleware(request: NextRequest) {
     const onAdmin = nextUrl.pathname.startsWith('/admin')
     const onAdminLogin = nextUrl.pathname == '/admin/login'
     const adminCookie = cookies.get('admin')
-    const isAdminLogined = !!adminCookie?.value
+    const isAdminLogined = isAdmin(adminCookie)
 
     if (onAdmin) {
         if (onAdminLogin) {

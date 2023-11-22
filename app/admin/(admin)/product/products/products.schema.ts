@@ -19,7 +19,7 @@ export const VariantSchema = z.object({
     variant2Id: z.coerce.number().optional()
 }).refine((data) => data.variant1Id !== data.variant2Id, {
     message: 'Variant 1 and varinat 2 can not be the same',
-    path: ["variant_2_id"]
+    path: ["variant2Id"]
 })
 
 

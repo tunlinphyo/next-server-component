@@ -7,7 +7,7 @@ import { PER_PAGE } from "@/libs/const"
 import { Prisma } from "@prisma/client"
 import prisma from "@/libs/prisma"
 import { CategoryWithParent, CategoryWithParentAndChildCount } from "./categories.interface"
-import { redirect } from "next/navigation"
+import { RedirectType, redirect } from "next/navigation"
 
 export async function getCategoryPageLength(id?: number) {
     const query: Prisma.CategoryCountArgs = {
@@ -105,7 +105,7 @@ export async function onCategoryEdit(prevState: any, formData: FormData) {
     const category = await prisma.category.update(query)
     if (category.parentId) {
         revalidatePath(`/admin/product/categories/${category.parentId}/edit`)
-        // redirect(`/admin/product/categories/${category.parentId}/edit`, RedirectType.replace)
+        redirect(`/admin/product/categories/${category.parentId}/edit`, RedirectType.replace)
     } else {
         revalidatePath('/admin/product/categories')
         // redirect('/admin/product/categories')

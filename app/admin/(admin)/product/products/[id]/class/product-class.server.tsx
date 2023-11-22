@@ -1,8 +1,9 @@
 'use server'
 
 import { redirect } from "next/navigation"
-import { getVariants, getProduct } from "../../products.actions"
+import { getProduct } from "../../products.actions"
 import { ClassCreateEditForm, ClassDeleteForm, VariantSelectForm } from "./product-class.client"
+import { getVariants } from "../../product-class.actions"
 
 export async function VariantSelect({ id }: { id: number }) {
     const product = await getProduct(id)
