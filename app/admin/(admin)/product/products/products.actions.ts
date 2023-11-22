@@ -5,7 +5,7 @@ import { CreateProductSchema, EditProductClassSchema, EditProductSchema, Product
 import { CategoryType, FormArrayType, NestedObject, ProductClassType, ProductType, VariantType } from "@/libs/definations"
 import { DELETE, GET, GET_ONE, PATCH, POST, QUERY } from "@/libs/db"
 import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
+import { RedirectType, redirect } from "next/navigation"
 import { PER_PAGE } from "@/libs/const"
 import { getStockAndPrices } from "./products.utils"
 import { deleteImage } from "@/libs/images"
@@ -160,12 +160,12 @@ export async function onProductCreate(prevState: any, formData: FormData) {
     }
 
     const productData = result.data
-    // const imagesToDelete = formData.getAll('delete_images') as string[]
-    // const images = formData.getAll('images') as string[]
+    const imagesToDelete = formData.getAll('delete_images') as string[]
+    const images = formData.getAll('images') as string[]
 
-    // for await (const img of imagesToDelete) {
-    //     await deleteImage(img)
-    // }
+    for await (const img of imagesToDelete) {
+        await deleteImage(img)
+    }
 
 
     const tResult = await prisma.$transaction(async (prisma) => {
@@ -188,14 +188,20 @@ export async function onProductCreate(prevState: any, formData: FormData) {
                 quantity: productData.quantity
             }
         })
+        const productImages = await prisma.productImage.createMany({
+            data: images.map(img => ({
+                productId: product.id,
+                imgUrl: img
+            }))
+        })
 
-        return { product, productCategories, productClass }
+        return { product, productCategories, productClass, productImages }
     })
 
     if (!tResult.product) return { code: 'Product can not create' }
 
     revalidatePath('/admin/product/products')
-    redirect(`/admin/product/products/${tResult.product.id}/edit`)
+    redirect(`/admin/product/products/${tResult.product.id}/edit`, RedirectType.replace)
 }
 
 export async function onProductEdit(initState: any, formData: FormData) {
@@ -225,12 +231,21 @@ export async function onProductEdit(initState: any, formData: FormData) {
     }
     if (!isObjectEmpty(errors)) return errors
 
-    // const imagesToDelete = formData.getAll('delete_images') as string[]
-    // const images = formData.getAll('images') as string[]
+    const imagesToDelete = formData.getAll('delete_images') as string[]
+    const images = formData.getAll('images') as string[]
 
-    // for await (const img of imagesToDelete) {
-    //     await deleteImage(img)
-    // }
+    for await (const img of imagesToDelete) {
+        await deleteImage(img)
+    }
+    const productDBImages = await prisma.productImage.findMany({
+        where: { productId: result.data.id }
+    })
+    const productImages = productDBImages.map(item => item.imgUrl)
+
+    const toDeleteImages = productDBImages.filter(img => imagesToDelete.includes(img.imgUrl))
+    const toAddImages = images.filter(img => !productImages.includes(img))
+    
+    console.log(productImages, toDeleteImages, toAddImages)
 
     const tResult = await prisma.$transaction(async (prisma) => {
         const product = await prisma.product.update({
@@ -259,6 +274,20 @@ export async function onProductEdit(initState: any, formData: FormData) {
                 categoryId,
             })),
         });
+        await prisma.productImage.deleteMany({
+            where: {
+                productId: result.data.id,
+                id: {
+                    in: toDeleteImages.map(item => item.id)
+                }
+            }
+        })
+        await prisma.productImage.createMany({
+            data: toAddImages.map(img => ({
+                productId: product.id,
+                imgUrl: img
+            }))
+        })
 
         return { product, productCategories, productClass }
     })
@@ -392,5 +421,5 @@ export async function onVariantDelete(id: number) {
 
     revalidatePath(`/admin/product/products/${id}/edit`)
     revalidatePath(`/admin/product/products/${id}/class`)
-    redirect(`/admin/product/products/${id}/edit`)
+    redirect(`/admin/product/products/${id}/edit`, RedirectType.replace)
 }

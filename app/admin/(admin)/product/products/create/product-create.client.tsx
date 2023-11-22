@@ -35,14 +35,15 @@ export function ProductCreateForm({ categories }: { categories: FormCategoryType
             >
                 Name
             </Input>
-            {/* <ImageUpload
+            <ImageUpload
                 name="images"
             >
                 Images (optional)
-            </ImageUpload> */}
+            </ImageUpload>
             <Textarea
                 name="description"
                 error={state?.description}
+                rows={10}
             >
                 Description
             </Textarea>

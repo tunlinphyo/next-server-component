@@ -6,7 +6,7 @@ import { LoginSchema } from "./auth.schema"
 import { User } from "@prisma/client"
 import { UserType } from "@/libs/prisma/definations"
 import prisma from "@/libs/prisma"
-
+const bcrypt = require('bcrypt')
 
 export async function handleSignIn(prevState: any, formData: FormData) {
     const result = LoginSchema.safeParse( Object.fromEntries(formData))
@@ -20,7 +20,8 @@ export async function handleSignIn(prevState: any, formData: FormData) {
 
     if (!user) return { message: 'Invalid email' }
     if (!user.isAdmin) return { message: 'Unauth user' }
-    if (user.password !== result.data.password) return { message: 'Invalid passowrd' }
+    const passwordsMatch = await bcrypt.compare(result.data.password, user.password);
+    if (!passwordsMatch) return { message: 'Invalid passowrd' }
 
     const cookieUser: UserType = {
         id: user.id,

@@ -83,10 +83,10 @@ export async function onCategoryCreate(prevState: any, formData: FormData) {
     const category = await prisma.category.create({ data: result.data })
     if (category.parentId) {
         revalidatePath(`/admin/product/categories/${category.parentId}/edit`)
-        redirect(`/admin/product/categories/${category.parentId}/edit`)
+        redirect(`/admin/product/categories/${category.id}/edit`)
     } else {
         revalidatePath('/admin/product/categories')
-        // redirect('/admin/product/categories')
+        redirect(`/admin/product/categories/${category.id}/edit`)
     }
 }
 

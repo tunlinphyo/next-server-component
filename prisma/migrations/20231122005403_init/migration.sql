@@ -1,14 +1,16 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
+    "email" VARCHAR(255) NOT NULL,
+    "password" VARCHAR(255) NOT NULL,
+    "createDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateDate" TIMESTAMP(3),
+    "isDelete" BOOLEAN NOT NULL DEFAULT false,
+    "isAdmin" BOOLEAN NOT NULL,
 
-  - Made the column `name` on table `User` required. This step will fail if there are existing NULL values in that column.
-
-*/
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "createDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN     "updateDate" TIMESTAMP(3),
-ALTER COLUMN "name" SET NOT NULL,
-ALTER COLUMN "isDelete" SET DEFAULT false;
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Variant" (
@@ -74,6 +76,18 @@ CREATE TABLE "ProductClass" (
     CONSTRAINT "ProductClass_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "ProductImage" (
+    "id" SERIAL NOT NULL,
+    "productId" INTEGER NOT NULL,
+    "imgUrl" TEXT NOT NULL,
+
+    CONSTRAINT "ProductImage_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
 -- AddForeignKey
 ALTER TABLE "Variant" ADD CONSTRAINT "Variant_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Variant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -100,3 +114,6 @@ ALTER TABLE "ProductClass" ADD CONSTRAINT "ProductClass_variant1Id_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "ProductClass" ADD CONSTRAINT "ProductClass_variant2Id_fkey" FOREIGN KEY ("variant2Id") REFERENCES "Variant"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProductImage" ADD CONSTRAINT "ProductImage_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

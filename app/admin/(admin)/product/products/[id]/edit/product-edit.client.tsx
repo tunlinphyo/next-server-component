@@ -55,12 +55,12 @@ export function ProductEditForm({ product, categories }: ProductEditProps) {
             >
                 Name
             </Input>
-            {/* <ImageUpload
+            <ImageUpload
                 name="images"
-                defaultValue={product.images}
+                defaultValue={product.images.map(item => item.imgUrl)}
             >
                 Images (optional)
-            </ImageUpload> */}
+            </ImageUpload>
             <Textarea
                 rows={10}
                 name="description"
