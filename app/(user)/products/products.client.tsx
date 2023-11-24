@@ -1,6 +1,5 @@
 'use client'
 
-import { ProductClassType, ProductType } from '@/libs/definations'
 import styles from './products.module.css'
 import Image from 'next/image'
 import { ArrowPathIcon, ListBulletIcon, NoSymbolIcon, PhotoIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
@@ -14,10 +13,10 @@ import clsx from 'clsx'
 import { BottomSheetContainer, Modal } from '@/components/user/modals/modals.client'
 import { usePathname } from 'next/navigation'
 import { useToast } from '@/components/user/toast/toast.index'
-import { ProductClassEdit, ProductWithPriceAndStock } from '@/app/admin/(admin)/product/products/products.interface'
+import { ProductClassWithVariants, ProductWithPriceAndStock } from './product.interface'
 
 type AddToCartFormProps = {
-    productClass: ProductClassEdit[];
+    productClass: ProductClassWithVariants[];
 }
 
 export function Products({ products }: { products: ProductWithPriceAndStock[] }) {
@@ -29,6 +28,9 @@ export function Products({ products }: { products: ProductWithPriceAndStock[] })
                         <Product product={product} />
                     </li>
                 ))
+            }
+            { 
+                products.length == 1 && <div />
             }
         </ul>
     )

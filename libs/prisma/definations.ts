@@ -8,3 +8,12 @@ export interface UserType {
     isAdmin: boolean;
     expiredAt: Date;
 }
+
+export interface CustomerType {
+    id: number;
+    name: string;
+    email: string;
+    avatar?: string | null;
+    isDelete: boolean;
+    expiredAt: Date;
+}

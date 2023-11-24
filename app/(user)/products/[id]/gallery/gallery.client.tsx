@@ -5,8 +5,9 @@ import styles from './gallery.module.css'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { useState } from 'react'
+import { ProductImage } from '@prisma/client'
 
-export function ImageGallery({ images }: { images?: string[] }) {
+export function ImageGallery({ images }: { images?: ProductImage[] }) {
     if (!images || !images.length) return (
         <div className={styles.galleryContainer}>
             <div className={styles.galleryCard}>
@@ -35,7 +36,7 @@ export function ImageGallery({ images }: { images?: string[] }) {
                         <div className={styles.galleryCard} key={index}>
                             <div className={styles.image}>
                                 <Image
-                                    src={img}
+                                    src={img.imgUrl}
                                     alt="product image"
                                     width={400}
                                     height={400}

@@ -119,6 +119,9 @@
 .quantityControl:has(button:hover) {
     outline: 2px solid var(--primary-600);
 }
+.quantityControl:has(button:has(svg.icon-loading)) {
+    pointer-events: none;
+}
 
 .quantity,
 .qtyButton {

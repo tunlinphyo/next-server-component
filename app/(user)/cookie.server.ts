@@ -2,19 +2,45 @@
 
 import { cookies } from "next/headers"
 import { COOKIE_CART, COOKIE_USER } from "./user.const"
-import { CookieCartType, UserType } from "@/libs/definations"
+import { CookieCartType } from "@/libs/definations"
+import { ONE_DAY } from "@/libs/const"
+import { CustomerType } from "@/libs/prisma/definations"
+import { decryptCookieValue, encryptCookieValue } from "@/auth"
+import { Customer } from "@prisma/client"
 
 export async function getCookieUser() {
     const cookieStore = cookies()
+    
     const cookieUser = cookieStore.get(COOKIE_USER)
 
-    const user: UserType = cookieUser?.value ? JSON.parse(cookieUser.value) : null
-    return user
+    if (!cookieUser) return
+    const decrypted = decryptCookieValue(cookieUser?.value)
+    if (!decrypted) return
+    const customer = JSON.parse(decrypted) as CustomerType
+
+    console.log('CUSTOMER_______', customer)
+    
+    return customer
 }
 
-export async function setCookieUser(user: UserType) {
+export async function setCookieUser(user: Customer) {
     const cookieStore = cookies()
-    cookieStore.set(COOKIE_USER, JSON.stringify(user))
+
+    const currentDate = new Date()
+    const newDate = new Date(currentDate.getTime() + (ONE_DAY * 30))
+
+    const cookieUser: CustomerType = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        isDelete: user.isDelete,
+        expiredAt: newDate,
+    }
+
+    const hashedValue = encryptCookieValue(JSON.stringify(cookieUser))
+
+    cookieStore.set(COOKIE_USER, hashedValue)
     return true
 }
 

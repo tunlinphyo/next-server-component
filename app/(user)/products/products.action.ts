@@ -2,9 +2,6 @@
 
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
 import { PER_PAGE } from "@/libs/const"
-import { GET, GET_ONE, QUERY } from "@/libs/db"
-import { ProductClassType, ProductType, VariantType } from "@/libs/definations"
-import { wait } from "@/libs/utils"
 import { revalidatePath } from 'next/cache'
 import { getUser } from "../user.actions"
 import { createCartItem, getCart, getCartItem, updateCartItem } from "../cart.server"
@@ -14,8 +11,8 @@ import { Prisma } from "@prisma/client"
 import { ProductWithPriceAndStock } from "@/app/admin/(admin)/product/products/products.interface"
 
 
-export async function getProductPageLength(key: string) {
-    const count = await prisma.product.count({
+export async function getProductPageLength(key: string, categoryId?: number) {
+    const query: Prisma.ProductCountArgs = {
         where: {
             AND: [
                 { isDelete: false },
@@ -26,12 +23,22 @@ export async function getProductPageLength(key: string) {
                     }
                 }
             ],
-        }
-    })
+        },
+    }
+    if (categoryId) {
+        (query.where?.AND as any[]).push({
+            categories: { 
+                some: { 
+                    categoryId   
+                }
+            }
+        })
+    }
+    const count = await prisma.product.count(query)
     return Math.ceil(count / PER_PAGE)
 }
 
-export async function getProducts(page: number, key: string ) {
+export async function getProducts(page: number, key: string, categoryId?: number) {
     const index = page - 1
     const start = index ? index * PER_PAGE : 0
     const query: Prisma.ProductFindManyArgs = {
@@ -60,6 +67,15 @@ export async function getProducts(page: number, key: string ) {
         take: PER_PAGE,
         orderBy: { createDate: "desc" }
     }
+    if (categoryId) {
+        (query.where?.AND as any[]).push({
+            categories: { 
+                some: { 
+                    categoryId   
+                }
+            }
+        })
+    }
     const result = await prisma.product.findMany(query) as ProductWithPriceAndStock[]
     for await (const product of result) {
         const { stockTotal, minPrice, maxPrice } = getStockAndPrices(product.productClasses)
@@ -78,10 +94,15 @@ export async function addToCart(prevState: any, formData: FormData) {
 
     if (user) {
         const cart = await getCart(user.id)
+        if (!cart) return { code: 'Cart could not find' }
         try {
-            const cartItem = await getCartItem(cart.id, class_id)
+            const cartItem = await getCartItem(class_id)
             if (cartItem) {
-                await updateCartItem({ ...cartItem, quantity: cartItem.quantity + 1 })
+                await updateCartItem({ 
+                    id: cartItem.id, 
+                    productClassId: cartItem.productClassId,
+                    quantity: cartItem.quantity + 1 
+                })
             } else {
                 await createCartItem(cart.id, class_id, 1)
             }
@@ -91,7 +112,7 @@ export async function addToCart(prevState: any, formData: FormData) {
     } else {
         let carts = await getCookieCartItems()
         const is = carts.find(item => item.id == class_id)
-        const productClass = await GET_ONE<ProductClassType>('product_class', { id: class_id, isDelete: false })
+        const productClass = await prisma.productClass.findUnique({ where: { id: class_id } })
         if (!productClass) return { code: 'Product could not find' }
         if (!productClass.quantity) return { code: 'Out of stock' }
 

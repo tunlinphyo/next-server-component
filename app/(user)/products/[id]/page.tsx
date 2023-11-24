@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             url: `${process.env.APP_URL}${product.id}`,
             siteName: 'Shoppy',
             images: product.images?.map(img => ({
-                url: `${process.env.APP_URL}${img}`
+                url: `${process.env.APP_URL}${img.imgUrl}`
             })),
             locale: 'en_US',
             type: 'website',
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             siteId: '1467726470533754880',
             creator: '@tun',
             creatorId: '1467726470533754880',
-            images: product.images,
+            images: product.images.map(item => item.imgUrl),
         },
         robots: {
             nocache: true,

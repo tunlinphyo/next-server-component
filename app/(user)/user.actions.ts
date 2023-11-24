@@ -1,18 +1,15 @@
 'use server'
 
-import { wait } from "@/libs/utils"
-import { UserType } from "@/libs/definations"
-import { getCart, getCartItems, handleUserCart } from "./cart.server"
+import { getCart, getCountCartItems, handleUserCart } from "./cart.server"
 import { redirect } from "next/navigation"
 import { clearCookieCart, clearCookieUser, getCookieCartItems, getCookieUser, setCookieUser } from "./cookie.server";
+import { Customer } from "@prisma/client"
 
 export async function isLogined() {
-    await wait()
     return !!(await getCookieUser())
 }
 
 export async function getUser() {
-    await wait()
     return await getCookieUser()
 }
 
@@ -21,9 +18,8 @@ export async function getCartItemCount() {
 
     if (user) {
         const cart = await getCart(user.id)
-        const cartItems = await getCartItems(cart.id)
-        console.log('CART_COUNT', cart)
-        return cartItems.reduce((acc, item) => acc + item.quantity, 0)
+        if (!cart) return 0
+        return await getCountCartItems(cart.id)
     } else {
         const cartItems = await getCookieCartItems()
         if (!cartItems.length) return 0
@@ -31,9 +27,9 @@ export async function getCartItemCount() {
     }
 }
 
-export async function handleSignIn(user: UserType) {
-    setCookieUser(user)
-    await handleUserCart(user.id)
+export async function handleSignIn(customer: Customer) {
+    setCookieUser(customer)
+    await handleUserCart(customer.id)
     clearCookieCart()
 }
 

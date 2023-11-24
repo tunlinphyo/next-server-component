@@ -5,6 +5,8 @@ import { useFormState, useFormStatus } from "react-dom"
 import { onCustomerCreate } from "../customers.actions"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { AvatarUpload } from "@/components/admin/form/files/files.client"
+import { useEffect } from "react"
+import { appToast } from "@/libs/toasts"
 
 const initState = {
     name: '',
@@ -15,6 +17,11 @@ const initState = {
 
 export function CustomerCreateForm() {
     const [ state, onAction ] = useFormState(onCustomerCreate, initState)
+
+    useEffect(() => {
+        if (state.message) appToast(state.message)
+    }, [ state ])
+
     return (
         <Form action={onAction} footer={
             <FormFooter>

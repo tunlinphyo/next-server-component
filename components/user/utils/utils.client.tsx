@@ -1,6 +1,6 @@
 'use client'
 
-import { ChildrenProp, UserNavType, UserType } from '@/libs/definations'
+import { ChildrenProp, UserNavType } from '@/libs/definations'
 import styles from './utils.module.css'
 import { ArrowLeftOnRectangleIcon, Bars3BottomLeftIcon, ShoppingBagIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import ProfilePicture from '@/app/assets/icons/profile.svg'
+import { CustomerType } from '@/libs/prisma/definations'
 
 type PageHeaderProps = ChildrenProp & {
     navigations: React.ReactNode;
@@ -112,12 +113,12 @@ export function CartIcon({ count }: { count: number }) {
     )
 }
 
-export function UserLink({ user }: { user?: UserType }) {
+export function UserLink({ user }: { user?: CustomerType }) {
     return (
         user ? (
             <Link href="/account" className={clsx(styles.userIcon, styles.withUser)}>
                 <Image
-                    src={ProfilePicture}
+                    src={user.avatar ?? ProfilePicture}
                     alt={user.name}
                     width={38}
                     height={38}

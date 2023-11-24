@@ -10,9 +10,10 @@ import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from '@
 import React from 'react';
 import { TextSkeleton } from '@/components/user/utils/utils.client';
 import { Budge } from '@/components/user/utils/utils.client';
+import { ProductClassWithVariants, ProductDetail } from '../product.interface';
 
 export function ProductDetail({ product, minPrice, maxPrice }: {
-    product: ProductType;
+    product: ProductDetail;
     minPrice: number;
     maxPrice: number;
 }) {
@@ -22,8 +23,8 @@ export function ProductDetail({ product, minPrice, maxPrice }: {
             <ul className={styles.categories}>
                 {
                     product.categories?.map(item => (
-                        <li key={item.id}>
-                            <Budge>{ item.name }</Budge>
+                        <li key={item.categoryId}>
+                            <Budge>{ item.category.name }</Budge>
                         </li>
                     ))
                 }
@@ -47,7 +48,7 @@ export function ProductDetail({ product, minPrice, maxPrice }: {
     )
 }
 
-export function ProductActions({ productClass, stock }: { productClass: ProductClassType[]; stock: number }) {
+export function ProductActions({ productClass, stock }: { productClass: ProductClassWithVariants[]; stock: number }) {
     const router = useRouter()
 
     return (
@@ -79,9 +80,8 @@ export function TitleSkeleton() {
     )
 }
 
-export function ProductClassTable({ product, productClass }: { 
-    product: ProductType; 
-    productClass: ProductClassType[] 
+export function ProductClassTable({ product }: { 
+    product: ProductDetail;
 }) {
     return (
         <div className={styles.classContainer}>
@@ -93,7 +93,7 @@ export function ProductClassTable({ product, productClass }: {
                 </TableHeader>
                 <TableBody>
                     {
-                        productClass.map(item => (
+                        product.productClasses.map(item => (
                             <TableRow key={item.id}>
                                 <TableData>{ item.variant1?.name }</TableData>
                                 <TableData>{ item.variant2?.name }</TableData>

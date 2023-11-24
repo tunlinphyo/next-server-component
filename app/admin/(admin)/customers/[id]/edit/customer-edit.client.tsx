@@ -3,9 +3,9 @@
 import { Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
 import { useFormState, useFormStatus } from "react-dom"
 import { onCustomerEdit } from "../../customers.actions"
-import { CustomerType } from "@/libs/definations"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { AvatarUpload } from "@/components/admin/form/files/files.client"
+import { Customer } from "@prisma/client"
 
 const initState = {
     name: '',
@@ -14,7 +14,7 @@ const initState = {
     confirm: ''
 }
 
-export function CustomerEditForm({ customer }: { customer: CustomerType }) {
+export function CustomerEditForm({ customer }: { customer: Customer }) {
     const [ state, onAction ] = useFormState(onCustomerEdit, initState)
     return (
         <Form action={onAction} footer={

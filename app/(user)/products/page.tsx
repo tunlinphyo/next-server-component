@@ -17,18 +17,20 @@ export default async function Home({ searchParams }: {
     searchParams?: {
         page?: string;
         query?: string;
+        category?: string;
     }
 }) {
     const query = searchParams?.query || ''
+    const category = Number(searchParams?.category) ?? undefined
     const page = Number(searchParams?.page) ?? 1
     return (
         <PageContainer>
             <PageTitle title='Product List' />
-            <Suspense key={page + query} fallback={<ProductsSkeleton count={6} />}>
-                <ServerProducts page={page} query={query} />
+            <Suspense key={page + query + category} fallback={<ProductsSkeleton count={6} />}>
+                <ServerProducts page={page} query={query} categoryId={category} />
             </Suspense>
             <Suspense fallback={<PaginationSkileton />}>
-                <Pagination action={getProductPageLength.bind(null, query)} />
+                <Pagination action={getProductPageLength.bind(null, query, category)} />
             </Suspense>
         </PageContainer>
     )

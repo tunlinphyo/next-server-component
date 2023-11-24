@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import styles from './cart.module.css'
-import { CartItemType, CartType } from "@/libs/definations"
 import Image from 'next/image'
 import { ArrowLongRightIcon, ArrowPathIcon, ArrowRightOnRectangleIcon, MinusIcon, PhotoIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { formatPrice } from '@/libs/utils'
@@ -14,6 +13,7 @@ import clsx from 'clsx'
 import { usePathname, useSearchParams } from 'next/navigation'
 import EmptyImage from '@/app/assets/icons/empty.svg'
 import { useToast } from '@/components/user/toast/toast.index'
+import { CartItemWithDetail, CartWithItems, CookieCartItem, CookieCartWithItems } from '../../cart.interface'
 
 export function CartForm({ isLogined, isCartItems }: { isLogined: boolean, isCartItems: boolean }) {
     const pathname = usePathname()
@@ -43,9 +43,9 @@ export function CartForm({ isLogined, isCartItems }: { isLogined: boolean, isCar
     )
 }
 
-export function CartList({ cart, list }: { cart?: CartType, list: CartItemType[] }) {
+export function CartList({ cart }: { cart: CartWithItems | CookieCartWithItems }) {
 
-    if (!list.length) return (
+    if (!cart.cartItems.length) return (
         <EmptyCard image={EmptyImage} text="Empty Cart">
             <Link href="/products" className="primary-button">
                 Go to Products <ArrowLongRightIcon />
@@ -56,7 +56,7 @@ export function CartList({ cart, list }: { cart?: CartType, list: CartItemType[]
     return (
         <ul className={styles.cartList}>
             {
-                list.map(item => (
+                cart.cartItems.map(item => (
                     <li key={item.id}>
                         <CartItem item={item} />
                     </li>
@@ -66,7 +66,7 @@ export function CartList({ cart, list }: { cart?: CartType, list: CartItemType[]
     )
 }
 
-export function CartItem({ item }: { item: CartItemType }) {
+export function CartItem({ item }: { item: CartItemWithDetail | CookieCartItem }) {
     const product = item.product
     const productClass = item.productClass
     return (
@@ -74,7 +74,7 @@ export function CartItem({ item }: { item: CartItemType }) {
             <Link href={`/products/${product.id}`} className={styles.productImage}>
                 {
                     (product.images && product.images.length)
-                        ? <Image src={product.images[0]} width={200} height={200} alt='product image' />
+                        ? <Image src={product.images[0].imgUrl} width={200} height={200} alt='product image' />
                         : <PhotoIcon />
                     }
             </Link>

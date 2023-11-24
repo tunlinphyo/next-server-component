@@ -6,7 +6,7 @@ import { LoginSchema } from "./auth.schema"
 import { User } from "@prisma/client"
 import { UserType } from "@/libs/prisma/definations"
 import prisma from "@/libs/prisma"
-import { decryptCookieValue, encryptCookieValue } from "@/auth"
+import { encryptCookieValue } from "@/auth"
 import { ONE_DAY } from "@/libs/const"
 const bcrypt = require('bcrypt')
 
@@ -40,7 +40,7 @@ export async function handleSignIn(prevState: any, formData: FormData) {
     const hashedValue = encryptCookieValue(JSON.stringify(cookieUser))
 
     const cookieStore = cookies()
-    cookieStore.set('admin', hashedValue, { secure: false })
+    cookieStore.set('admin', hashedValue)
     redirect('/admin')
 }
 

@@ -5,12 +5,12 @@ import { deleteCustomer } from "./customers.actions"
 import { LinkIcon } from "@/components/admin/button/button.client"
 import { PencilIcon } from "@heroicons/react/24/outline"
 import { FromDeleteButton, IdContainer } from "@/components/admin/form/form.client"
-import { CustomerType } from "@/libs/definations"
 import { formatDate } from '../../../../libs/utils';
 import { ThumbnailImage } from "@/components/admin/image/image.client"
 import styles from './customers.module.css'
+import { Customer } from "@prisma/client"
 
-export function CustomerTable({ customers }: { customers: CustomerType[] }) {
+export function CustomerTable({ customers }: { customers: Customer[] }) {
     return (
         <Table>
             <colgroup>
@@ -53,10 +53,10 @@ export function CustomerTable({ customers }: { customers: CustomerType[] }) {
     )
 }
 
-export function CustomerData({ customer }: { customer: CustomerType }) {
+export function CustomerData({ customer }: { customer: Customer }) {
     return (
         <div className={styles.customerData}>
-            <ThumbnailImage image={customer.avatar} />
+            <ThumbnailImage image={customer.avatar || ''} />
             <h4 className={styles.customerName}>{ customer.name }</h4>
         </div>
     )

@@ -3,7 +3,6 @@
 import clsx from 'clsx'
 import { Product } from '../products/products.client'
 import styles from './home.module.css'
-import { CategoryType, ProductType } from "@/libs/definations"
 import Link from 'next/link'
 import { ArrowRightIcon, TicketIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
@@ -11,6 +10,7 @@ import IntroImg from '@/app/assets/icons/welcome.svg'
 import { useToast } from '@/components/user/toast/toast.index'
 import { ProductWithPriceAndStock } from '@/app/admin/(admin)/product/products/products.interface'
 import { Category } from '@prisma/client'
+import { useXScroll } from './home.utils'
 
 export function SearchBar() {
     const { showToast } = useToast()
@@ -45,10 +45,10 @@ export function Categories({ categories }: { categories: Category[] }) {
 }
 
 export function ProductSlide({ products }: { products: ProductWithPriceAndStock[] }) {
-
+    const { elemRef, handleScroll } = useXScroll()
     return (
         <div className={styles.latestProducts}>
-            <div className={styles.slideContainer}>
+            <div ref={elemRef} className={styles.slideContainer} onScroll={handleScroll}>
                 <div className={clsx(styles.slideItem, styles.slideItemStart)}>
                     <div className={styles.introCard}>
                         <div className={styles.introMedia}>

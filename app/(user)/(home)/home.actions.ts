@@ -27,7 +27,6 @@ export async function getHomeProduct() {
                 }
             }
         },
-        skip: 0,
         take: 5,
         orderBy: { createDate: "desc" }
     }

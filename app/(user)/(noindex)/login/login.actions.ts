@@ -2,11 +2,11 @@
 
 import { wait } from "@/libs/utils"
 import { LoginSchema } from "./login.schema"
-import { GET_ONE } from "@/libs/db"
-import { UserType } from "@/libs/definations"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { handleSignIn } from "../../user.actions"
+import prisma from "@/libs/prisma"
+const bcrypt = require('bcrypt')
 
 export async function onLogin(prevProp: any, formData: FormData) {
     await wait()
@@ -17,14 +17,15 @@ export async function onLogin(prevProp: any, formData: FormData) {
         return { message: 'Invalid credentials' }
     }
 
-    const user = await GET_ONE<UserType>('users', { email: result.data.email, isDelete: false })
-    if (!user) return { message: 'Invalid email' }
-    if (user.password !== result.data.password) return { message: 'Invalid passowrd' }
-    console.log('USER', user)
+    const customer = await prisma.customer.findUnique({ where: { email: result.data.email } })
+    if (!customer) return { message: 'Invalid email' }
+    const passwordsMatch = await bcrypt.compare(result.data.password, customer.password);
+    if (!passwordsMatch) return { message: 'Invalid passowrd' }
+    console.log('USER', customer)
 
     const redirectUrl = String(formData.get('callback_url'))
 
-    await handleSignIn(user)
+    await handleSignIn(customer)
 
     if (redirectUrl) {
         revalidatePath(redirectUrl)

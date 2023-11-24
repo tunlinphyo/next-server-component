@@ -9,12 +9,11 @@ export async function ServerCart() {
         getCartData(),
         isLogined()
     ])
-    const { cart, cartItems, errors } = cartData
 
     return (
         <>
-            <CartList cart={cart} list={cartItems} />
-            <CartForm isLogined={is} isCartItems={!!cartItems.length} />
+            <CartList cart={cartData} />
+            <CartForm isLogined={is} isCartItems={!!cartData.cartItems.length} />
         </>
     )
 }

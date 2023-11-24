@@ -1,78 +1,69 @@
 'use server'
 
-import { getZodErrors, wait } from "@/libs/utils"
+import { getZodErrors } from "@/libs/utils"
 import { CreateCustomerSchema, EditCustomerSchema } from "./customers.schema"
-import { CustomerType, GenericObject } from "@/libs/definations"
-import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { PER_PAGE } from "@/libs/const"
+import { PASSWORD, PER_PAGE } from "@/libs/const"
 import { deleteImage } from "@/libs/images"
+import { Customer, Prisma } from "@prisma/client"
+import prisma from "@/libs/prisma"
+const bcrypt = require('bcrypt')
 
 export async function getTotalCustomer() {
-    await wait()
-
-    const customers = await GET<CustomerType>('customers', { isDelete: false })
-
-    return customers.length
+    const query: Prisma.CustomerCountArgs = {
+        where: { isDelete: false },
+    }
+    return await prisma.customer.count(query)
 }
 
 export async function getCustomersPageLength() {
-    await wait()
+    const query: Prisma.CustomerCountArgs = {
+        where: { isDelete: false },
+    }
 
-    const customers = await GET<CustomerType>('customers', { isDelete: false })
-    return Math.ceil(customers.length / PER_PAGE)
+    const count = await prisma.customer.count(query)
+    return Math.ceil(count / PER_PAGE)
 }
 
 export async function getCustomers(page: number = 1) {
-    await wait()
-
-    const customers = await GET<CustomerType>('customers', { isDelete: false })
     const index = page - 1
     const start = index ? index * PER_PAGE : 0
-    const end = start + PER_PAGE
-    const sortedCustomers = customers.sort((a, b) => {
-        if (a.createDate < b.createDate) return 1
-        if (a.createDate > b.createDate) return -1
-        return 0
-    })
-    return sortedCustomers.slice(start, end)
+    const query: Prisma.CustomerFindManyArgs = {
+        where: { isDelete: false },
+        skip: start,
+        take: PER_PAGE,
+        orderBy: { createDate: "desc" }
+    }
+
+    return await prisma.customer.findMany(query)
 }
 
 export async function getCustomer(id: number) {
-    await wait()
-
-    return await GET_ONE<CustomerType>('customers', { id, isDelete: false })
+    const customer = await prisma.customer.findUnique({ where: { id, isDelete: false } })
+    if (!customer) return
+    customer.password = PASSWORD
+    return customer
 }
 
 export async function deleteCustomer(id: number) {
-    await wait()
-
     try {
-        await DELETE<CustomerType>('customers', id)
-        revalidatePath('/admin/customers')
-        redirect('/admin/customers')
+        await prisma.customer.update({
+            where: { id },
+            data: { isDelete: true }
+        })
     } catch(e) {
         console.log('CAN REDIRECT ON SELF PAGE', e)
     }
+    revalidatePath('/admin/customers')
+    redirect('/admin/customers')
 }
 
-export async function onCustomerCreate(prevState: any, formData: FormData) {
-    await wait()
-
+export async function onCustomerCreate(prevState: any, formData: FormData): Promise<Record<string, string>> {
     const result = CreateCustomerSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
         return getZodErrors(result.error.issues)
-    }
-
-    const isName = await GET_ONE<CustomerType>('customers', { name: result.data.name, isDelete: false })
-    const isEmail = await GET_ONE<CustomerType>('customers', { email: result.data.email, isDelete: false })
-    if (isEmail || isName) {
-        const errors: GenericObject = {}
-        if (isEmail) errors.email = 'Customer email is already in used'
-        if (isName) errors.name = 'Customer name is already in used'
-        return errors
     }
 
     const imagesToDelete = formData.getAll('delete_images') as string[]
@@ -80,22 +71,27 @@ export async function onCustomerCreate(prevState: any, formData: FormData) {
         await deleteImage(img)
     }
 
-    const createCustomer = {
-        ...result.data,
-        confirm: undefined
+    try {
+        const hashedPassword = await bcrypt.hash(result.data.password, 10)
+        const bodyData: Prisma.CustomerCreateInput = {
+            avatar: result.data.avatar,
+            name: result.data.name,
+            email: result.data.email,
+            password: hashedPassword
+        }
+        const customer = await prisma.customer.create({
+            data: bodyData
+        })
+        console.log('CUSTOMER_UPDATED', customer)
+    } catch (error: any) {
+        console.log(error)
+        return { message: error.message }
     }
-
-    const newCustomer = await POST<CustomerType>('customers', createCustomer)
-    console.log('CUSTOMER_UPDATED', newCustomer)
     revalidatePath('/admin/customers')
     redirect('/admin/customers')
 }
 
-export async function onCustomerEdit(prevState: any, formData: FormData) {
-    await wait()
-
-    console.log('FORM_DATA', Object.fromEntries(formData))
-
+export async function onCustomerEdit(prevState: any, formData: FormData): Promise<Record<string, string>> {
     const result = EditCustomerSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
@@ -103,30 +99,30 @@ export async function onCustomerEdit(prevState: any, formData: FormData) {
     }
     const id = result.data.id
 
-    console.log('RESULT', result)
-
-    const isName = await GET_ONE<CustomerType>('customers', { name: result.data.name, isDelete: false })
-    const isEmail = await GET_ONE<CustomerType>('customers', { email: result.data.email, isDelete: false })
-    console.log(isEmail, isName, id)
-    if ((isEmail && isEmail.id !== id) || (isName && isName.id !== id)) {
-        const errors: GenericObject = {}
-        if (isEmail && isEmail.id !== id) errors.email = 'Customer email is already in used'
-        if (isName && isName.id !== id) errors.name = 'Customer name is already in used'
-        return errors
-    }
-
     const imagesToDelete = formData.getAll('delete_images') as string[]
     for await (const img of imagesToDelete) {
         await deleteImage(img)
     }
 
-    const editCustomer = {
-        ...result.data,
-        confirm: undefined
+    try {
+        const bodyData: Prisma.CustomerUpdateInput = {
+            avatar: result.data.avatar,
+            name: result.data.name,
+            email: result.data.email
+        }
+        if (result.data.password !== PASSWORD) {
+            const hashedPassword = await bcrypt.hash(result.data.password, 10)
+            bodyData.password = hashedPassword
+        }
+        const customer = await prisma.customer.update({
+            where: { id: result.data.id },
+            data: bodyData
+        })
+        console.log('CUSTOMER_UPDATED', customer)
+    } catch (error: any) {
+        console.log(error)
+        return { message: error.message }
     }
-
-    const updatedCustomer = await PATCH<CustomerType>('customers', editCustomer)
-    console.log('CUSTOMER_UPDATED', updatedCustomer)
     revalidatePath('/admin/customers')
     redirect('/admin/customers')
 }

@@ -1,115 +1,116 @@
 'use server'
 
-import { DELETE, GET, GET_ONE, PATCH, POST } from "@/libs/db"
-import { CartItemType, CartType, CookieCartType, DBCartItemType, ProductClassType, ProductType, VariantType } from "@/libs/definations"
+import { CookieCartType } from "@/libs/definations"
 import { getCookieCartItems } from "./cookie.server"
+import prisma from "@/libs/prisma"
+import { CartItem } from "@prisma/client"
+import { CartWithItems } from "./cart.interface"
 
 
-export async function getCart(userId: number) {
-    const cart = await GET_ONE<CartType>('carts', { user_id: userId, isDelete: false })
+export async function getCart(customerId: number) {
+    const cart = await prisma.cart.findUnique({
+        where: { customerId },
+        include: {
+            cartItems: true,
+        }
+    })
 
-    if (!cart) return createCart(userId)
+    if (!cart) return createCart(customerId)
     return cart
 }
 
-export async function createCart(userId: number) {
-    const newCart: Partial<CartType> = {
-        user_id: userId,
-    }
+export async function getCartItems(cartId: number) {
+    return await prisma.cartItem.findMany({
+        where: { cartId }
+    })
+}
 
-    const cart = await POST<CartType>('carts', newCart)
-    return cart
+export async function createCart(customerId: number) {
+    try {
+        const cart = await prisma.cart.create({
+            data: { customerId }
+        })
+        return cart
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export async function createCartItem(cartId: number, classId: number, quantity: number) {
-    const productClass = await GET_ONE<ProductClassType>('product_class', { id: classId, isDelete: false })
+    const productClass = await prisma.productClass.findUnique({
+        where: { id: classId }
+    })
 
     if (!productClass) throw new Error('Product class could not find')
     if (!productClass.quantity) throw new Error('Product stock is zero')
 
     const updatedQuantity = Math.min(productClass.quantity, quantity)
-    const newCartItem: Partial<DBCartItemType> = {
-        cart_id: cartId,
-        product_id: productClass.product_id,
-        product_class_id: productClass.id,
-        quantity: updatedQuantity,
-    }
-    return await POST<DBCartItemType>('cart_items', newCartItem)
+    return await prisma.cartItem.create({
+        data: {
+            cartId,
+            productId: productClass.productId,
+            productClassId: productClass.id,
+            quantity: updatedQuantity,
+        }
+    })
 }
 
-export async function getCartItem(cart_id: number, product_class_id: number) {
-    return await GET_ONE<DBCartItemType>('cart_items', { cart_id, product_class_id })
+export async function getCartItem(productClassId: number) {
+    return await prisma.cartItem.findFirst({
+        where: {
+            productClassId
+        }
+    })
 }
 
-export async function updateCartItem(data: Partial<DBCartItemType>) {
-    const productClass = await GET_ONE<ProductClassType>('product_class', { id: data.product_class_id, isDelete: false })
+export async function getCountCartItems(cartId: number) {
+    const count = await prisma.cartItem.count({
+        where: { cartId }
+    })
+    return count
+}
+
+export async function updateCartItem(data: Partial<CartItem>) {
+    const productClass = await prisma.productClass.findUnique({
+        where: { id: data.productClassId }
+    })
     if (productClass && data.quantity) {
         const updatedQuantity = Math.min(productClass.quantity, data.quantity)
         data = { ...data, quantity: updatedQuantity }
     }
-    return await PATCH<DBCartItemType>('cart_items', data)
-}
-
-export async function getCartItems(cart_id: number) {
-    const dbItems = await GET<DBCartItemType>('cart_items', { cart_id })
-
-    return dbItems || []
+    return await prisma.cartItem.update({
+        where: { id: data.id },
+        data
+    })
 }
 
 export async function removeCartItem(id: number) {
-    return await DELETE<CartItemType>('cart_items', id, true)
+    return await prisma.cartItem.delete({
+        where: { id }
+    })
 }
 
-export async function getCartItemsWithDetails(cart_id: number) {
-    const errors: string[] = []
-    const dbItems = await GET<DBCartItemType>('cart_items', { cart_id })
-
-    const cartItems = []
-    for await (const item of dbItems) {
-        const product = await getProduct(item.product_id)
-        const productClass = await getProductClass(item.product_class_id)
-
-        if (!product) errors.push('Product could not find')
-        if (!productClass) errors.push('Product class could not find')
-
-        if (!(productClass?.quantity || 0)) errors.push(`${product?.name} out of stock!`)
-        else if (item.quantity < (productClass?.quantity || 0)) errors.push(`${product?.name} stock not enough!`)
-
-        if (product && productClass && productClass.quantity) {
-            const cartItem = {
-                ...item,
-                quantity: Math.min(productClass.quantity, item.quantity),
-                product: product,
-                productClass: productClass,
-            } as CartItemType
-            cartItems.push(cartItem)
+export async function getCartWithDetails(customerId: number) {
+    return await prisma.cart.findUnique({
+        where: { customerId },
+        include: {
+            cartItems: {
+                include: {
+                    product: {
+                        include: {
+                            images: true,
+                        }
+                    },
+                    productClass: {
+                        include: {
+                            variant1: true,
+                            variant2: true,
+                        }
+                    },
+                }
+            }
         }
-    }
-    return { cartItems, errors }
-}
-
-
-export async function getProduct(id: number) {
-    return await GET_ONE<ProductType>('products', { id, isDelete: false })
-}
-
-export async function getProductClass(id: number, noVariant: boolean = false) {
-    const productClass = await GET_ONE<ProductClassType>('product_class', { id })
-
-    if (!productClass) return
-
-    if (!noVariant) {
-        if (productClass.variant_1_id) {
-            const variant = await GET_ONE<VariantType>('product_variants', { id: productClass.variant_1_id, isDelete: false })
-            productClass.variant1 = variant
-        }
-        if (productClass.variant_2_id) {
-            const variant = await GET_ONE<VariantType>('product_variants', { id: productClass.variant_2_id, isDelete: false })
-            productClass.variant2 = variant
-        }
-    }
-
-    return productClass
+    }) as CartWithItems
 }
 
 export async function handleUserCart(userId: number) {
@@ -117,15 +118,15 @@ export async function handleUserCart(userId: number) {
     if (!cookieCartItems.length) return
 
     let cart = await getCart(userId)
-    const cartItems = await getCartItems(cart.id)
-    _createCartItems(cart.id, cartItems, cookieCartItems)
+    if (cart) _createCartItems(cart.id, cookieCartItems)
 }
 
-async function _createCartItems(cartId: number, cartItems: DBCartItemType[], items: CookieCartType[]) {
+async function _createCartItems(cartId: number, items: CookieCartType[]) {
+    const cartItems = await getCartItems(cartId)
     for await (const item of items) {
         try {
-            const oldItem = cartItems.find(cartItem => cartItem.product_class_id == item.id)
-            const productClass = await GET_ONE<ProductClassType>('product_class', { id: item.id, isDelete: false })
+            const oldItem = cartItems.find(cartItem => cartItem.productClassId == item.id)
+            const productClass = await prisma.productClass.findUnique({ where: { id: item.id } })
             if (!productClass) continue
             if (oldItem) {
                 await updateCartItem({ ...oldItem, quantity: oldItem.quantity + item.quantity })

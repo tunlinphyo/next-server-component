@@ -7,8 +7,8 @@ import { onLogin } from './login.actions'
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
-import { appToast } from '@/libs/toasts'
 import clsx from 'clsx'
+import { useToast } from '@/components/user/toast/toast.index'
 
 const initState = {
     email: '',
@@ -22,9 +22,10 @@ export function LoginForm() {
     const [ state, onAction ] = useFormState(onLogin, initState)
     const params = new URLSearchParams(searchParams)
     const callbackUrl = params.get('callback_url')
+    const { showToast } = useToast()
 
     useEffect(() => {
-        if (state.message) appToast(state.message)
+        if (state.message) showToast(state.message)
     }, [ state ])
 
     return (
@@ -39,14 +40,14 @@ export function LoginForm() {
                 <input type="hidden" name="callback_url" defaultValue={callbackUrl || ''} />
                 <Input
                     name="email"
-                    defaultValue='user@gmail.com'
+                    defaultValue='customer@gmail.com'
                 >
                     Email
                 </Input>
                 <Input
                     type="password"
                     name="password"
-                    defaultValue='password'
+                    defaultValue='user@2023'
                 >
                     Password
                 </Input>
