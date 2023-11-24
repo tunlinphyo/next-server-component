@@ -1,9 +1,9 @@
 import { atom, useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 
-const scrollAtom = atom<Record<number, number>>({})
+const scrollAtom = atom<Record<string | number, number>>({})
 
-export function useXScroll(id: number) {
+export function useXScroll(id: string | number) {
     const elemRef = useRef<HTMLDivElement | null>(null)
     const [scrollX, setScrollX] = useAtom(scrollAtom)
 
@@ -15,9 +15,9 @@ export function useXScroll(id: number) {
 
     const handleScroll = (event: React.MouseEvent<HTMLDivElement>) => {
         const target = event.target as HTMLDivElement
-        setScrollX({ 
-            ...scrollX, 
-            [id]: target.scrollLeft 
+        setScrollX({
+            ...scrollX,
+            [id]: target.scrollLeft
         })
     }
 

@@ -9,6 +9,8 @@ import { getCookieCartItems, setCookieCartItems } from "../cookie.server"
 import prisma from "@/libs/prisma"
 import { Prisma } from "@prisma/client"
 import { ProductWithPriceAndStock } from "@/app/admin/(admin)/product/products/products.interface"
+import { FavouriteFormData } from "./product.interface"
+import { wait } from "@/libs/utils"
 
 
 export async function getProductPageLength(key: string, categoryId?: number) {
@@ -27,9 +29,9 @@ export async function getProductPageLength(key: string, categoryId?: number) {
     }
     if (categoryId) {
         (query.where?.AND as any[]).push({
-            categories: { 
-                some: { 
-                    categoryId   
+            categories: {
+                some: {
+                    categoryId
                 }
             }
         })
@@ -69,9 +71,9 @@ export async function getProducts(page: number, key: string, categoryId?: number
     }
     if (categoryId) {
         (query.where?.AND as any[]).push({
-            categories: { 
-                some: { 
-                    categoryId   
+            categories: {
+                some: {
+                    categoryId
                 }
             }
         })
@@ -98,10 +100,10 @@ export async function addToCart(prevState: any, formData: FormData) {
         try {
             const cartItem = await getCartItem(class_id)
             if (cartItem) {
-                await updateCartItem({ 
-                    id: cartItem.id, 
+                await updateCartItem({
+                    id: cartItem.id,
                     productClassId: cartItem.productClassId,
-                    quantity: cartItem.quantity + 1 
+                    quantity: cartItem.quantity + 1
                 })
             } else {
                 await createCartItem(cart.id, class_id, 1)
@@ -132,4 +134,42 @@ export async function addToCart(prevState: any, formData: FormData) {
 
     revalidatePath(pathname, "page")
     return { code: 'Success!' }
+}
+
+export async function getFavourites(customerId: number, productIds: number[]) {
+    const favourites = await prisma.customerFavourite.findMany({
+        where: {
+            customerId,
+            productId: {
+                in: productIds
+            }
+        }
+    })
+    return favourites.map(item => item.productId)
+}
+
+export async function setFabourite(favData: FavouriteFormData) {
+    try {
+        if (favData.is) {
+            await prisma.customerFavourite.create({
+                data: {
+                    customerId: favData.customerId,
+                    productId: favData.productId
+                }
+            })
+        } else {
+            await prisma.customerFavourite.delete({
+                where: {
+                    customerId_productId: {
+                        customerId: favData.customerId,
+                        productId: favData.productId
+                    }
+                }
+            })
+        }
+        revalidatePath(favData.pathname)
+        return { code:  favData.is ? 'Added to favourite' : 'Removed from favourite' }
+    } catch(e) {
+        return { code: 'Error' }
+    }
 }

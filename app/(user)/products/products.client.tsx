@@ -2,41 +2,51 @@
 
 import styles from './products.module.css'
 import Image from 'next/image'
-import { ArrowPathIcon, ListBulletIcon, NoSymbolIcon, PhotoIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon, HeartIcon, ListBulletIcon, NoSymbolIcon, PhotoIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
 import { formatPrice } from '@/libs/utils'
-import { TextSkeleton } from '@/components/user/utils/utils.client'
+import { EmptyCard, TextSkeleton } from '@/components/user/utils/utils.client'
 import Link from 'next/link'
-import { useFormState, useFormStatus } from 'react-dom'
+import { createPortal, useFormState, useFormStatus } from 'react-dom'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { addToCart } from './products.action'
+import { addToCart, setFabourite } from './products.action'
 import clsx from 'clsx'
 import { BottomSheetContainer, Modal } from '@/components/user/modals/modals.client'
 import { usePathname } from 'next/navigation'
 import { useToast } from '@/components/user/toast/toast.index'
 import { ProductClassWithVariants, ProductWithPriceAndStock } from './product.interface'
+import EmptyImage from '@/app/assets/icons/empty.svg'
+import { HeartIcon as HeartIconSolid } from '@heroicons/react/20/solid'
 
 type AddToCartFormProps = {
     productClass: ProductClassWithVariants[];
 }
 
-export function Products({ products }: { products: ProductWithPriceAndStock[] }) {
+export function Products({ products, withFav }: { products: ProductWithPriceAndStock[], withFav?: boolean }) {
+    if (!products.length) return (
+        <EmptyCard image={EmptyImage} text="No Products" >
+            <Link href={`/products`} className="primary-button">
+                Clear Filters <ArrowPathIcon />
+            </Link>
+        </EmptyCard>
+    )
+
     return (
         <ul className={styles.products}>
             {
                 products.map(product => (
                     <li key={product.id}>
-                        <Product product={product} />
+                        <Product product={product} withFav={withFav} />
                     </li>
                 ))
             }
-            { 
+            {
                 products.length == 1 && <div />
             }
         </ul>
     )
 }
 
-export function Product({ product }: { product: ProductWithPriceAndStock }) {
+export function Product({ product, withFav }: { product: ProductWithPriceAndStock, withFav?: boolean }) {
     return (
         <div className={styles.product}>
             <Link href={`/products/${product.id}`} className={styles.productImage}>
@@ -54,6 +64,7 @@ export function Product({ product }: { product: ProductWithPriceAndStock }) {
                     { product.minPrice != product.maxPrice && formatPrice(product.maxPrice) }
                 </small>
             </Link>
+            { withFav && <FavouriteContainer id={product.id} /> }
             <div className={styles.productAction}>
                 {
                     product.productClasses && product.quantity
@@ -62,6 +73,55 @@ export function Product({ product }: { product: ProductWithPriceAndStock }) {
                 }
             </div>
         </div>
+    )
+}
+
+export function FavouriteContainer({ id }: { id: number }) {
+    return (
+        <div className={styles.favouriteContainer} id={`favourite_${id}`}>
+            <div className={styles.favouriteSkeletom} />
+        </div>
+    )
+}
+
+export function FavouriteForm({ favourite }: { favourite: { productId: number; customerId: number; is: boolean }}) {
+    const [ container, setContainer] = useState<HTMLElement | null>(null)
+    const pathname = usePathname()
+    const { showToast } = useToast()
+    const [ state, onAction ] = useFormState(setFabourite.bind(null, {
+        customerId: favourite.customerId,
+        productId: favourite.productId,
+        is: !favourite.is,
+        pathname
+    }), { code: '' })
+
+    useEffect(() => {
+        setContainer(document.getElementById(`favourite_${favourite.productId}`))
+    }, [])
+
+    useEffect(() => {
+        if (state.code) showToast(state.code)
+    }, [ state ])
+
+    return (
+        container ? createPortal(
+            (
+                <form action={onAction}>
+                    <FavouriteButton is={favourite.is} />
+                </form>
+            ),
+            container,
+            String(favourite.productId)
+        ) : null
+    )
+}
+
+function FavouriteButton({ is }: { is: boolean }) {
+    const { pending } = useFormStatus()
+    return (
+        <button className={styles.favourite} disabled={pending}>
+            { pending ? <ArrowPathIcon className="icon-loading" /> : (is ? <HeartIconSolid /> : <HeartIcon />) }
+        </button>
     )
 }
 

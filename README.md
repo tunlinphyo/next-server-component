@@ -1,13 +1,16 @@
 ## TODO
 
-- [ ] Add serch and filter to products (admin)
+- [x] Add serch and filter to products (admin)
 - [ ] Add sort to category (admin)
 - [ ] Add sort to variant (admin)
-- [ ] Connect to Postgres Database
-- [ ] Use Nextauth for Authentication
+- [x] Connect to Postgres Database
+- [x] Add Authentication
 - [x] Implement user pages (user)
 - [ ] Add Favourite
 - [ ] Checkout process
+- [ ] User address (admin, user)
+- [ ] Forgot Password
+- [ ] User register (user)
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).

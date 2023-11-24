@@ -22,7 +22,7 @@ export async function getLatestProducts() {
             { createDate: "desc" }
         ]
     }) as ProductWithPriceAndStock[]
-    const getDate = (product: Product) => product.updateDate || product.createDate
+    const getDate = (product: Product) => product ? product.updateDate || product.createDate : null
     for await (const product of products) {
         const { stockTotal, minPrice, maxPrice } = getStockAndPrices(product.productClasses)
         product.minPrice = minPrice

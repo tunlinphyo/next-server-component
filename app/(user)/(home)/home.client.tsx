@@ -44,7 +44,7 @@ export function Categories({ categories }: { categories: Category[] }) {
     )
 }
 
-export function ProductSlide({ products }: { products: ProductWithPriceAndStock[] }) {
+export function ProductSlide({ products, withFav }: { products: ProductWithPriceAndStock[], withFav: boolean }) {
     const { elemRef, handleScroll } = useXScroll()
     return (
         <div className={styles.latestProducts}>
@@ -62,7 +62,7 @@ export function ProductSlide({ products }: { products: ProductWithPriceAndStock[
                 {
                     products.map(item => (
                         <div className={styles.slideItem} key={item.id}>
-                            <Product product={item} />
+                            <Product product={item} withFav={withFav} />
                         </div>
                     ))
                 }

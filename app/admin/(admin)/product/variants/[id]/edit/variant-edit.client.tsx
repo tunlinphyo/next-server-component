@@ -6,6 +6,9 @@ import { onVariantEdit } from "../../variant.action"
 import { DisplayInput, Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { VariantWithParent } from "../../variant.interface"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+import { appToast } from "@/libs/toasts"
 
 
 const initState = {
@@ -16,6 +19,15 @@ const initState = {
 
 export function VariantEditForm({ variant }: { variant: VariantWithParent }) {
     const [ state, onAction ] = useFormState(onVariantEdit, initState)
+    const { back } = useRouter()
+
+    useEffect(() => {
+        if (state.back) {
+            appToast('Success')
+            back()
+        }
+    }, [ state ])
+
     return (
         <Form action={onAction} footer={
             <FormFooter>

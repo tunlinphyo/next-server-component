@@ -50,7 +50,7 @@ export function DashboardSummarySkileton({ icon, title }: { icon: any; title: st
     )
 }
 
-export function ProductTable({ lastDate, products }: { lastDate: Date, products: ProductWithPriceAndStock[] }) {
+export function ProductTable({ lastDate, products }: { lastDate?: Date, products: ProductWithPriceAndStock[] }) {
     return (
         <div className={styles.tableCard}>
             <div className={styles.tableContainer}>
@@ -100,7 +100,7 @@ export function ProductTable({ lastDate, products }: { lastDate: Date, products:
             </div>
             <footer className={styles.tableFooter}>
                 <ClockIcon />
-                Last update { timeAgo(lastDate) }
+                { lastDate && `Last update ${timeAgo(lastDate)}` }
             </footer>
         </div>
     )

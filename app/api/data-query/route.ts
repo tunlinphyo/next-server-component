@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 export async function GET(request: NextRequest) {
     try {
         const prisma = new PrismaClient()
-        const allUsers = await prisma.customer.findMany({
+        const allUsers = await prisma.user.findMany({
             select: {
                 id: true,
                 name: true,
@@ -13,6 +13,21 @@ export async function GET(request: NextRequest) {
                 password: true
             }
         })
+
+        // const password = 'admin@2023'
+
+        // const hashedPassword = await bcrypt.hash(password, 10);
+        // const user = await prisma.user.create({
+        //     data: {
+        //       name: 'John Snow',
+        //       email: 'admin@gmail.com',
+        //       password: hashedPassword,
+        //       isDelete: false,
+        //       isAdmin: true,
+        //     },
+        // })
+        // console.log(user)
+
 
         // const password = "user@2023"
 

@@ -5,7 +5,7 @@ import { ProductWithPriceAndStock } from '../../product.interface'
 import { Product, ProductSkeleton } from '../../products.client'
 import { useXScroll } from './related-product.utils'
 
-export function RelatedProducts({ id, products }: { id: number, products: ProductWithPriceAndStock[] }) {
+export function RelatedProducts({ id, products, withFav }: { id: number, products: ProductWithPriceAndStock[], withFav: boolean }) {
     const { elemRef, handleScroll } = useXScroll(id)
     return (
         <div className={styles.relatedProducts}>
@@ -13,7 +13,7 @@ export function RelatedProducts({ id, products }: { id: number, products: Produc
                 {
                     products.map((item) => (
                         <div className={styles.slideItem} key={item.id}>
-                            <Product product={item} />
+                            <Product product={item} withFav={withFav} />
                         </div>
                     ))
                 }

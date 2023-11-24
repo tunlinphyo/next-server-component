@@ -11,7 +11,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <BackHeader />
         <FlexBetween>
             <h1>Edit Customer</h1>
-            <FromDeleteButton action={deleteCustomer.bind(null, id)}>
+            <FromDeleteButton action={deleteCustomer.bind(null, id, true)}>
                 Delete Customer
             </FromDeleteButton>
         </FlexBetween>

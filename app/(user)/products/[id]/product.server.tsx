@@ -8,6 +8,8 @@ import { ProductActions, ProductClassTable, ProductDetail, ProductTitle } from "
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
 import { RelatedProdcutSkeleton, RelatedProducts } from './related/related-products'
 import { Suspense } from 'react'
+import { ServerFavourite } from '../products.server'
+import { getUser } from '../../user.actions'
 
 export async function ServerProduct({ id }: { id: number }) {
     const product = await getProductDetail(id)
@@ -36,9 +38,16 @@ export async function ServerProduct({ id }: { id: number }) {
 }
 
 export async function ServerRelatedProduct({ id }: { id: number }) {
+    const user = await getUser()
     const products =  await getRelativeProducts(id)
+    const productIds = products.map(item => item.id)
 
     return (
-        <RelatedProducts id={id} products={products} />
+        <>
+            <RelatedProducts id={id} products={products} withFav />
+            <Suspense fallback={<></>}>
+                <ServerFavourite customerId={user?.id} productIds={productIds} />
+            </Suspense>
+        </>
     )
 }

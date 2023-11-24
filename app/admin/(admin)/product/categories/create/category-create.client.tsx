@@ -5,6 +5,9 @@ import { useFormState } from "react-dom"
 import { onCategoryCreate } from "../categories.actions"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { CategoryWithParent } from "../categories.interface"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { appToast } from "@/libs/toasts"
 
 const initState = {
     name: '',
@@ -13,6 +16,13 @@ const initState = {
 
 export function CategoryCreateForm({ parent }: { parent?: CategoryWithParent }) {
     const [ state, onAction ] = useFormState(onCategoryCreate, initState)
+    const { back } = useRouter()
+
+    useEffect(() => {
+        if (state.message) appToast(state.message)
+        if (state.back) back()
+    }, [ state ])
+
     return (
         <Form action={onAction} footer={
             <FormFooter>

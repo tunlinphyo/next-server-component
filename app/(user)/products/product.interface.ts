@@ -18,8 +18,15 @@ export interface CategotyWithDetail extends ProductCategory {
     category: Category;
 }
 
-export interface ProductDetail extends ProductWithPriceAndStock { 
+export interface ProductDetail extends ProductWithPriceAndStock {
     categories?: CategotyWithDetail[];
     variant1?: Variant;
     variant2?: Variant;
+}
+
+export interface FavouriteFormData {
+    productId: number;
+    customerId: number;
+    is: boolean;
+    pathname: string;
 }

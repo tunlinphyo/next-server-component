@@ -1,11 +1,14 @@
 'use client'
 
 import { Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
-import { useFormState, useFormStatus } from "react-dom"
+import { useFormState } from "react-dom"
 import { onCustomerEdit } from "../../customers.actions"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { AvatarUpload } from "@/components/admin/form/files/files.client"
 import { Customer } from "@prisma/client"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+import { appToast } from "@/libs/toasts"
 
 const initState = {
     name: '',
@@ -16,6 +19,13 @@ const initState = {
 
 export function CustomerEditForm({ customer }: { customer: Customer }) {
     const [ state, onAction ] = useFormState(onCustomerEdit, initState)
+    const { back } = useRouter()
+
+    useEffect(() => {
+        if (state.message) appToast(state.message)
+        if (state.back) back()
+    }, [ state ])
+
     return (
         <Form action={onAction} footer={
             <FormFooter>
@@ -62,14 +72,5 @@ export function CustomerEditForm({ customer }: { customer: Customer }) {
                 Avatar (optional)
             </AvatarUpload>
         </Form>
-    )
-}
-
-export function CreateButton() {
-    const { pending } = useFormStatus()
-    return (
-        <button className="primary" disabled={pending}>
-            Create Customer
-        </button>
     )
 }

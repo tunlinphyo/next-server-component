@@ -8,13 +8,16 @@ import { Pagination } from '@/components/admin/pagination/pagination.server';
 import { PageContainer } from '@/components/admin/utils/utils.client';
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { PaginationSkileton } from "@/components/admin/pagination/pagination.client";
+import { SearchBar, SearchContainer } from "@/components/admin/search/search.client";
 
 export default async function Page({ searchParams }: {
     searchParams?: {
-        page?: string
+        page?: string;
+        query?: string;
     }
 }) {
     const page = Number(searchParams?.page) ?? 1
+    const query = searchParams?.query || ''
     return (
         <PageContainer>
             <FlexBetween>
@@ -24,11 +27,14 @@ export default async function Page({ searchParams }: {
                     <PlusIcon />
                 </LinkButton>
             </FlexBetween>
-            <Suspense key={page} fallback={<TableSkeleton cols={4} rows={5} />}>
-                <CustomerList page={page} />
+            <SearchContainer>
+                <SearchBar placehiolder="Search by customer name and email.." />
+            </SearchContainer>
+            <Suspense key={page + query} fallback={<TableSkeleton cols={4} rows={5} />}>
+                <CustomerList page={page} query={query} />
             </Suspense>
             <Suspense fallback={<PaginationSkileton />}>
-                <Pagination action={getCustomersPageLength} />
+                <Pagination action={getCustomersPageLength.bind(null, query)} />
             </Suspense>
         </PageContainer>
     )

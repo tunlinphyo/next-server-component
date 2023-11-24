@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { appConfirm } from "@/libs/modals";
 import { appToast } from "@/libs/toasts";
 import { timeAgo } from "@/libs/relative-time";
+import { useRouter } from "next/navigation";
 
 
 type FormProps = ChildrenProp & {
@@ -196,8 +197,10 @@ export function FormCreatButton({ children, icon, full }: FormCreatButtonProps) 
 
 export function FromDeleteButton({ children, action }: FromDeleteButtonProps) {
     const [ state, onAction ] = useFormState(action, { code: '' })
+    const { back } = useRouter()
     useEffect(() => {
         if (state.code) appToast(state.code)
+        if (state.back) back()
     }, [ state ])
     return (
         <form action={onAction}>

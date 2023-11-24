@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { PASSWORD, PER_PAGE } from "@/libs/const"
 import { deleteImage } from "@/libs/images"
-import { Customer, Prisma } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import prisma from "@/libs/prisma"
 const bcrypt = require('bcrypt')
 
@@ -17,20 +17,60 @@ export async function getTotalCustomer() {
     return await prisma.customer.count(query)
 }
 
-export async function getCustomersPageLength() {
+export async function getCustomersPageLength(key: string) {
     const query: Prisma.CustomerCountArgs = {
-        where: { isDelete: false },
+        where: {
+            AND: [
+                { isDelete: false },
+                {
+                    OR: [
+                        {
+                            name: {
+                                startsWith: key ? `%${key}%` : '',
+                                mode: 'insensitive',
+                            }
+                        },
+                        {
+                            email: {
+                                startsWith: key ? `%${key}%` : '',
+                                mode: 'insensitive',
+                            }
+                        }
+                    ]
+                }
+            ],
+        },
     }
 
     const count = await prisma.customer.count(query)
     return Math.ceil(count / PER_PAGE)
 }
 
-export async function getCustomers(page: number = 1) {
+export async function getCustomers(page: number = 1, key: string) {
     const index = page - 1
     const start = index ? index * PER_PAGE : 0
     const query: Prisma.CustomerFindManyArgs = {
-        where: { isDelete: false },
+        where: {
+            AND: [
+                { isDelete: false },
+                {
+                    OR: [
+                        {
+                            name: {
+                                startsWith: key ? `%${key}%` : '',
+                                mode: 'insensitive',
+                            }
+                        },
+                        {
+                            email: {
+                                startsWith: key ? `%${key}%` : '',
+                                mode: 'insensitive',
+                            }
+                        }
+                    ]
+                }
+            ],
+        },
         skip: start,
         take: PER_PAGE,
         orderBy: { createDate: "desc" }
@@ -46,7 +86,7 @@ export async function getCustomer(id: number) {
     return customer
 }
 
-export async function deleteCustomer(id: number) {
+export async function deleteCustomer(id: number, back: boolean = false) {
     try {
         await prisma.customer.update({
             where: { id },
@@ -56,10 +96,10 @@ export async function deleteCustomer(id: number) {
         console.log('CAN REDIRECT ON SELF PAGE', e)
     }
     revalidatePath('/admin/customers')
-    redirect('/admin/customers')
+    return { code: 'Customer deleted', back: true }
 }
 
-export async function onCustomerCreate(prevState: any, formData: FormData): Promise<Record<string, string>> {
+export async function onCustomerCreate(prevState: any, formData: FormData): Promise<Record<string, any>> {
     const result = CreateCustomerSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
@@ -82,16 +122,16 @@ export async function onCustomerCreate(prevState: any, formData: FormData): Prom
         const customer = await prisma.customer.create({
             data: bodyData
         })
-        console.log('CUSTOMER_UPDATED', customer)
+        console.log('CUSTOMER_CREATED', customer)
     } catch (error: any) {
         console.log(error)
         return { message: error.message }
     }
     revalidatePath('/admin/customers')
-    redirect('/admin/customers')
+    return { back: true, message: 'Success' }
 }
 
-export async function onCustomerEdit(prevState: any, formData: FormData): Promise<Record<string, string>> {
+export async function onCustomerEdit(prevState: any, formData: FormData): Promise<Record<string, any>> {
     const result = EditCustomerSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
@@ -124,5 +164,5 @@ export async function onCustomerEdit(prevState: any, formData: FormData): Promis
         return { message: error.message }
     }
     revalidatePath('/admin/customers')
-    redirect('/admin/customers')
+    return { back: true, message: 'Success' }
 }

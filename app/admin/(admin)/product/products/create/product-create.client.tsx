@@ -7,6 +7,9 @@ import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { CategorySelect } from "@/components/admin/form/category/category.client"
 import { ImageUpload } from "@/components/admin/form/files/files.client"
 import { FormCategoryType } from "../products.interface"
+import { useEffect } from "react"
+import { appToast } from "@/libs/toasts"
+import { useRouter } from "next/navigation"
 
 const initState = {
     name: '',
@@ -20,8 +23,13 @@ const initState = {
 
 export function ProductCreateForm({ categories }: { categories: FormCategoryType[] }) {
     const [ state, onAction ] = useFormState(onProductCreate, initState)
+    const { replace } = useRouter()
 
-    console.log('CATEGORIES', categories)
+    useEffect(() => {
+        if (state.message) appToast(state.message)
+        if (state.replace) replace(`/admin/product/products/${state.replace}/edit`)
+    }, [ state ])
+
     return (
         <Form action={onAction} footer={
             <FormFooter>

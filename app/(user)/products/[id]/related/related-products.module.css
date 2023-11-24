@@ -5,7 +5,7 @@
 .slideContainer {
     width: 100%;
     padding: var(--space-3) var(--space-4);
-    
+
     display: flex;
     overflow-x: auto;
     gap: var(--space-3);
@@ -16,6 +16,7 @@
 
 .slideItem {
     min-width: 180px;
+    max-width: 190px;
     background-color: rgb(var(--background-accent-rgb));
     border-radius: var(--space-4);
 

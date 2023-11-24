@@ -146,7 +146,7 @@ export async function deleteProduct(id: number) {
     redirect('/admin/product/products')
 }
 
-export async function onProductCreate(prevState: any, formData: FormData) {
+export async function onProductCreate(prevState: any, formData: FormData): Promise<Record<string, any>> {
     const data = Object.fromEntries(formData)
     const category_ids = formData.getAll('category_ids').map(item => Number(item))
     const result = CreateProductSchema.safeParse({ ...data, category_ids })
@@ -196,10 +196,11 @@ export async function onProductCreate(prevState: any, formData: FormData) {
     if (!tResult.product) return { code: 'Product can not create' }
 
     revalidatePath('/admin/product/products')
-    redirect(`/admin/product/products/${tResult.product.id}/edit`, RedirectType.replace)
+    return { replace: tResult.product.id, message: 'Success' }
+    // redirect(`/admin/product/products/${tResult.product.id}/edit`, RedirectType.replace)
 }
 
-export async function onProductEdit(initState: any, formData: FormData) {
+export async function onProductEdit(initState: any, formData: FormData): Promise<Record<string, string>> {
     const data = Object.fromEntries(formData)
     const category_ids = formData.getAll('category_ids').map(item => Number(item))
     const result = EditProductSchema.safeParse({ ...data, category_ids })
@@ -292,5 +293,5 @@ export async function onProductEdit(initState: any, formData: FormData) {
     if (!tResult.product) return { code: 'Product can not update' }
 
     revalidatePath(`/admin/product/products/${result.data.id}/edit`)
-    return { message: 'success' }
+    return { message: 'Success' }
 }

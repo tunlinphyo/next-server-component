@@ -40,14 +40,14 @@ export function LoginForm() {
                 <input type="hidden" name="callback_url" defaultValue={callbackUrl || ''} />
                 <Input
                     name="email"
-                    defaultValue='customer@gmail.com'
+                    defaultValue=''
                 >
                     Email
                 </Input>
                 <Input
                     type="password"
                     name="password"
-                    defaultValue='user@2023'
+                    defaultValue=''
                 >
                     Password
                 </Input>

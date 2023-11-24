@@ -7,8 +7,8 @@ generator client {
 
 datasource db {
     provider  = "postgresql"
-    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+    url       = env("POSTGRES_LOCAL_URL") // uses connection pooling
+    // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
@@ -120,9 +120,9 @@ model Customer {
 model CustomerAddress {
     id              Int             @id @default(autoincrement())
     customer        Customer        @relation(fields: [customerId], references: [id])
-    customerId      Int 
+    customerId      Int
     address01       String
-    address02       String 
+    address02       String
     createDate      DateTime        @default(now())
     updateDate      DateTime?       @updatedAt
     isDelete        Boolean         @default(false)
@@ -131,7 +131,7 @@ model CustomerAddress {
 
 model CustomerFavourite {
     customer        Customer        @relation(fields: [customerId], references: [id])
-    customerId      Int 
+    customerId      Int
     product         Product         @relation(fields: [productId], references: [id])
     productId       Int
     createDate      DateTime        @default(now())
@@ -144,10 +144,10 @@ model CartItem {
     cart            Cart            @relation(fields: [cartId], references: [id])
     cartId          Int
     product         Product         @relation(fields: [productId], references: [id])
-    productId       Int 
+    productId       Int
     productClass    ProductClass    @relation(fields: [productClassId], references: [id])
-    productClassId  Int 
-    quantity        Int 
+    productClassId  Int
+    quantity        Int
     createDate      DateTime        @default(now())
     updateDate      DateTime?       @updatedAt
 }

@@ -1,12 +1,13 @@
 'use client'
 
 import { Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
-import { useFormState, useFormStatus } from "react-dom"
+import { useFormState } from "react-dom"
 import { onCustomerCreate } from "../customers.actions"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import { AvatarUpload } from "@/components/admin/form/files/files.client"
 import { useEffect } from "react"
 import { appToast } from "@/libs/toasts"
+import { useRouter } from "next/navigation"
 
 const initState = {
     name: '',
@@ -17,9 +18,11 @@ const initState = {
 
 export function CustomerCreateForm() {
     const [ state, onAction ] = useFormState(onCustomerCreate, initState)
+    const { back } = useRouter()
 
     useEffect(() => {
         if (state.message) appToast(state.message)
+        if (state.back) back()
     }, [ state ])
 
     return (
@@ -29,7 +32,7 @@ export function CustomerCreateForm() {
                     Clear
                     <ArrowPathIcon />
                 </button>
-                <FormCreatButton icon={<CheckCircleIcon />}>Create Customer</FormCreatButton>
+                <FormCreatButton icon={<CheckCircleIcon />}>Create Customer Test</FormCreatButton>
             </FormFooter>
         }>
             <Input
@@ -65,14 +68,5 @@ export function CustomerCreateForm() {
                 Avatar (optional)
             </AvatarUpload>
         </Form>
-    )
-}
-
-export function CreateButton() {
-    const { pending } = useFormStatus()
-    return (
-        <button className="primary" disabled={pending}>
-            Create Customer
-        </button>
     )
 }

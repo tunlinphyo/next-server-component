@@ -7,7 +7,6 @@ import { PER_PAGE } from "@/libs/const"
 import { Prisma } from "@prisma/client"
 import prisma from "@/libs/prisma"
 import { CategoryWithParent, CategoryWithParentAndChildCount } from "./categories.interface"
-import { RedirectType, redirect } from "next/navigation"
 
 export async function getCategoryPageLength(id?: number) {
     const query: Prisma.CategoryCountArgs = {
@@ -73,7 +72,7 @@ export async function deleteCategory(id: number) {
     revalidatePath('/admin/product/categories')
 }
 
-export async function onCategoryCreate(prevState: any, formData: FormData) {
+export async function onCategoryCreate(prevState: any, formData: FormData): Promise<Record<string, any>> {
     const result = CreateCategorySchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
@@ -83,14 +82,13 @@ export async function onCategoryCreate(prevState: any, formData: FormData) {
     const category = await prisma.category.create({ data: result.data })
     if (category.parentId) {
         revalidatePath(`/admin/product/categories/${category.parentId}/edit`)
-        redirect(`/admin/product/categories/${category.id}/edit`)
     } else {
         revalidatePath('/admin/product/categories')
-        redirect(`/admin/product/categories/${category.id}/edit`)
     }
+    return { back: true, message: 'Success' }
 }
 
-export async function onCategoryEdit(prevState: any, formData: FormData) {
+export async function onCategoryEdit(prevState: any, formData: FormData): Promise<Record<string, any>> {
     const result = CategorySchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
@@ -103,12 +101,12 @@ export async function onCategoryEdit(prevState: any, formData: FormData) {
     }
 
     const category = await prisma.category.update(query)
+    console.log('CATEGORY_EDIT____________', category)
     if (category.parentId) {
         revalidatePath(`/admin/product/categories/${category.parentId}/edit`)
-        redirect(`/admin/product/categories/${category.parentId}/edit`, RedirectType.replace)
     } else {
         revalidatePath('/admin/product/categories')
-        // redirect('/admin/product/categories')
     }
+    return { back: true, message: 'Success' }
 }
 

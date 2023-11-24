@@ -9,6 +9,9 @@ import clsx from 'clsx'
 export default async function Layout({ children }: ChildrenProp) {
   return (
     <>
+      <div className="view-on-desktop">
+        View On Desktop
+      </div>
       <main className={clsx(styles.main, 'admin')}>
           <Navigation />
           { children }

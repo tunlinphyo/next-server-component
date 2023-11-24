@@ -64,10 +64,13 @@ export async function getCartItem(productClassId: number) {
 }
 
 export async function getCountCartItems(cartId: number) {
-    const count = await prisma.cartItem.count({
-        where: { cartId }
+    const items = await prisma.cartItem.aggregate({
+        where: { cartId },
+        _sum: {
+            quantity: true
+        }
     })
-    return count
+    return items._sum.quantity
 }
 
 export async function updateCartItem(data: Partial<CartItem>) {
