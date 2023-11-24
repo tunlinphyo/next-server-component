@@ -4,14 +4,14 @@ import { DisplayInput, Form, FormCreatButton, FormFooter, Input } from "@/compon
 import { useFormState } from "react-dom"
 import { onCategoryCreate } from "../categories.actions"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
-import { CategoryType } from "@/libs/definations"
+import { CategoryWithParent } from "../categories.interface"
 
 const initState = {
     name: '',
     parent_category_id: ''
 }
 
-export function CategoryCreateForm({ parent }: { parent?: CategoryType }) {
+export function CategoryCreateForm({ parent }: { parent?: CategoryWithParent }) {
     const [ state, onAction ] = useFormState(onCategoryCreate, initState)
     return (
         <Form action={onAction} footer={

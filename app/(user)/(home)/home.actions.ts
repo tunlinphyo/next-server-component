@@ -2,10 +2,7 @@
 
 import { ProductWithPriceAndStock } from "@/app/admin/(admin)/product/products/products.interface"
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
-import { GET } from "@/libs/db"
-import { CategoryType, ProductClassType, ProductType, VariantType } from "@/libs/definations"
 import prisma from "@/libs/prisma"
-import { wait } from "@/libs/utils"
 import { Prisma } from "@prisma/client"
 
 export async function getCategories() {
