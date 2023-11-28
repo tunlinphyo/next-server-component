@@ -8,6 +8,7 @@ import { getCookieCartItems, setCookieCartItems } from "../../user/cookie.server
 import prisma from "@/libs/prisma"
 import { CartWithItems, CookieCartItem } from "../../user/cart.interface"
 import { redirect } from "next/navigation"
+import { ORDER_STATUS_PENDING } from "@/libs/const"
 
 export async function getCartData(): Promise<CartWithItems | { cartItems: CookieCartItem[] }> {
     const user = await getUser()
@@ -165,6 +166,7 @@ export async function onCheckout(cartId: number) {
         }
     })
 
+    let subtotal: number = 0
     for await (const item of cartItems) {
         if (item.productClass.quantity <= 0) {
             errors.push(`${item.product.name} is removed because of not stock.`)
@@ -178,16 +180,63 @@ export async function onCheckout(cartId: number) {
                 where: { id: item.id },
                 data: { quantity }
             })
+            subtotal += item.productClass.price * quantity
+        } else {
+            subtotal += item.productClass.price * item.quantity
         }
     }
 
     if (errors.length) return { errors }
 
-    redirect('/cart/checkout/shipping')
-} 
+    let orderId: number
+    try {
+        orderId = await createOrder(cartId, subtotal)
+    } catch(error: any) {
+        errors.push(error.message)
+        return { errors }
+    }
+    redirect(`/cart/${orderId}/shipping`)
+}
 
-async function createOrder(cartId: number) {
+async function createOrder(cartId: number, subtotal: number) {
+    const deliveryAmount = 20
     const cart = await prisma.cart.findUnique({
         where: { id: cartId }
     })
+    if (!cart) throw new Error('Cart could not find.')
+    const cartItems = await prisma.cartItem.findMany({
+        where: { cartId: cart?.id }
+    })
+    // const pending = await prisma.orderStatus.findUnique({
+    //     where: { id: ORDER_STATUS_PENDING }
+    // })
+    const tResult = await prisma.$transaction(async (prisma) => {
+        const order = await prisma.order.create({
+            data: {
+                customerId: cart.customerId,
+                subTotal: subtotal,
+                deliveryAmount,
+                totalAmount: subtotal + deliveryAmount,
+                orderStatusId: ORDER_STATUS_PENDING
+            }
+        })
+        const orderItems = await prisma.orderItem.createMany({
+            data: cartItems.map(item => ({
+                orderId: order.id,
+                productId: item.productId,
+                productClassId: item.productClassId,
+                quantity: item.quantity,
+                orderStatusId: ORDER_STATUS_PENDING
+            }))
+        })
+        await prisma.cartItem.deleteMany({
+            where: { cartId }
+        })
+
+        return { order, orderItems }
+    })
+
+    if (!tResult?.order) throw new Error('Order can not create')
+
+    return tResult.order.id
 }

@@ -3,15 +3,16 @@
 import { getUser } from "@/app/(user)/user.actions"
 import { getCart } from "@/app/(user)/user/cart.server"
 import { redirect } from "next/navigation"
+import { getOrder } from "../checkout.actions"
+import { ShippingForm } from "./shipping.client"
 
-export async function ServerShipping() {
-    const user = await getUser() 
+export async function ServerShipping({ orderId }: { orderId: number }) {
+    const user = await getUser()
     if (!user) redirect("/cart")
-    const cart = await getCart(user.id)
-
-    console.log('CART_______', cart)
+    const order = await getOrder(orderId)
+    if (!order) redirect('cart')
 
     return (
-        <div>CHECKOUT FORM</div>
+        <ShippingForm order={order} customer={user} />
     )
 }

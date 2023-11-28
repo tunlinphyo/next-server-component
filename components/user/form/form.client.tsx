@@ -6,6 +6,7 @@ import { ChildrenProp, FormArrayType } from "@/libs/definations"
 import { useFormStatus } from 'react-dom';
 import { ArrowPathIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { TextSkeleton } from '../utils/utils.client';
+import { getCountryCodes } from './form.utils';
 
 type FormProps = ChildrenProp & {
     action: (formData: FormData) => void;
@@ -15,6 +16,13 @@ type InputProps = {
     children?: React.ReactNode;
     name: string;
     type?: React.HTMLInputTypeAttribute;
+    defaultValue?: string;
+    error?: string;
+}
+type PhoneInputProps = {
+    children?: React.ReactNode;
+    name: string;
+    countryCode?: string;
     defaultValue?: string;
     error?: string;
 }
@@ -86,6 +94,31 @@ export function Textarea({ children, name, rows, defaultValue, error }: Textarea
     )
 }
 
+export function PhoneInput({ children, name, countryCode, defaultValue, error }: PhoneInputProps) {
+    const countries = getCountryCodes()
+    return (
+        <div className={clsx(styles.formGroup, styles.formGroupSpan)}>
+            <label htmlFor={name} className={styles.label}>{ children }</label>
+            <div className={styles.inputContainer}>
+                <div className={styles.phoneInput}>
+                    <Select
+                        name="countrycode"
+                        list={countries}
+                        defaultValue={countryCode || ''}
+                    />
+                    <input
+                        className={styles.input}
+                        type="tel"
+                        name={name}
+                        defaultValue={defaultValue || ''}
+                    />
+                </div>
+                { error && <small>{ error }</small> }
+            </div>
+        </div>
+    )
+}
+
 export function DisplayInput({ children, defaultValue }: DisplayInputProps) {
     return (
         <div className={styles.formGroup}>
@@ -104,8 +137,8 @@ export function Select({ children, name, list, defaultValue, error, placeholder,
             <div className={styles.inputContainer}>
                 <div className={styles.selectContainer}>
                     <ChevronUpDownIcon />
-                    <select 
-                        name={name} 
+                    <select
+                        name={name}
                         defaultValue={defaultValue}
                         disabled={disabled || false}
                         onChange={onChange}

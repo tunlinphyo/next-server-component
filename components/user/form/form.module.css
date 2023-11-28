@@ -73,7 +73,7 @@
     position: relative;
 }
 .selectContainer select {
-    appearance: none; 
+    appearance: none;
     width: 100%;
     height: 40px;
     font-size: .9rem;

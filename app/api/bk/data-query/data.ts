@@ -14,21 +14,21 @@ export const customers = [
         email: 'job@gmail.com',
         password: 'user@2023',
         avatar: '/uploads/1700877630011.jpeg',
-        statusId: 4
+        statusId: 1
     },
     {
         name: 'Henery Ford',
         email: 'ford@gmail.com',
         password: 'user@2023',
         avatar: null,
-        statusId: 4
+        statusId: 1
     },
     {
         name: 'Jon Snow',
         email: 'jon@gmail.com',
         password: 'user@2023',
         avatar: null,
-        statusId: 4
+        statusId: 1
     }
 ]
 

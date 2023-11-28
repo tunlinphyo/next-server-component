@@ -14,8 +14,8 @@ import { CustomerWithStatus } from "./customers.interface"
 
 export function CustomerTable({ customers }: { customers: CustomerWithStatus[] }) {
     const getTheme = (id: number) => {
-        if (id == 5) return 'success'
-        if (id == 6) return 'danger'
+        if (id == 2) return 'success'
+        if (id == 3) return 'danger'
         return 'default'
     }
     return (
