@@ -7,7 +7,7 @@ import { CategoryType } from "@/libs/definations";
 import { formatDate } from "@/libs/utils";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { deleteCategory } from "./categories.actions";
-import { Budge } from "@/components/admin/utils/utils.client";
+import { Budge, DateTime } from "@/components/admin/utils/utils.client";
 import { CategoryWithParentAndChildCount } from "./categories.interface";
 
 export function CategoryTable({ categories, child }: { categories: CategoryWithParentAndChildCount[], child?: boolean }) {
@@ -33,7 +33,9 @@ export function CategoryTable({ categories, child }: { categories: CategoryWithP
                             <TableData>
                                 <Budge>{ cate._count.children }</Budge>
                             </TableData>
-                            <TableData>{ formatDate(cate.createDate) }</TableData>
+                            <TableData>
+                                <DateTime date={cate.createDate} />
+                            </TableData>
                             <TableData end={true}>
                                 <LinkIcon
                                     href={

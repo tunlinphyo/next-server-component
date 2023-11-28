@@ -10,7 +10,7 @@ import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from '@
 import React from 'react';
 import { TextSkeleton } from '@/components/user/utils/utils.client';
 import { Budge } from '@/components/user/utils/utils.client';
-import { ProductClassWithVariants, ProductDetail } from '../product.interface';
+import { ProductClassWithVariants, type ProductDetail } from '../product.interface';
 
 export function ProductDetail({ product, minPrice, maxPrice }: {
     product: ProductDetail;

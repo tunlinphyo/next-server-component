@@ -6,6 +6,7 @@ import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { handleSignIn } from "../../user.actions"
 import prisma from "@/libs/prisma"
+import { APPROVED_ID } from "../../user.const"
 const bcrypt = require('bcrypt')
 
 export async function onLogin(prevProp: any, formData: FormData) {
@@ -19,6 +20,7 @@ export async function onLogin(prevProp: any, formData: FormData) {
 
     const customer = await prisma.customer.findUnique({ where: { email: result.data.email } })
     if (!customer) return { message: 'Invalid email' }
+    if (customer.statusId !== APPROVED_ID) return { message: 'You are not approved. Contact to admin' }
     const passwordsMatch = await bcrypt.compare(result.data.password, customer.password);
     if (!passwordsMatch) return { message: 'Invalid passowrd' }
     console.log('USER', customer)

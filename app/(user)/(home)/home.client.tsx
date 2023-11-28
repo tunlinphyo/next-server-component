@@ -44,7 +44,7 @@ export function Categories({ categories }: { categories: Category[] }) {
     )
 }
 
-export function ProductSlide({ products, withFav }: { products: ProductWithPriceAndStock[], withFav: boolean }) {
+export function ProductSlide({ children }: { children: React.ReactNode }) {
     const { elemRef, handleScroll } = useXScroll()
     return (
         <div className={styles.latestProducts}>
@@ -59,13 +59,7 @@ export function ProductSlide({ products, withFav }: { products: ProductWithPrice
                         </div>
                     </div>
                 </div>
-                {
-                    products.map(item => (
-                        <div className={styles.slideItem} key={item.id}>
-                            <Product product={item} withFav={withFav} />
-                        </div>
-                    ))
-                }
+                { children }
                 <div className={clsx(styles.slideItem, styles.slideItemEnd)}>
                     <Link href="/products?order=latest" className={styles.goButton}>
                         <ArrowRightIcon />

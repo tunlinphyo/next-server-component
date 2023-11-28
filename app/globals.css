@@ -23,6 +23,9 @@
   --danger: hsl(6, 79%, 57%);
   --danger-100: hsla(6, 79%, 57%, .1);
 
+  --success: hsl(145, 63%, 49%);
+  --success-100: hsla(145, 63%, 49%, .1);
+
   --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;

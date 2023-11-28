@@ -49,6 +49,6 @@ export async function CustomerSummary() {
 export async function LatestProducts() {
     const { lastDate, products } = await getLatestProducts()
     return (
-        <ProductTable lastDate={lastDate} products={products} />
+        <ProductTable lastDate={lastDate || new Date()} products={products} />
     )
 }

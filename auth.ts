@@ -1,12 +1,12 @@
 import * as CryptoJS from 'crypto-js'
-import { UserType } from "./libs/prisma/definations"
+import { CustomerType, UserType } from "./libs/prisma/definations"
+import { APPROVED_ID } from './app/(user)/user.const'
 
 export function isAdmin(cookie: string | undefined) {
     if (!cookie) return false
     const decrypted = decryptCookieValue(cookie)
     if (!decrypted) return false
     const adminUser = JSON.parse(decrypted) as UserType
-    console.log('ADMIN_USER', new Date(adminUser.expiredAt), new Date())
     return (
         adminUser
         && adminUser.isAdmin
@@ -14,6 +14,23 @@ export function isAdmin(cookie: string | undefined) {
         && new Date(adminUser.expiredAt) > new Date()
     )
 }
+
+export function isUser(cookie: string | undefined) {
+    if (!cookie) return false
+    const decrypted = decryptCookieValue(cookie)
+    if (!decrypted) return
+    const customer = JSON.parse(decrypted) as CustomerType
+
+    if (new Date(customer.expiredAt) < new Date()) return
+
+    return (
+        customer
+        && customer.statusId == APPROVED_ID
+        && !customer.isDelete
+        && new Date(customer.expiredAt) > new Date()
+    )
+}
+
 
 export function encryptCookieValue(originalValue: string): string {
     const key = String(process.env.AUTH_SECRET)

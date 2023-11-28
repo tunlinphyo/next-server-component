@@ -7,7 +7,7 @@ import { formatPrice } from '@/libs/utils'
 import { EmptyCard, TextSkeleton } from '@/components/user/utils/utils.client'
 import Link from 'next/link'
 import { createPortal, useFormState, useFormStatus } from 'react-dom'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { addToCart, setFabourite } from './products.action'
 import clsx from 'clsx'
 import { BottomSheetContainer, Modal } from '@/components/user/modals/modals.client'
@@ -21,32 +21,21 @@ type AddToCartFormProps = {
     productClass: ProductClassWithVariants[];
 }
 
-export function Products({ products, withFav }: { products: ProductWithPriceAndStock[], withFav?: boolean }) {
-    if (!products.length) return (
-        <EmptyCard image={EmptyImage} text="No Products" >
-            <Link href={`/products`} className="primary-button">
-                Clear Filters <ArrowPathIcon />
-            </Link>
-        </EmptyCard>
-    )
-
+export function Products({ children }: { children: React.ReactNode }) {
+    const childrenCount = React.Children.count(children);
     return (
         <ul className={styles.products}>
-            {
-                products.map(product => (
-                    <li key={product.id}>
-                        <Product product={product} withFav={withFav} />
-                    </li>
-                ))
-            }
-            {
-                products.length == 1 && <div />
-            }
+            { children }
+            { childrenCount === 1 && <div /> }
         </ul>
     )
 }
 
-export function Product({ product, withFav }: { product: ProductWithPriceAndStock, withFav?: boolean }) {
+export function ProductLi({ children }: { children: React.ReactNode }) {
+    return <li>{ children }</li>
+}
+
+export function Product({ product, children }: { product: ProductWithPriceAndStock, children?: React.ReactNode }) {
     return (
         <div className={styles.product}>
             <Link href={`/products/${product.id}`} className={styles.productImage}>
@@ -64,7 +53,7 @@ export function Product({ product, withFav }: { product: ProductWithPriceAndStoc
                     { product.minPrice != product.maxPrice && formatPrice(product.maxPrice) }
                 </small>
             </Link>
-            { withFav && <FavouriteContainer id={product.id} /> }
+            { children }
             <div className={styles.productAction}>
                 {
                     product.productClasses && product.quantity
@@ -76,44 +65,39 @@ export function Product({ product, withFav }: { product: ProductWithPriceAndStoc
     )
 }
 
-export function FavouriteContainer({ id }: { id: number }) {
-    return (
-        <div className={styles.favouriteContainer} id={`favourite_${id}`}>
-            <div className={styles.favouriteSkeletom} />
-        </div>
-    )
-}
-
-export function FavouriteForm({ favourite }: { favourite: { productId: number; customerId: number; is: boolean }}) {
-    const [ container, setContainer] = useState<HTMLElement | null>(null)
+export function FavouriteToggleForm({ productId, customerId, is }: { productId: number; customerId: number; is: boolean }) {
     const pathname = usePathname()
     const { showToast } = useToast()
     const [ state, onAction ] = useFormState(setFabourite.bind(null, {
-        customerId: favourite.customerId,
-        productId: favourite.productId,
-        is: !favourite.is,
+        customerId,
+        productId,
+        is: !is,
         pathname
     }), { code: '' })
-
-    useEffect(() => {
-        setContainer(document.getElementById(`favourite_${favourite.productId}`))
-    }, [])
 
     useEffect(() => {
         if (state.code) showToast(state.code)
     }, [ state ])
 
     return (
-        container ? createPortal(
-            (
-                <form action={onAction}>
-                    <FavouriteButton is={favourite.is} />
-                </form>
-            ),
-            container,
-            String(favourite.productId)
-        ) : null
+        <div className={styles.favouriteContainer}>
+            <form action={onAction}>
+                <FavouriteButton is={is} />
+            </form>
+        </div>
     )
+}
+
+export function FavouriteSkeleton() {
+    return (
+        <div className={styles.favouriteContainer}>
+            <div className={styles.favouriteSkeletom} />
+        </div>
+    )
+}
+
+export function FavouriteContainer({ children }: { children: React.ReactNode }) {
+    return <div className={styles.favouriteContainer}>{ children }</div>
 }
 
 function FavouriteButton({ is }: { is: boolean }) {

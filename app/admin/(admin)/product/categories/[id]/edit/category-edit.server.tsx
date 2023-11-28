@@ -1,7 +1,7 @@
 'use server'
 
 import { redirect } from "next/navigation"
-import { FormDates } from "@/components/admin/form/form.client"
+import { FormDates } from "@/components/admin/form/form.server"
 import { getCategory } from "../../categories.actions"
 import { CategoryEditForm } from "./category-edit.client"
 

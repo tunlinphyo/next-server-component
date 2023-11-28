@@ -7,6 +7,7 @@ export const CustomerSchema = z.object({
     email: z.string().email(),
     password: z.string().min(5),
     confirm: z.string().min(5),
+    status: z.coerce.number(),
 })
 
 export const CreateCustomerSchema = CustomerSchema.omit({ id: true })

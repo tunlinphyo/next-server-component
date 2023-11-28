@@ -6,7 +6,7 @@ import { Table, TableBody, TableData, TableHead, TableHeader, TableRow } from "@
 import { formatDate } from "@/libs/utils";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { deleteVariant } from "./variant.action";
-import { Budge } from "@/components/admin/utils/utils.client";
+import { Budge, DateTime } from "@/components/admin/utils/utils.client";
 import { usePathname } from "next/navigation";
 import { VariantWithParentAndChildCount } from './variant.interface';
 
@@ -38,7 +38,9 @@ export function VariantTable({ variants, child }: { variants: VariantWithParentA
                                         : <Budge>{ variant._count.children }</Budge>
                                 }
                             </TableData>
-                            <TableData>{ formatDate(variant.createDate) }</TableData>
+                            <TableData>
+                                <DateTime date={variant.createDate} />
+                            </TableData>
                             <TableData end={true}>
                                 <LinkIcon
                                     href={

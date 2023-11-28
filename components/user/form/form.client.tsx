@@ -2,9 +2,9 @@
 
 import clsx from 'clsx';
 import styles from './form.module.css'
-import { ChildrenProp } from "@/libs/definations"
+import { ChildrenProp, FormArrayType } from "@/libs/definations"
 import { useFormStatus } from 'react-dom';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { TextSkeleton } from '../utils/utils.client';
 
 type FormProps = ChildrenProp & {
@@ -18,12 +18,32 @@ type InputProps = {
     defaultValue?: string;
     error?: string;
 }
+type TextareaProps = {
+    children?: React.ReactNode;
+    name: string;
+    rows?: number;
+    defaultValue?: string;
+    error?: string;
+}
+type SelectProps = {
+    children?: React.ReactNode;
+    name: string;
+    list: FormArrayType[];
+    disabled?: boolean;
+    defaultValue?: string;
+    error?: string;
+    placeholder?: string;
+    onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
 type FormFooterProps = ChildrenProp & {
     center?: boolean;
 }
 type FormCreatButtonProps = ChildrenProp & {
     icon: any,
     full?: boolean;
+}
+type DisplayInputProps = ChildrenProp & {
+    defaultValue: string;
 }
 
 export function Form({ children, action, footer }: FormProps) {
@@ -48,6 +68,56 @@ export function Input({ children, name, type, defaultValue, error }: InputProps)
                     name={name}
                     defaultValue={defaultValue || ''}
                 />
+                { error && <small>{ error }</small> }
+            </div>
+        </div>
+    )
+}
+
+export function Textarea({ children, name, rows, defaultValue, error }: TextareaProps) {
+    return (
+        <div className={clsx(styles.formGroup, styles.formGroupSpan)}>
+            <label htmlFor={name} className={styles.label}>{ children }</label>
+            <div className={styles.inputContainer}>
+                <textarea name={name} defaultValue={defaultValue || ''} rows={rows || 4} />
+                { error && <small>{ error }</small> }
+            </div>
+        </div>
+    )
+}
+
+export function DisplayInput({ children, defaultValue }: DisplayInputProps) {
+    return (
+        <div className={styles.formGroup}>
+            <label className={styles.label}>{ children }</label>
+            <div className={styles.inputContainer}>
+                <input type="text" readOnly={true} defaultValue={defaultValue} className={styles.input} />
+            </div>
+        </div>
+    )
+}
+
+export function Select({ children, name, list, defaultValue, error, placeholder, disabled, onChange }: SelectProps) {
+    return (
+        <div className={styles.formGroup}>
+            <label htmlFor={name} className={styles.label}>{ children }</label>
+            <div className={styles.inputContainer}>
+                <div className={styles.selectContainer}>
+                    <ChevronUpDownIcon />
+                    <select 
+                        name={name} 
+                        defaultValue={defaultValue}
+                        disabled={disabled || false}
+                        onChange={onChange}
+                    >
+                        <option value="">{ placeholder || 'Select a value' }</option>
+                        {
+                            list.map(item => (
+                                <option key={item.id} value={item.id}>{ item.name }</option>
+                            ))
+                        }
+                    </select>
+                </div>
                 { error && <small>{ error }</small> }
             </div>
         </div>

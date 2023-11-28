@@ -179,6 +179,10 @@
     color: var(--primary-600);
     border-color: var(--primary-100);
 }
+.withUser img {
+    object-fit: cover;
+    object-position: center;
+}
 .userIcon:hover {
     border-color: transparent;
     outline: 2px solid var(--primary-600);

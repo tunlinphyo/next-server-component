@@ -1,3 +1,4 @@
+import { Status } from "@prisma/client";
 
 
 export interface UserType {
@@ -16,4 +17,5 @@ export interface CustomerType {
     avatar?: string | null;
     isDelete: boolean;
     expiredAt: Date;
+    statusId: number;
 }

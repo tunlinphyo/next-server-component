@@ -77,6 +77,7 @@ model Product {
     images          ProductImage[]
     customerFavourites  CustomerFavourite[]
     cartItems       CartItem[]
+    orderItems      OrderItem[]
 }
 
 model ProductClass {
@@ -93,13 +94,14 @@ model ProductClass {
     updateDate      DateTime?       @updatedAt
     isDelete        Boolean         @default(false)
     cartItems       CartItem[]
+    orderItems      OrderItem[]
 }
 
 model ProductImage {
     id              Int             @id @default(autoincrement())
     product         Product         @relation(fields: [productId], references: [id])
     productId       Int
-    imgUrl          String
+    imgUrl          String          @db.VarChar(255)
     createDate      DateTime        @default(now())
 }
 
@@ -108,25 +110,31 @@ model Customer {
     name            String          @unique @db.VarChar(255)
     email           String          @unique @db.VarChar(255)
     password        String          @db.VarChar(255)
-    avatar          String?
+    avatar          String?         @db.VarChar(255)
+    status          Status          @relation(fields: [statusId], references: [id])
+    statusId        Int
     createDate      DateTime        @default(now())
     updateDate      DateTime?       @updatedAt
     isDelete        Boolean         @default(false)
     address         CustomerAddress[]
     favourites      CustomerFavourite[]
     cart            Cart?
+    orders          Order[]
 }
 
 model CustomerAddress {
     id              Int             @id @default(autoincrement())
     customer        Customer        @relation(fields: [customerId], references: [id])
     customerId      Int
-    address01       String
-    address02       String
+    address         String          @db.VarChar(255)
+    city            String          @db.VarChar(255)
+    state           String          @db.VarChar(255)
+    country         String          @db.VarChar(255)
+    isDefault       Boolean         @default(false)
     createDate      DateTime        @default(now())
     updateDate      DateTime?       @updatedAt
     isDelete        Boolean         @default(false)
-    carts           Cart[]
+    orders          Order[]
 }
 
 model CustomerFavourite {
@@ -156,9 +164,79 @@ model Cart {
     id              Int             @id @default(autoincrement())
     customer        Customer        @relation(fields: [customerId], references: [id])
     customerId      Int             @unique
-    address         CustomerAddress?@relation(fields: [addressId], references: [id])
-    addressId       Int?
     createDate      DateTime        @default(now())
     updateDate      DateTime?       @updatedAt
     cartItems       CartItem[]
+}
+
+model OrderItem {
+    id              Int             @id @default(autoincrement())
+    order           Order           @relation(fields: [orderId], references: [id])
+    orderId         Int
+    product         Product         @relation(fields: [productId], references: [id])
+    productId       Int
+    productClass    ProductClass    @relation(fields: [productClassId], references: [id])
+    productClassId  Int
+    quantity        Int
+    orderStatus     OrderStatus     @relation(fields: [orderStatusId], references: [id])
+    orderStatusId   Int
+    createDate      DateTime        @default(now())
+    updateDate      DateTime?       @updatedAt
+}
+
+model Order {
+    id              Int             @id @default(autoincrement())
+    customer        Customer        @relation(fields: [customerId], references: [id])
+    customerId      Int             @unique
+    subTotal        Int
+    deliveryAmount  Int             @default(0)
+    totalAmount     Int
+    paymentAmount   Int?
+    address         CustomerAddress?@relation(fields: [addressId], references: [id])
+    addressId       Int?        
+    name            String?         @db.VarChar(255)
+    email           String?         @db.VarChar(255)
+    phone           String?         @db.VarChar(255)
+    note            String?         @db.Text
+    orderPayment    OrderPayment?   @relation(fields: [orderPaymentId], references: [id])
+    orderPaymentId  Int?
+    orderStatus     OrderStatus     @relation(fields: [orderStatusId], references: [id])
+    orderStatusId   Int
+    createDate      DateTime        @default(now())
+    orderDate       DateTime?       @db.Date
+    deliveryDate    DateTime?       @db.Date
+    updateDate      DateTime?       @updatedAt
+    orderItems      OrderItem[]
+}
+
+model OrderPayment {
+    id              Int             @id @default(autoincrement())
+    payment         Payment         @relation(fields: [paymentId], references: [id])
+    paymentId       Int
+    cardData        String?         @db.Text
+    orders          Order[]       
+}
+
+model Payment {
+    id              Int             @id @default(autoincrement())
+    name            String          @db.VarChar(255)
+    logo            String?         @db.VarChar(255)
+    image           String?         @db.VarChar(255)
+    order           Int
+    payments        OrderPayment[]
+}
+
+model Status {
+    id              Int             @id @default(autoincrement())
+    name            String          @unique
+    order           Int
+    customers        Customer[]
+}
+
+model OrderStatus {
+    id              Int             @id @default(autoincrement())
+    name            String          @unique
+    order           Int
+    customerOrders  Order[]
+    orderItems      OrderItem[]
 }

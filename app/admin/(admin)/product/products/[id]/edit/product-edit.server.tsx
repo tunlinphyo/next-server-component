@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 import { getCategories, getProduct } from "../../products.actions"
 import { ProductEditForm } from "./product-edit.client"
-import { FormDates } from "@/components/admin/form/form.client"
+import { FormDates } from "@/components/admin/form/form.server"
 
 export async function ProductEdit({ id }: { id: number }) {
     const product = await getProduct(id)

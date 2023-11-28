@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from "next/headers"
-import { COOKIE_CART, COOKIE_USER } from "./user.const"
+import { COOKIE_CART, COOKIE_USER } from "../user.const"
 import { CookieCartType } from "@/libs/definations"
 import { ONE_DAY } from "@/libs/const"
 import { CustomerType } from "@/libs/prisma/definations"
@@ -10,7 +10,7 @@ import { Customer } from "@prisma/client"
 
 export async function getCookieUser() {
     const cookieStore = cookies()
-    
+
     const cookieUser = cookieStore.get(COOKIE_USER)
 
     if (!cookieUser) return
@@ -18,8 +18,8 @@ export async function getCookieUser() {
     if (!decrypted) return
     const customer = JSON.parse(decrypted) as CustomerType
 
-    console.log('CUSTOMER_______', customer)
-    
+    if (new Date(customer.expiredAt) < new Date()) return
+
     return customer
 }
 
@@ -34,6 +34,7 @@ export async function setCookieUser(user: Customer) {
         name: user.name,
         email: user.email,
         avatar: user.avatar,
+        statusId: user.statusId,
         isDelete: user.isDelete,
         expiredAt: newDate,
     }

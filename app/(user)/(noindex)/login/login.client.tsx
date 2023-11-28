@@ -4,11 +4,12 @@ import { Form, FormFooter, Input, FormCreatButton, FormSkeleton } from '@/compon
 import styles from './login.module.css'
 import { useFormState } from 'react-dom'
 import { onLogin } from './login.actions'
-import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftOnRectangleIcon, UserPlusIcon } from '@heroicons/react/24/outline'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import clsx from 'clsx'
 import { useToast } from '@/components/user/toast/toast.index'
+import Link from 'next/link'
 
 const initState = {
     email: '',
@@ -35,6 +36,10 @@ export function LoginForm() {
                     <FormCreatButton icon={<ArrowLeftOnRectangleIcon />}>
                         Login
                     </FormCreatButton>
+                    <Link href="/register" className="button">
+                        Register
+                        <UserPlusIcon />
+                    </Link>
                 </FormFooter>
             }>
                 <input type="hidden" name="callback_url" defaultValue={callbackUrl || ''} />

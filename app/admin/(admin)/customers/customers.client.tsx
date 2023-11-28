@@ -9,14 +9,22 @@ import { formatDate } from '../../../../libs/utils';
 import { ThumbnailImage } from "@/components/admin/image/image.client"
 import styles from './customers.module.css'
 import { Customer } from "@prisma/client"
+import { Budge, DateTime } from "@/components/admin/utils/utils.client"
+import { CustomerWithStatus } from "./customers.interface"
 
-export function CustomerTable({ customers }: { customers: Customer[] }) {
+export function CustomerTable({ customers }: { customers: CustomerWithStatus[] }) {
+    const getTheme = (id: number) => {
+        if (id == 5) return 'success'
+        if (id == 6) return 'danger'
+        return 'default'
+    }
     return (
         <Table>
             <colgroup>
                 <col width="10%" />
                 <col width="20%" />
                 <col width="20%" />
+                <col width="5%" />
                 <col width="20%" />
                 <col width="10%" />
             </colgroup>
@@ -24,6 +32,7 @@ export function CustomerTable({ customers }: { customers: Customer[] }) {
                 <TableHead>#</TableHead>
                 <TableHead>Customer</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Create Date</TableHead>
                 <TableHead></TableHead>
             </TableHeader>
@@ -38,7 +47,12 @@ export function CustomerTable({ customers }: { customers: Customer[] }) {
                                 <CustomerData customer={customer} />
                             </TableData>
                             <TableData>{ customer.email }</TableData>
-                            <TableData>{ formatDate(customer.createDate) }</TableData>
+                            <TableData>
+                                <Budge theme={getTheme(customer.status.id)}>{ customer.status.name }</Budge>
+                            </TableData>
+                            <TableData>
+                                <DateTime date={customer.createDate} />
+                            </TableData>
                             <TableData end={true}>
                                 <LinkIcon href={`/admin/customers/${customer.id}/edit`} theme="primary">
                                     <PencilIcon />

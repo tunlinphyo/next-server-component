@@ -1,6 +1,6 @@
 'use client'
 
-import { Form, FormCreatButton, FormFooter, Input } from "@/components/admin/form/form.client"
+import { Form, FormCreatButton, FormFooter, Input, Select } from "@/components/admin/form/form.client"
 import { useFormState } from "react-dom"
 import { onCustomerCreate } from "../customers.actions"
 import { ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
@@ -8,6 +8,7 @@ import { AvatarUpload } from "@/components/admin/form/files/files.client"
 import { useEffect } from "react"
 import { appToast } from "@/libs/toasts"
 import { useRouter } from "next/navigation"
+import { Status } from "@prisma/client"
 
 const initState = {
     name: '',
@@ -16,7 +17,7 @@ const initState = {
     confirm: ''
 }
 
-export function CustomerCreateForm() {
+export function CustomerCreateForm({ status }: { status: Status[] }) {
     const [ state, onAction ] = useFormState(onCustomerCreate, initState)
     const { back } = useRouter()
 
@@ -62,6 +63,10 @@ export function CustomerCreateForm() {
             >
                 Confirm Password
             </Input>
+            <Select
+                name="status"
+                list={status}
+            >Status</Select>
             <AvatarUpload
                 name="avatar"
             >

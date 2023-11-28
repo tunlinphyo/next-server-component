@@ -3,23 +3,25 @@
 import Link from 'next/link'
 import styles from './cart.module.css'
 import Image from 'next/image'
-import { ArrowLongRightIcon, ArrowPathIcon, ArrowRightOnRectangleIcon, MinusIcon, PhotoIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { ArrowLongRightIcon, ArrowPathIcon, ArrowRightOnRectangleIcon, MinusIcon, PhotoIcon, PlusIcon, ShoppingCartIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { formatPrice } from '@/libs/utils'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
-import { decreaseQuantity, deleteCartItem, increaseQuantity } from './cart.actions'
+import { decreaseQuantity, deleteCartItem, increaseQuantity, onCheckout } from './cart.actions'
 import { EmptyCard, TextSkeleton } from '@/components/user/utils/utils.client'
 import clsx from 'clsx'
 import { usePathname, useSearchParams } from 'next/navigation'
 import EmptyImage from '@/app/assets/icons/empty.svg'
 import { useToast } from '@/components/user/toast/toast.index'
-import { CartItemWithDetail, CartWithItems, CookieCartItem, CookieCartWithItems } from '../../cart.interface'
+import { CartItemWithDetail, CartWithItems, CookieCartItem, CookieCartWithItems } from '../../user/cart.interface'
+import { useCartTotal } from './cart.utils'
+import { FormCreatButton } from '@/components/user/form/form.client'
 
-export function CartForm({ isLogined, isCartItems }: { isLogined: boolean, isCartItems: boolean }) {
+export function CartForm({ isLogined, cart }: { isLogined: boolean, cart: CartWithItems }) {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    if (!isCartItems) return null
+    if (!cart.cartItems.length) return null
 
     if (!isLogined) {
         const params = new URLSearchParams(searchParams)
@@ -35,10 +37,54 @@ export function CartForm({ isLogined, isCartItems }: { isLogined: boolean, isCar
         )
     }
 
+    return <CheckoutForm cart={cart} />
+}
+
+function CheckoutForm({ cart }: { cart: CartWithItems }) {
+    const { subtotal, shipping } = useCartTotal(cart)
+    const [ state, onAction ] = useFormState(onCheckout.bind(null, cart.id), { errors: [] })
+    const { showToasts } = useToast()
+
+    useEffect(() => {
+        if (state.errors) showToasts(state.errors)
+    }, [ state ])
+
     return (
-        <form className={styles.checkoutForm}>
-            <h4>Checkout</h4>
-            <div>Comming soon..</div>
+        <form action={onAction} className={styles.checkoutForm}>
+            <div className={styles.cartTotal}>
+                <div className={styles.cartTotalFlex}>
+                    <div className={styles.cartTotalLabel}>
+                        Subtotal 
+                    </div>
+                    <div className={styles.cartTotalValue}>
+                        { formatPrice(subtotal) }
+                    </div>
+                </div>
+                <div className={styles.cartTotalFlex}>
+                    <div className={styles.cartTotalLabel}>
+                        Estimated shipping 
+                    </div>
+                    <div className={styles.cartTotalValue}>
+                        { formatPrice(shipping) }
+                    </div>
+                </div>
+                <div className={clsx(styles.cartTotalFlex, styles.total)}>
+                    <div className={styles.cartTotalLabel}>
+                        Total
+                    </div>
+                    <div className={styles.cartTotalValue}>
+                        <div>
+                            { formatPrice(subtotal + shipping) }
+                        </div>
+                        <small className={styles.info}>Additional fees and texs may apply</small>
+                    </div>
+                </div>
+            </div>
+            <div className={clsx(styles.cartTotal, styles.cartButton)}>
+                <FormCreatButton icon={<ShoppingCartIcon />}>
+                    Proceed
+                </FormCreatButton>
+            </div>
         </form>
     )
 }

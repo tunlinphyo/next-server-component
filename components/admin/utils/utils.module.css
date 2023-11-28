@@ -56,3 +56,11 @@
     min-width: 40px;
     text-align: center;
 }
+.budge.success {
+    background-color: var(--success-100);
+    color: var(--success);
+}
+.budge.danger {
+    background-color: var(--danger-100);
+    color: var(--danger);
+}

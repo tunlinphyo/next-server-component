@@ -1,6 +1,6 @@
 .relatedProducts {
     width: 100%;
-    margin-top: var(--space-3);
+    margin-top: var(--space-3)!important;
 }
 .slideContainer {
     width: 100%;

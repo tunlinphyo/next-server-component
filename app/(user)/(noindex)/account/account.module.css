@@ -1,4 +1,74 @@
 
 .logoutFrom {
     padding: var(--space-4);
+    position: sticky;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.userDetail {
+    padding: var(--space-3);
+}
+.detailCard {
+    padding: var(--space-3);
+    border-radius: var(--space-4);
+    background-color: rgb(var(--background-accent-rgb));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+.flexStart {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--space-4);
+    background-color: rgb(var(--background-rgb));
+    padding: var(--space-3);
+}
+.flexStart:first-of-type {
+    border-top-right-radius: var(--space-3);
+    border-top-left-radius: var(--space-3);
+}
+.flexStart:last-of-type {
+    border-bottom-right-radius: var(--space-3);
+    border-bottom-left-radius: var(--space-3);
+}
+.flexStart svg {
+    width: 1.2rem;
+    flex-shrink: 0;
+    color: var(--foreground-600);
+}
+
+.editButton {
+    margin-top: var(--space-3);
+}
+
+
+.slideItemEnd {
+    min-width: calc(36px + var(--space-5));
+    padding: var(--space-4);
+    background-color: transparent;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.goButton {
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    color: var(--primary-600);
+    background-color: var(--primary-100);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.goButton svg {
+    width: 1.2rem;
+}
+.goButton:hover {
+    outline: 2px solid var(--primary-600);
 }

@@ -1,6 +1,7 @@
 'use server'
 
 import { isLogined } from "../../user.actions"
+import { CartWithItems } from "../../user/cart.interface"
 import { getCartData } from "./cart.actions"
 import { CartForm, CartList } from "./cart.client"
 
@@ -13,7 +14,7 @@ export async function ServerCart() {
     return (
         <>
             <CartList cart={cartData} />
-            <CartForm isLogined={is} isCartItems={!!cartData.cartItems.length} />
+            <CartForm isLogined={is} cart={cartData as CartWithItems} />
         </>
     )
 }

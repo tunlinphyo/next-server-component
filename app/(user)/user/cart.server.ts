@@ -55,9 +55,10 @@ export async function createCartItem(cartId: number, classId: number, quantity: 
     })
 }
 
-export async function getCartItem(productClassId: number) {
+export async function getCartItem(cartId: number, productClassId: number) {
     return await prisma.cartItem.findFirst({
         where: {
+            cartId,
             productClassId
         }
     })
@@ -110,8 +111,9 @@ export async function getCartWithDetails(customerId: number) {
                             variant2: true,
                         }
                     },
-                }
-            }
+                },
+                orderBy: { createDate: "asc" }
+            },
         }
     }) as CartWithItems
 }

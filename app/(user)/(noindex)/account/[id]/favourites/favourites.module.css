@@ -1,0 +1,21 @@
+.favourite {
+    width: 32px;
+    height: 32px;
+    background-color: transparent;
+    border: none;
+    color: var(--danger);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(--danger-100);
+}
+.favourite:hover {
+    outline: 2px solid var(--danger);
+}
+.favourite:disabled {
+    pointer-events: none;
+}
+.favourite svg {
+    width: 1.2rem;
+}

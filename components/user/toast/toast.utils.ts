@@ -15,7 +15,7 @@ export function createToast(text:string) {
 }
 
 export function removeToast(Toaster: HTMLElement, toast:HTMLOutputElement) {
-    Toaster.removeChild(toast)
+    Toaster?.removeChild(toast)
 }
 
 export const addToast = (Toaster: HTMLElement, toast:HTMLOutputElement) => {

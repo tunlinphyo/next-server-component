@@ -89,7 +89,7 @@ export function formatPrice(price: number | undefined, currencySymbol: string = 
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
     // Concatenate the parts and add the currency symbol
-    const result = currencySymbol + parts.join('.')
+    const result = `${currencySymbol}${parts.join('.')}`
 
     return result
 }

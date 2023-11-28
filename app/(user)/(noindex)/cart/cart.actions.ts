@@ -1,12 +1,13 @@
 'use server'
 
-import { CartItemType, CookieCartType } from "@/libs/definations"
+import { CookieCartType } from "@/libs/definations"
 import { revalidatePath } from "next/cache"
 import { getUser } from "../../user.actions"
-import { getCart, getCartItem, getCartWithDetails, removeCartItem, updateCartItem } from "../../cart.server"
-import { getCookieCartItems, setCookieCartItems } from "../../cookie.server"
+import { getCart, getCartItem, getCartWithDetails, removeCartItem, updateCartItem } from "../../user/cart.server"
+import { getCookieCartItems, setCookieCartItems } from "../../user/cookie.server"
 import prisma from "@/libs/prisma"
-import { CartWithItems, CookieCartItem } from "../../cart.interface"
+import { CartWithItems, CookieCartItem } from "../../user/cart.interface"
+import { redirect } from "next/navigation"
 
 export async function getCartData(): Promise<CartWithItems | { cartItems: CookieCartItem[] }> {
     const user = await getUser()
@@ -26,7 +27,9 @@ export async function deleteCartItem(class_id: number) {
     console.log('DELETE_CLASS_ID', class_id)
 
     if (user) {
-        const cartItem = await getCartItem(class_id)
+        const cart = await getCart(user.id)
+        if (!cart) return { code: 'Cart do not exist!' }
+        const cartItem = await getCartItem(cart.id, class_id)
         if (!cartItem) {
             revalidatePath('/cart', "page")
             return { code: 'Cart Item do not exist!' }
@@ -50,7 +53,9 @@ export async function increaseQuantity(class_id: number) {
     if (!productClass) return { code: 'Poduct could not find!' }
 
     if (user) {
-        const cartItem = await getCartItem(class_id)
+        const cart = await getCart(user.id)
+        if (!cart) return { code: 'Cart do not exist!' }
+        const cartItem = await getCartItem(cart.id, class_id)
         if (!cartItem) {
             revalidatePath('/cart', "page")
             return { code: 'Cart Item do not exist!' }
@@ -60,10 +65,10 @@ export async function increaseQuantity(class_id: number) {
             revalidatePath('/cart', "page")
             return { code: 'Poduct is out of stock!' }
         }
-        await updateCartItem({ 
+        await updateCartItem({
             id: cartItem.id,
-            productClassId: cartItem.productClassId, 
-            quantity: Math.min(cartItem.quantity + 1, productClass.quantity) 
+            productClassId: cartItem.productClassId,
+            quantity: Math.min(cartItem.quantity + 1, productClass.quantity)
         })
     } else {
         const carts = await getCookieCartItems()
@@ -87,7 +92,9 @@ export async function decreaseQuantity(class_id: number) {
     if (!productClass) return { code: 'Poduct could not find!' }
 
     if (user) {
-        const cartItem = await getCartItem(class_id)
+        const cart = await getCart(user.id)
+        if (!cart) return { code: 'Cart do not exist!' }
+        const cartItem = await getCartItem(cart.id, class_id)
         if (!cartItem) {
             revalidatePath('/cart', "page")
             return { code: 'Cart Item do not exist!' }
@@ -97,10 +104,10 @@ export async function decreaseQuantity(class_id: number) {
             revalidatePath('/cart', "page")
             return { code: 'Poduct is out of stock!' }
         }
-        await updateCartItem({ 
-            id: cartItem.id, 
+        await updateCartItem({
+            id: cartItem.id,
             productClassId: cartItem.productClassId,
-            quantity: Math.max(cartItem.quantity - 1, 1) 
+            quantity: Math.max(cartItem.quantity - 1, 1)
         })
     } else {
         const carts = await getCookieCartItems()
@@ -120,8 +127,8 @@ export async function decreaseQuantity(class_id: number) {
 async function _getCookieCart(carts: CookieCartType[]) {
     const cartItems: CookieCartItem[] = []
     for await (const item of carts) {
-        const productClass = await prisma.productClass.findUnique({ 
-            where: { id: item.id }, 
+        const productClass = await prisma.productClass.findUnique({
+            where: { id: item.id },
             include: {
                 product: {
                     include: {
@@ -148,3 +155,39 @@ async function _getCookieCart(carts: CookieCartType[]) {
     return { cartItems }
 }
 
+export async function onCheckout(cartId: number) {
+    const errors: string[] = []
+    const cartItems = await prisma.cartItem.findMany({
+        where: { cartId },
+        include: {
+            product: true,
+            productClass: true
+        }
+    })
+
+    for await (const item of cartItems) {
+        if (item.productClass.quantity <= 0) {
+            errors.push(`${item.product.name} is removed because of not stock.`)
+            await prisma.cartItem.delete({
+                where: { id: item.id }
+            })
+        } else if (item.quantity > item.productClass.quantity) {
+            const quantity = item.productClass.quantity
+            errors.push(`${item.product.name} qunatity is not enough.`)
+            await prisma.cartItem.update({
+                where: { id: item.id },
+                data: { quantity }
+            })
+        }
+    }
+
+    if (errors.length) return { errors }
+
+    redirect('/cart/checkout/shipping')
+} 
+
+async function createOrder(cartId: number) {
+    const cart = await prisma.cart.findUnique({
+        where: { id: cartId }
+    })
+}

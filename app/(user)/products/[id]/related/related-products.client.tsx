@@ -1,25 +1,27 @@
 'use client'
 
 import styles from './related-products.module.css'
-import { ProductWithPriceAndStock } from '../../product.interface'
-import { Product, ProductSkeleton } from '../../products.client'
+import { ProductSkeleton } from '../../products.client'
 import { useXScroll } from './related-product.utils'
 
-export function RelatedProducts({ id, products, withFav }: { id: number, products: ProductWithPriceAndStock[], withFav: boolean }) {
+export function RelatedProducts({ id, children, more }: { 
+    id: number;
+    children?: React.ReactNode;
+    more?: React.ReactNode;
+}) {
     const { elemRef, handleScroll } = useXScroll(id)
     return (
         <div className={styles.relatedProducts}>
             <div ref={elemRef} className={styles.slideContainer} onScroll={handleScroll}>
-                {
-                    products.map((item) => (
-                        <div className={styles.slideItem} key={item.id}>
-                            <Product product={item} withFav={withFav} />
-                        </div>
-                    ))
-                }
+                { children }
+                { more }
             </div>
         </div>
     )
+}
+
+export function SlideItem({ children }: { children: React.ReactNode }) {
+    return <div className={styles.slideItem}>{ children }</div>
 }
 
 export function RelatedProdcutSkeleton() {

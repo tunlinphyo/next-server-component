@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 import { getVariant } from "../../variant.action"
 import { VariantEditForm } from "./variant-edit.client"
-import { FormDates } from "@/components/admin/form/form.client"
+import { FormDates } from "@/components/admin/form/form.server"
 
 
 export async function VariantEdit({ id, page }: { id: number, page: number }) {

@@ -4,8 +4,8 @@ import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products
 import { PER_PAGE } from "@/libs/const"
 import { revalidatePath } from 'next/cache'
 import { getUser } from "../user.actions"
-import { createCartItem, getCart, getCartItem, updateCartItem } from "../cart.server"
-import { getCookieCartItems, setCookieCartItems } from "../cookie.server"
+import { createCartItem, getCart, getCartItem, updateCartItem } from "../user/cart.server"
+import { getCookieCartItems, setCookieCartItems } from "../user/cookie.server"
 import prisma from "@/libs/prisma"
 import { Prisma } from "@prisma/client"
 import { ProductWithPriceAndStock } from "@/app/admin/(admin)/product/products/products.interface"
@@ -98,7 +98,7 @@ export async function addToCart(prevState: any, formData: FormData) {
         const cart = await getCart(user.id)
         if (!cart) return { code: 'Cart could not find' }
         try {
-            const cartItem = await getCartItem(class_id)
+            const cartItem = await getCartItem(cart.id, class_id)
             if (cartItem) {
                 await updateCartItem({
                     id: cartItem.id,

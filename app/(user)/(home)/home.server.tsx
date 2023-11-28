@@ -1,10 +1,13 @@
 "use server"
 
+import styles from './home.module.css'
+import { FavouriteSkeleton, Product } from "../products/products.client";
 import { ServerFavourite } from "../products/products.server";
 import { getUser } from "../user.actions";
 import { getCategories, getHomeProduct } from "./home.actions"
 import { Categories, ProductSlide } from "./home.client"
 import { Suspense } from "react";
+import { ProductWithPriceAndStock } from '../user/cart.interface';
 
 export async function ServerCategories() {
     const categories = await getCategories()
@@ -17,14 +20,22 @@ export async function ServerCategories() {
 export async function ServerLatestProducts() {
     const user = await getUser()
     const products = await getHomeProduct()
-    const productIds = products.map(item => item.id)
 
     return (
         <>
-            <ProductSlide products={products} withFav={!!user} />
-            <Suspense fallback={<></>}>
-                <ServerFavourite customerId={user?.id} productIds={productIds} />
-            </Suspense>
+            <ProductSlide>
+                {
+                    products.map(item => (
+                        <div className={styles.slideItem} key={item.id}>
+                            <Product product={item}>
+                                <Suspense fallback={<FavouriteSkeleton />}>
+                                    <ServerFavourite customerId={user?.id} productId={item.id} />
+                                </Suspense>
+                            </Product>
+                        </div>
+                    ))
+                }
+            </ProductSlide>
         </>
     )
 }

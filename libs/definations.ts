@@ -23,7 +23,7 @@ export interface CookieCartType {
 }
 
 export interface FormArrayType {
-    id: number;
+    id: number | string;
     name: string;
 }
 

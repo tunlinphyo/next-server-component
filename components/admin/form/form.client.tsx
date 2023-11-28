@@ -7,11 +7,9 @@ import { useFormState, useFormStatus } from "react-dom";
 import { ArrowPathIcon, ChevronUpDownIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { ButtonSkeleton } from "../button/button.client";
 import { TextSkeleton } from "../utils/utils.client";
-import { formatDate } from "@/libs/utils";
 import { useEffect, useRef, useState } from "react";
 import { appConfirm } from "@/libs/modals";
 import { appToast } from "@/libs/toasts";
-import { timeAgo } from "@/libs/relative-time";
 import { useRouter } from "next/navigation";
 
 
@@ -45,11 +43,11 @@ type CheckboxsProp = {
     children?: React.ReactNode;
     name: string;
     list: FormArrayType[];
-    defaultValue?: number[];
+    defaultValue?: Array<number | string>;
     error?: string;
 }
 type CheckboxProp = {
-    id: number;
+    id: number | string;
     name: string;
     label: string;
     checked: boolean;
@@ -238,19 +236,6 @@ export function DeleteButton({ children }: { children?: React.ReactNode }) {
                 (pending || loading) ? <ArrowPathIcon className="icon-loading" /> : <TrashIcon className="test" />
             }
         </button>
-    )
-}
-
-export function FormDates({ createDate, updateDate }: { createDate: Date, updateDate?: Date | null }) {
-    return (
-        <div className={styles.dates}>
-            <div className={styles.date}>Create at: { formatDate(createDate) }</div>
-            {/* { updateDate && <div className={styles.date}>Last update at: { formatDate(updateDate) }</div> } */}
-            { updateDate && <div className={styles.date}>
-                    Last update at: { timeAgo(updateDate) }
-                </div>
-            }
-        </div>
     )
 }
 

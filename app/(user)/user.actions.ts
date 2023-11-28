@@ -1,8 +1,8 @@
 'use server'
 
-import { getCart, getCountCartItems, handleUserCart } from "./cart.server"
+import { getCart, getCountCartItems, handleUserCart } from "./user/cart.server"
 import { redirect } from "next/navigation"
-import { clearCookieCart, clearCookieUser, getCookieCartItems, getCookieUser, setCookieUser } from "./cookie.server";
+import { clearCookieCart, clearCookieUser, getCookieCartItems, getCookieUser, setCookieUser } from "./user/cookie.server";
 import { Customer } from "@prisma/client"
 
 export async function isLogined() {

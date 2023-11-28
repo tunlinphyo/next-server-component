@@ -6,8 +6,9 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { PASSWORD, PER_PAGE } from "@/libs/const"
 import { deleteImage } from "@/libs/images"
-import { Prisma } from "@prisma/client"
+import { Prisma, Status } from "@prisma/client"
 import prisma from "@/libs/prisma"
+import { CustomerWithStatus } from "./customers.interface"
 const bcrypt = require('bcrypt')
 
 export async function getTotalCustomer() {
@@ -71,12 +72,15 @@ export async function getCustomers(page: number = 1, key: string) {
                 }
             ],
         },
+        include: {
+            status: true 
+        },
         skip: start,
         take: PER_PAGE,
         orderBy: { createDate: "desc" }
     }
 
-    return await prisma.customer.findMany(query)
+    return await prisma.customer.findMany(query) as CustomerWithStatus[]
 }
 
 export async function getCustomer(id: number) {
@@ -84,6 +88,10 @@ export async function getCustomer(id: number) {
     if (!customer) return
     customer.password = PASSWORD
     return customer
+}
+
+export async function getStatus() {
+    return await prisma.status.findMany()
 }
 
 export async function deleteCustomer(id: number, back: boolean = false) {
@@ -117,7 +125,12 @@ export async function onCustomerCreate(prevState: any, formData: FormData): Prom
             avatar: result.data.avatar,
             name: result.data.name,
             email: result.data.email,
-            password: hashedPassword
+            status: {
+                connect: {
+                    id: result.data.status
+                }
+            },
+            password: hashedPassword,
         }
         const customer = await prisma.customer.create({
             data: bodyData
@@ -148,7 +161,12 @@ export async function onCustomerEdit(prevState: any, formData: FormData): Promis
         const bodyData: Prisma.CustomerUpdateInput = {
             avatar: result.data.avatar,
             name: result.data.name,
-            email: result.data.email
+            email: result.data.email,
+            status: {
+                connect: {
+                    id: result.data.status
+                }
+            },
         }
         if (result.data.password !== PASSWORD) {
             const hashedPassword = await bcrypt.hash(result.data.password, 10)

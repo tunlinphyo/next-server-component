@@ -5,10 +5,11 @@ import styles from './utils.module.css'
 import { useRouter } from 'next/navigation'
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
+import { formatDate } from '@/libs/utils'
 
 type BudgeProps = ChildrenProp & {
     size?: 'default' | 'small' | 'large';
-    theme?: 'default' | 'primary' | 'danger';
+    theme?: 'default' | 'success' | 'danger';
 }
 
 export function PageContainer({ children }: ChildrenProp) {
@@ -58,9 +59,24 @@ export function TextSkeleton({ width, fontSizeEm, bgColor }: { width?: number, f
 }
 
 export function Budge({ children, size, theme }: BudgeProps) {
+    const getTheme = (theme: string | undefined) => {
+        if (theme == "success") return styles.success 
+        if (theme == "danger") return styles.danger 
+        return null
+    }
     return (
-        <div className={clsx(styles.budge)}>
+        <div className={clsx(styles.budge, getTheme(theme))}>
             { children }
         </div>
+    )
+}
+
+export function DateTime({ date }: { date?: Date }) {
+    if (!date) return null
+
+    return (
+        <span suppressHydrationWarning>
+         { formatDate(date) }
+        </span>
     )
 }
