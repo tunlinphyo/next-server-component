@@ -21,6 +21,7 @@
     /* padding: var(--space-3) var(--space-4); */
     border-radius: var(--space-4);
     overflow: hidden;
+    /* border: 1px solid var(--primary-100); */
 
     display: flex;
 }

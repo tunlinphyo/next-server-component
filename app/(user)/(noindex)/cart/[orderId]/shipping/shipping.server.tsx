@@ -1,18 +1,32 @@
 "use server"
 
 import { getUser } from "@/app/(user)/user.actions"
-import { getCart } from "@/app/(user)/user/cart.server"
 import { redirect } from "next/navigation"
-import { getOrder } from "../checkout.actions"
-import { ShippingForm } from "./shipping.client"
+import { getAllCustomerAddress, getOrder } from "../checkout.actions"
+import { AddressInput, ShippingForm } from './shipping.client';
+import { Suspense } from "react";
+import { wait } from "@/libs/utils";
+import { InputSkeleton } from "@/components/user/form/form.client";
 
 export async function ServerShipping({ orderId }: { orderId: number }) {
+    await wait()
     const user = await getUser()
-    if (!user) redirect("/cart")
     const order = await getOrder(orderId)
-    if (!order) redirect('cart')
+    if (!(user && order)) redirect('cart')
 
     return (
-        <ShippingForm order={order} customer={user} />
+        <ShippingForm order={order} customer={user}>
+            <Suspense fallback={<InputSkeleton />}>
+                <ServerAddress customerId={user.id} addressId={order.addressId} />
+            </Suspense>
+        </ShippingForm>
+    )
+}
+
+export async function ServerAddress({ customerId, addressId }: { customerId: number; addressId?: number | null; }) {
+    await wait()
+    const addressList = await getAllCustomerAddress(customerId)
+    return (
+        <AddressInput customerId={customerId} addressId={addressId} addrList={addressList} />
     )
 }

@@ -2,17 +2,25 @@
 
 import { CustomerType } from '@/libs/prisma/definations';
 import styles from './shipping.module.css'
-import { Order } from "@prisma/client"
-import { Form, FormCreatButton, Input, PhoneInput, Textarea } from '@/components/user/form/form.client'
+import { CustomerAddress, Order } from "@prisma/client"
+import { FormCreatButton, FormSkeleton, Input, AddressRadios, Textarea } from '@/components/user/form/form.client'
 import { useFormState } from 'react-dom'
 import { onShipping } from '../checkout.actions'
 import { FooterBar } from '../checkout.client'
-import { CreditCardIcon } from '@heroicons/react/24/outline'
-import { useEffect, useRef } from 'react';
+import { CreditCardIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
+import React, { createContext, useContext, useEffect } from 'react';
 import { useToast } from '@/components/user/toast/toast.index';
+import { formatAddress } from '@/app/(user)/user/user.utils';
+import Link from 'next/link';
 
-export function ShippingForm({ order, customer }: { order: Order; customer: CustomerType }) {
-    const [ state, onAction ] = useFormState(onShipping, { message: '' })
+const initState: Record<string, string> = {
+    message: '',
+}
+
+const StateContext = createContext(initState)
+
+export function ShippingForm({ order, customer, children }: { order: Order; customer: CustomerType, children: React.ReactNode }) {
+    const [ state, onAction ] = useFormState(onShipping, initState)
     const { showToast } = useToast()
 
     useEffect(() => {
@@ -23,6 +31,8 @@ export function ShippingForm({ order, customer }: { order: Order; customer: Cust
         <form action={onAction} className={styles.form}>
             <div className={styles.formContainer}>
                 <div className={styles.shippingForm}>
+                    <input type="hidden" name="orderId" defaultValue={order.id} />
+                    <input type="hidden" name="customerId" defaultValue={customer.id} />
                     <Input
                         name="name"
                         defaultValue={order.name || customer.name}
@@ -42,11 +52,13 @@ export function ShippingForm({ order, customer }: { order: Order; customer: Cust
                     >Phone</Input>
                 </div>
                 <div className={styles.shippingForm}>
-                    SELECT FORM
+                    <StateContext.Provider value={state}>
+                        { children }
+                    </StateContext.Provider>
                 </div>
                 <div className={styles.shippingForm}>
                     <Textarea
-                        name="message"
+                        name="note"
                         defaultValue={order.note || ''}
                         error={state?.note}
                     >Message (optional)</Textarea>
@@ -58,5 +70,40 @@ export function ShippingForm({ order, customer }: { order: Order; customer: Cust
                 </FormCreatButton>
             </FooterBar>
         </form>
+    )
+}
+
+export function AddressInput({ customerId, addrList, addressId }: {
+    customerId: number;
+    addrList: CustomerAddress[];
+    addressId?: number | null;
+}) {
+    const state = useContext(StateContext);
+    const list = addrList.map(item => ({
+        id: item.id,
+        name: formatAddress(item)
+    }))
+    return (
+        <>
+            <AddressRadios
+                customerId={customerId}
+                name="addressId"
+                list={list}
+                defaultValue={addressId || ''}
+                error={state?.addressId}
+            >Address</AddressRadios>
+            <Link href={`/account/${customerId}/address/new`} className="button fill">
+                Add address
+                <PlusCircleIcon />
+            </Link>
+        </>
+    )
+}
+
+export function ShippingSkeleton() {
+    return (
+        <div className={styles.form}>
+            <FormSkeleton count={3} />
+        </div>
     )
 }

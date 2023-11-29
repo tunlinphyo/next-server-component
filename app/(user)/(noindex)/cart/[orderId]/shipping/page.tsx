@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { ProgressBar } from '../checkout.client'
 import { ServerShipping } from './shipping.server'
+import { ShippingSkeleton } from './shipping.client'
 
 export const metadata: Metadata = {
     title: 'Checkout',
@@ -19,7 +20,7 @@ export default async function Page({ params }: {
         <PageContainer>
             <PageTitle title='Shipping' />
             <ProgressBar step={1} />
-            <Suspense fallback={<div>LOADING..</div>}>
+            <Suspense fallback={<ShippingSkeleton />}>
                 <ServerShipping orderId={orderId} />
             </Suspense>
         </PageContainer>

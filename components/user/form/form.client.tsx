@@ -4,9 +4,11 @@ import clsx from 'clsx';
 import styles from './form.module.css'
 import { ChildrenProp, FormArrayType } from "@/libs/definations"
 import { useFormStatus } from 'react-dom';
-import { ArrowPathIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, ChevronUpDownIcon, MapPinIcon as MapPinIconOutline, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { TextSkeleton } from '../utils/utils.client';
 import { getCountryCodes } from './form.utils';
+import { MapPinIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
 
 type FormProps = ChildrenProp & {
     action: (formData: FormData) => void;
@@ -53,6 +55,22 @@ type FormCreatButtonProps = ChildrenProp & {
 type DisplayInputProps = ChildrenProp & {
     defaultValue: string;
 }
+type RadiosProp = {
+    children?: React.ReactNode;
+    name: string;
+    list: FormArrayType[];
+    defaultValue?: number | string;
+    error?: string;
+    customerId: number;
+}
+type RadioProp = {
+    id: number | string;
+    name: string;
+    label: string;
+    checked: boolean;
+    customerId: number;
+}
+
 
 export function Form({ children, action, footer }: FormProps) {
     return (
@@ -154,6 +172,50 @@ export function Select({ children, name, list, defaultValue, error, placeholder,
                 { error && <small>{ error }</small> }
             </div>
         </div>
+    )
+}
+
+export function AddressRadios({ children, customerId, name, list, defaultValue, error }: RadiosProp) {
+    return (
+        <div className={clsx(styles.formGroup, styles.formGroupSpan)}>
+            <label htmlFor={name} className={styles.label}>{ children }</label>
+            <div className={styles.inputContainer}>
+                <div className={styles.radios}>
+                    {
+                        list.map(item => (
+                            <AddressRadio
+                                key={item.id}
+                                customerId={customerId}
+                                id={item.id}
+                                name={name}
+                                label={item.name}
+                                checked={item.id == defaultValue}
+                            />
+                        ))
+                    }
+                </div>
+                { error && <small>{ error }</small> }
+            </div>
+        </div>
+    )
+}
+
+export function AddressRadio({ customerId, id, name, label, checked }: RadioProp) {
+    return (
+        <label className={styles.addressRadio}>
+            <input type="radio" name={name} value={id} defaultChecked={checked} />
+            <div className={styles.icon}>
+                <MapPinIconOutline className={styles.outline} />
+                <MapPinIcon className={styles.solid} />
+            </div>
+            <div className={styles.radioLabel}>{ label }</div>
+            <Link
+                className={styles.addressEdit}
+                href={`/account/${customerId}/address/${id}`}
+            >
+                <PencilSquareIcon />
+            </Link>
+        </label>
     )
 }
 

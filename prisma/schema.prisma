@@ -193,7 +193,7 @@ model Order {
     totalAmount     Int
     paymentAmount   Int?
     address         CustomerAddress?@relation(fields: [addressId], references: [id])
-    addressId       Int?        
+    addressId       Int?
     name            String?         @db.VarChar(255)
     email           String?         @db.VarChar(255)
     phone           String?         @db.VarChar(255)
@@ -214,7 +214,9 @@ model OrderPayment {
     payment         Payment         @relation(fields: [paymentId], references: [id])
     paymentId       Int
     cardData        String?         @db.Text
-    orders          Order[]       
+    createDate      DateTime        @default(now())
+    updateDate      DateTime?       @updatedAt
+    orders          Order[]
 }
 
 model Payment {

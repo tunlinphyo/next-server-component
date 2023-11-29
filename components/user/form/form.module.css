@@ -28,7 +28,7 @@
 .inputContainer .input {
     width: 100%;
     height: 40px;
-    font-size: .9rem;
+    font-size: 1rem;
     padding: 0 1em;
     border: 1px solid var(--foreground-100);
     border-radius: var(--space-3);
@@ -76,7 +76,7 @@
     appearance: none;
     width: 100%;
     height: 40px;
-    font-size: .9rem;
+    font-size: 1rem;
     padding: 0 1em;
     border: 1px solid var(--foreground-100);
     border-radius: var(--space-2);
@@ -116,4 +116,58 @@
     color: transparent;
     margin-top: 4px;
     border-radius: var(--space-3);
+}
+
+.radios {
+    display: grid;
+    gap: var(--space-2);
+}
+.addressRadio {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 2fr) 32px;
+    align-items: baseline;
+    border-radius: var(--space-3);
+    padding: var(--space-3);
+    border: 1px solid rgb(var(--border-rgb));
+    cursor: pointer;
+}
+.addressRadio:not(:has(a:hover)):hover {
+    border-color: var(--primary-600);
+    outline: 1px solid var(--primary-600);
+}
+.addressRadio:has(input:checked) {
+    background-color: rgb(var(--background-rgb));
+}
+.addressRadio input[type=radio] {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    position: absolute;
+    left: -9999px;
+}
+.addressRadio svg {
+    width: 1.2rem;
+    transform: translateY(3px);
+}
+.addressRadio input[type=radio]:not(:checked) + .icon .solid {
+    display: none;
+}
+.addressRadio input[type=radio]:checked + .icon .outline {
+    display: none;
+}
+.radioLabel {
+    font-size: 1rem;
+}
+.addressEdit {
+    width: 32px;
+    height: 32px;
+    padding-bottom: 5px;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--space-2);
+}
+.addressEdit:hover {
+    outline: 2px solid var(--primary-600);
 }

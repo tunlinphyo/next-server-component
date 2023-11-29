@@ -1,8 +1,9 @@
 'use server'
 
 import prisma from "@/libs/prisma"
-import { wait } from "@/libs/utils";
-import { Prisma } from "@prisma/client";
+import { getZodErrors, wait } from "@/libs/utils"
+import { ShippingSchema } from "./checkout.schema"
+import { redirect } from "next/navigation"
 
 export async function getOrder(orderId: number) {
     const order = await prisma.order.findUnique({
@@ -41,7 +42,34 @@ export async function getOrder(orderId: number) {
     return order
 }
 
+export async function getAllCustomerAddress(customerId: number) {
+    return await prisma.customerAddress.findMany({
+        where: { customerId }
+    })
+}
+
 export async function onShipping(prevState: any, formData: FormData): Promise<Record<string, string>> {
-    await wait()
-    return { message: 'Success!' }
+    const orderId = Number(formData.get('orderId'))
+    const customerId = Number(formData.get('customerId'))
+    if (!orderId) return { message: 'Order id is required' }
+
+    const result = ShippingSchema.safeParse(Object.fromEntries(formData))
+
+    if (!result.success) {
+        return getZodErrors(result.error.issues)
+    }
+
+    console.log('SHIPPING____', result.data)
+
+    try {
+        const order = await prisma.order.update({
+            where: { id: orderId, customerId },
+            data: result.data
+        })
+    } catch (error: any) {
+        console.log(error)
+        return { message: 'Error occur!' }
+    }
+
+    redirect(`/cart/${orderId}/payment`)
 }
