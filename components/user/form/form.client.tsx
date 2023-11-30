@@ -2,13 +2,14 @@
 
 import clsx from 'clsx';
 import styles from './form.module.css'
-import { ChildrenProp, FormArrayType } from "@/libs/definations"
+import { ChildrenProp, FormArrayType, PhoneCodeArrayType } from "@/libs/definations"
 import { useFormStatus } from 'react-dom';
 import { ArrowPathIcon, ChevronUpDownIcon, MapPinIcon as MapPinIconOutline, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { TextSkeleton } from '../utils/utils.client';
 import { getCountryCodes } from './form.utils';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
+import { useState } from 'react';
 
 type FormProps = ChildrenProp & {
     action: (formData: FormData) => void;
@@ -44,6 +45,11 @@ type SelectProps = {
     error?: string;
     placeholder?: string;
     onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+type PhoneCodeSelectProps = {
+    name: string;
+    list: PhoneCodeArrayType[];
+    defaultValue?: string;
 }
 type FormFooterProps = ChildrenProp & {
     center?: boolean;
@@ -119,7 +125,7 @@ export function PhoneInput({ children, name, countryCode, defaultValue, error }:
             <label htmlFor={name} className={styles.label}>{ children }</label>
             <div className={styles.inputContainer}>
                 <div className={styles.phoneInput}>
-                    <Select
+                    <PhoneCodeSelect
                         name="countrycode"
                         list={countries}
                         defaultValue={countryCode || ''}
@@ -147,6 +153,37 @@ export function DisplayInput({ children, defaultValue }: DisplayInputProps) {
         </div>
     )
 }
+
+export function PhoneCodeSelect({ name, list, defaultValue }: PhoneCodeSelectProps) {
+    const initValue = list.find(item => item.id == defaultValue)
+    const [ code, setCode ] = useState(initValue)
+
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newValue = list.find(item => item.id == event.target.value)
+        console.log('PHONE_CODE_____', newValue)
+        setCode(newValue)
+    }
+
+    return (
+        <div className={styles.phoneSelectContainer}>
+            <ChevronUpDownIcon />
+            <div className={styles.codeView}>{ code ? `${code.flag} ${code.code}` : '' }</div>
+            <select
+                name={name}
+                defaultValue={defaultValue}
+                onChange={handleChange}
+            >
+                <option value=""></option>
+                {
+                    list.map((item, index) => (
+                        <option key={`${item.id}-${index}`} value={item.id}>{ item.name }</option>
+                    ))
+                }
+            </select>
+        </div>
+    )
+}
+
 
 export function Select({ children, name, list, defaultValue, error, placeholder, disabled, onChange }: SelectProps) {
     return (

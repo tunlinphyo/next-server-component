@@ -44,14 +44,15 @@ export function ShippingForm({ order, customer, children }: { order: Order; cust
                         defaultValue={order.email || customer.email}
                         error={state?.email}
                     >Email</Input>
-                    <Input
+                    {/* <Input
                         type="tel"
                         name="phone"
                         defaultValue={order.phone || ''}
                         error={state?.phone}
-                    >Phone</Input>
+                    >Phone</Input> */}
                     <PhoneInput
                         name="phone"
+                        countryCode={order.countrycode || ''}
                         defaultValue={order.phone || ''}
                         error={state?.phone}
                     >Tel Phone</PhoneInput>

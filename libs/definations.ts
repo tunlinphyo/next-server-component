@@ -27,6 +27,13 @@ export interface FormArrayType {
     name: string;
 }
 
+export interface PhoneCodeArrayType {
+    id: number | string;
+    flag: string;
+    code: string;
+    name: string;
+}
+
 export interface FormCategoryType {
     id: number;
     name: string;

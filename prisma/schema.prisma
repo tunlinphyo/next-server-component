@@ -196,6 +196,7 @@ model Order {
     addressId       Int?
     name            String?         @db.VarChar(255)
     email           String?         @db.VarChar(255)
+    countrycode     String?         @db.VarChar(255)
     phone           String?         @db.VarChar(255)
     note            String?         @db.Text
     orderPayment    OrderPayment?   @relation(fields: [orderPaymentId], references: [id])

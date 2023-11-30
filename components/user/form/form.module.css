@@ -79,7 +79,7 @@
     font-size: 1rem;
     padding: 0 1em;
     border: 1px solid var(--foreground-100);
-    border-radius: var(--space-2);
+    border-radius: var(--space-3);
     background-color: rgb(var(--background-rgb));
     color: rgb(var(--foreground-rgb));
 }
@@ -88,12 +88,15 @@
     border-color: var(--primary-600);
     outline: 1px solid var(--primary-600);
 }
+
+.phoneSelectContainer svg,
 .selectContainer svg {
     position: absolute;
     right: var(--space-3);
     top: 50%;
     translate: 0 -50%;
     width: 1.4em;
+    pointer-events: none;
 }
 
 .formFooter {
@@ -170,4 +173,59 @@
 }
 .addressEdit:hover {
     outline: 2px solid var(--primary-600);
+}
+
+.phoneInput {
+    display: flex;
+    gap: 2px;
+}
+.phoneSelectContainer {
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--space-3);
+}
+.phoneSelectContainer:hover {
+    outline: 2px solid var(--primary-600);
+}
+.phoneSelectContainer select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    appearance: none;
+    width: initial;
+    height: 40px;
+    font-size: 1rem;
+    padding: 0 1em;
+    border: 1px solid var(--foreground-100);
+    border-radius: var(--space-3);
+    background-color: rgb(var(--background-rgb));
+    color: rgb(var(--foreground-rgb));
+    cursor: pointer;
+}
+.phoneSelectContainer svg {
+    z-index: 3;
+}
+.codeView {
+    position: relative;
+    z-index: 2;
+    height: 40px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgb(var(--background-rgb));
+    pointer-events: none;
+    padding: 0 var(--space-3);
+    padding-right: calc(var(--space-3) + 24px);
+}
+.codeView:empty::before {
+    content: '';
+    display: block;
+    width: 1.2em;
+    height: .8em;
+    border-radius: 2px;
+    background-color: var(--foreground-400);
+}
+.phoneInput input {
+    flex: 1;
 }

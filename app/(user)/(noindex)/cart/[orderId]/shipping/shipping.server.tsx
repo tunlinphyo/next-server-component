@@ -9,9 +9,8 @@ import { wait } from "@/libs/utils";
 import { InputSkeleton } from "@/components/user/form/form.client";
 
 export async function ServerShipping({ orderId }: { orderId: number }) {
-    await wait()
     const user = await getUser()
-    if (!user) return('/')
+    if (!user) redirect('/')
     const order = await getOrder(orderId, user?.id)
     if (!order) redirect('cart')
 
