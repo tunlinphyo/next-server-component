@@ -5,9 +5,9 @@ import { getZodErrors, wait } from "@/libs/utils"
 import { ShippingSchema } from "./checkout.schema"
 import { redirect } from "next/navigation"
 
-export async function getOrder(orderId: number) {
+export async function getOrder(orderId: number, customerId: number) {
     const order = await prisma.order.findUnique({
-        where: { id: orderId },
+        where: { id: orderId, customerId },
         // include: {
         //     orderItems: {
         //         include: {

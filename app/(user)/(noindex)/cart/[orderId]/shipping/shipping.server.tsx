@@ -11,8 +11,9 @@ import { InputSkeleton } from "@/components/user/form/form.client";
 export async function ServerShipping({ orderId }: { orderId: number }) {
     await wait()
     const user = await getUser()
-    const order = await getOrder(orderId)
-    if (!(user && order)) redirect('cart')
+    if (!user) return('/')
+    const order = await getOrder(orderId, user?.id)
+    if (!order) redirect('cart')
 
     return (
         <ShippingForm order={order} customer={user}>

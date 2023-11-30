@@ -11,3 +11,5 @@ export const ORDER_STATUS_PAID = 3
 export const ORDER_STATUS_DELIVERED = 4
 export const ORDER_STATUS_RETURN = 5
 export const ORDER_STATUS_CANCEL = 6
+
+export const WITH_USER_AUTH = ['/account', '/cart/']

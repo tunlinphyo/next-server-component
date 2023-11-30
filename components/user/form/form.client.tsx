@@ -163,8 +163,8 @@ export function Select({ children, name, list, defaultValue, error, placeholder,
                     >
                         <option value="">{ placeholder || 'Select a value' }</option>
                         {
-                            list.map(item => (
-                                <option key={item.id} value={item.id}>{ item.name }</option>
+                            list.map((item, index) => (
+                                <option key={`${item.id}-${index}`} value={item.id}>{ item.name }</option>
                             ))
                         }
                     </select>

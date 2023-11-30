@@ -5,14 +5,14 @@
     z-index: 4;
 
     --backgorund-one: rgb(215, 215, 215);
-    --backgorund-two: rgb(230, 230, 230);
-    --backgorund-three: rgb(245, 245, 245);
+    --backgorund-two: rgb(225, 225, 225);
+    --backgorund-three: rgb(235, 235, 235);
 }
 @media (prefers-color-scheme: dark) {
     .progressBar {
         --backgorund-one: rgb(70, 70, 70);
-        --backgorund-two: rgb(55, 55, 55);
-        --backgorund-three: rgb(40, 40, 40);
+        --backgorund-two: rgb(60, 60, 60);
+        --backgorund-three: rgb(50, 50, 50);
     }
 }
 
@@ -59,6 +59,14 @@
 }
 .review {
     background-color: var(--backgorund-three);
+}
+.progressItem.active {
+    /* background-color: var(--primary-100); */
+    color: var(--primary-600);
+}
+.progressItem.active .step {
+    background-color: var(--primary-600);
+    color: var(--primary-100);
 }
 
 

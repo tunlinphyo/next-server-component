@@ -10,15 +10,15 @@ export function ProgressBar({ step }: { step: number }) {
     return (
         <div className={styles.progressBar}>
             <div className={styles.progress}>
-                <div className={clsx(styles.progressItem, styles.shipping)}>
+                <div className={clsx(styles.progressItem, styles.shipping, step == 1 && styles.active)}>
                     { step > 1 ? <CheckCircleIcon /> : <div className={styles.step}>1</div> }
                     Shipping
                 </div>
-                <div className={clsx(styles.progressItem, styles.payment)}>
+                <div className={clsx(styles.progressItem, styles.payment, step == 2 && styles.active)}>
                     { step > 2 ? <CheckCircleIcon /> : <div className={styles.step}>2</div> }
                     Payment
                 </div>
-                <div className={clsx(styles.progressItem, styles.review)}>
+                <div className={clsx(styles.progressItem, styles.review, step == 3 && styles.active)}>
                     { step > 3 ? <CheckCircleIcon /> : <div className={styles.step}>3</div> }
                     Review
                 </div>

@@ -3,7 +3,7 @@
 import { CustomerType } from '@/libs/prisma/definations';
 import styles from './shipping.module.css'
 import { CustomerAddress, Order } from "@prisma/client"
-import { FormCreatButton, FormSkeleton, Input, AddressRadios, Textarea } from '@/components/user/form/form.client'
+import { FormCreatButton, FormSkeleton, Input, AddressRadios, Textarea, PhoneInput } from '@/components/user/form/form.client'
 import { useFormState } from 'react-dom'
 import { onShipping } from '../checkout.actions'
 import { FooterBar } from '../checkout.client'
@@ -50,6 +50,11 @@ export function ShippingForm({ order, customer, children }: { order: Order; cust
                         defaultValue={order.phone || ''}
                         error={state?.phone}
                     >Phone</Input>
+                    <PhoneInput
+                        name="phone"
+                        defaultValue={order.phone || ''}
+                        error={state?.phone}
+                    >Tel Phone</PhoneInput>
                 </div>
                 <div className={styles.shippingForm}>
                     <StateContext.Provider value={state}>

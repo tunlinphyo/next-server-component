@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { isAdmin, isUser } from './auth'
 import { COOKIE_USER } from './app/(user)/user.const'
+import { WITH_USER_AUTH } from './libs/const'
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
@@ -20,14 +21,16 @@ export function middleware(request: NextRequest) {
             if (!isAdminLogined) return NextResponse.redirect(new URL('/admin/login', url))
         }
     } else {
-        // const onUserLogin = nextUrl.pathname == '/login'
-        // const userCookie = cookies.get(COOKIE_USER)
-        // const isUserLogin = isUser(userCookie?.value)
-        // if (onUserLogin) {
-        //     if (isUserLogin) return NextResponse.redirect(new URL('/', nextUrl))
-        // } else {
-        //     if (!isUserLogin) return NextResponse.redirect(new URL('/login', nextUrl))
-        // }
+        console.log("PATH_NAME", nextUrl.pathname)
+        const onUserLogin = nextUrl.pathname == '/login'
+        const userCookie = cookies.get(COOKIE_USER)
+        const isUserLogin = isUser(userCookie?.value)
+        const isAuthPage = WITH_USER_AUTH.find(page => nextUrl.pathname.startsWith(page))
+        if (onUserLogin) {
+            if (isUserLogin) return NextResponse.redirect(new URL('/', nextUrl))
+        } else {
+            if (!isUserLogin && isAuthPage) return NextResponse.redirect(new URL('/login', nextUrl))
+        }
     }
 
     const response = NextResponse.next()

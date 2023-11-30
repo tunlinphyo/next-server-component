@@ -7,9 +7,13 @@ export function getCountryCodes() {
     const list: FormArrayType[] = []
     for (const country of countries) {
         list.push({
-            id: country.phonecode,
-            name: `${country.flag} ${country.phonecode}`
+            id: getCode(country.phonecode),
+            name: `${country.flag} (${getCode(country.phonecode)}) ${country.name}`
         })
     }
     return list
+}
+
+function getCode(code: string) {
+    return code.startsWith("+") ? code : "+".concat(code)
 }

@@ -27,7 +27,7 @@ export async function setCookieUser(user: Customer) {
     const cookieStore = cookies()
 
     const currentDate = new Date()
-    const newDate = new Date(currentDate.getTime() + (ONE_DAY * 30))
+    const newDate = new Date(currentDate.getTime() + (ONE_DAY))
 
     const cookieUser: CustomerType = {
         id: user.id,

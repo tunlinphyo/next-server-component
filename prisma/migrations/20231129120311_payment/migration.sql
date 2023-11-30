@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "OrderPayment" ADD COLUMN     "createDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updateDate" TIMESTAMP(3);
