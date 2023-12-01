@@ -13,8 +13,8 @@ export const NAVIGATIONS: Navigation[] = [
         href: '/admin/customers',
         name: 'Customers',
     },
-    // {
-    //     href: '/admin/users',
-    //     name: 'Users',
-    // },
+    {
+        href: '/admin/order',
+        name: 'Order',
+    },
 ]

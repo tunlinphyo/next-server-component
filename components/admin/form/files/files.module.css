@@ -3,8 +3,10 @@
     --size: 134.4px;
 }
 .avatarUpload {
-    grid-column: span 2;
     --size: 100px;
+}
+.avatarUpload.span {
+    grid-column: span 2;
 }
 
 .avatarUpload .label,

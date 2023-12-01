@@ -226,6 +226,7 @@ model Payment {
     logo            String?         @db.VarChar(255)
     image           String?         @db.VarChar(255)
     order           Int
+    isDisabled      Boolean         @default(false)
     payments        OrderPayment[]
 }
 

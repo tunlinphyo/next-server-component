@@ -1,7 +1,7 @@
 'use server'
 
 import { Logout, Nav } from "./navigation.client"
-import { Navigation } from "./navigation.types"
+import { type Navigation } from "./navigation.types"
 import { NAVIGATIONS } from "./navigation.utils"
 import styles from './navigation.module.css'
 

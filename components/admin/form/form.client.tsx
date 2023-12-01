@@ -52,6 +52,13 @@ type CheckboxProp = {
     label: string;
     checked: boolean;
 }
+type ToggleProps = {
+    children?: React.ReactNode;
+    name: string;
+    message: string;
+    defaultValue?: boolean;
+    error?: string;
+}
 type DisplayInputProps = ChildrenProp & {
     defaultValue: string;
 }
@@ -169,6 +176,22 @@ export function Select({ children, name, list, defaultValue, error, placeholder 
                         }
                     </select>
                 </div>
+                { error && <small>{ error }</small> }
+            </div>
+        </div>
+    )
+}
+
+export function Toggle({ children, name, message, defaultValue, error }: ToggleProps) {
+    return (
+        <div className={styles.formGroup}>
+            <label className={styles.label}>{ children }</label>
+            <div className={styles.inputContainer}>
+                <label htmlFor={name} className={styles.toggleContainer}>
+                    <div className={styles.message}>{ message }</div>
+                    <input type="checkbox" id={name} name={name} defaultChecked={defaultValue} />
+                    <div className={styles.toggle}></div>
+                </label>
                 { error && <small>{ error }</small> }
             </div>
         </div>

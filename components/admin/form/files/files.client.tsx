@@ -20,6 +20,7 @@ type AvatarUploadProps = {
     name: string;
     defaultValue?: string | null;
     children?: React.ReactNode;
+    isSpan?: boolean;
 }
 
 export function ImageUpload({ children, name, defaultValue }: ImageUploadProps) {
@@ -140,7 +141,7 @@ export function ImageUpload({ children, name, defaultValue }: ImageUploadProps) 
     )
 }
 
-export function AvatarUpload({ children, name, defaultValue }: AvatarUploadProps) {
+export function AvatarUpload({ children, name, defaultValue, isSpan }: AvatarUploadProps) {
     const [ loading, setLoading ] = useState(false)
     const [ image, setImage ] = useState(defaultValue || null)
     const [ toRemoves, setToRemoves ] = useState<string[]>([])
@@ -220,7 +221,7 @@ export function AvatarUpload({ children, name, defaultValue }: AvatarUploadProps
     }, [ elemRef ])
 
     return (
-        <div ref={elemRef} className={styles.avatarUpload}>
+        <div ref={elemRef} className={clsx(styles.avatarUpload, isSpan && styles.span)}>
             {
                 toRemoves.map((img, index) => (
                     <input key={index} type="hidden" name="delete_images" defaultValue={img} />

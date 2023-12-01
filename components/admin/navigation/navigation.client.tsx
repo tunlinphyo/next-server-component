@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import clsx from "clsx"
 import styles from './navigation.module.css'
 import { handleSignOut } from "@/app/admin/auth.actions"
-import { ArrowRightOnRectangleIcon, CubeIcon, HomeIcon, UserGroupIcon, UsersIcon } from "@heroicons/react/24/outline"
+import { ArrowRightOnRectangleIcon, CubeIcon, HomeIcon, ShoppingCartIcon, UserGroupIcon, UsersIcon } from "@heroicons/react/24/outline"
 
 export function Nav({ nav }: { nav: Navigation }) {
     const pathname = usePathname()
@@ -19,6 +19,8 @@ export function Nav({ nav }: { nav: Navigation }) {
                 return <UsersIcon />
             case 'Product':
                 return <CubeIcon />
+            case 'Order':
+                return <ShoppingCartIcon />
             default:
                 return <HomeIcon />
         }
