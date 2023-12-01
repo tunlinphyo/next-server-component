@@ -2,15 +2,17 @@
 
 import styles from './payment.module.css'
 import { OrderWithPaymentAndAddress } from '../checkout.interface'
-import { FormCreatButton, FormSkeleton, Input, AddressRadios, Textarea, PhoneInput, Select } from '@/components/user/form/form.client'
+import { FormCreatButton, Input, Select } from '@/components/user/form/form.client'
 import { FooterBar } from '../checkout.client'
-import { CreditCardIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { useFormState } from 'react-dom'
 import { onPayment } from '../checkout.actions'
 import { CustomerType } from '@/libs/prisma/definations'
+import { usePayment } from './paymnet.utils'
 
 export function PaymentForm({ order, customer }: { order: OrderWithPaymentAndAddress; customer: CustomerType }) {
     const [ state, onAction ] = useFormState(onPayment, { message: '' })
+    const { years, monthes } = usePayment()
 
     return (
         <form action={onAction} className={styles.form}>
@@ -36,12 +38,12 @@ export function PaymentForm({ order, customer }: { order: OrderWithPaymentAndAdd
                         <div className={styles.expSelect}>
                             <Select
                                 name="paymentId"
-                                list={[]}
+                                list={years}
                                 placeholder='YYYY'
                             >YYYY</Select>
                             <Select
                                 name="paymentId"
-                                list={[]}
+                                list={monthes}
                                 placeholder='MM'
                             >MM</Select>
                         </div>
@@ -54,8 +56,8 @@ export function PaymentForm({ order, customer }: { order: OrderWithPaymentAndAdd
                 </div>
             </div>
             <FooterBar>
-                <FormCreatButton icon={<CreditCardIcon />}>
-                    Payment
+                <FormCreatButton icon={<CheckCircleIcon />}>
+                    Review
                 </FormCreatButton>
             </FooterBar>
         </form>
