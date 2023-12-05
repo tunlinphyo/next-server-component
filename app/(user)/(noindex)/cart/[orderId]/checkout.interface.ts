@@ -1,4 +1,4 @@
-import { CustomerAddress, Order, OrderPayment } from "@prisma/client";
+import { CustomerAddress, CustomerPayment, Order, Payment } from "@prisma/client";
 
 
 export interface OrderWithAddress extends Order {
@@ -7,5 +7,20 @@ export interface OrderWithAddress extends Order {
 
 export interface OrderWithPaymentAndAddress extends Order {
     address: CustomerAddress;
-    orderPayment: OrderPayment;
+    customerPayment: CustomerPayment;
+}
+
+export interface CreditCard {
+    customerId: number,
+    paymentId: number,
+    holderName: string,
+    cardNumber: string,
+    expYear: string,
+    expMonth: string,
+    cvc: string,
+}
+
+export interface CustomerPaymentWithPayment extends CustomerPayment {
+    payment: Payment;
+    card: CreditCard;
 }

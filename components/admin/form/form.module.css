@@ -151,6 +151,7 @@
     align-items: center;
     padding: 0 var(--space-2);
     cursor: pointer;
+    border-radius: var(--space-2);
 }
 .toggleContainer input[type=checkbox] {
     display: none;
@@ -161,6 +162,15 @@
     border-radius: 24px;
     background-color: rgb(var(--background-rgb));
     padding: 2px;
+    outline: 1px solid var(--foreground-100);
+}
+.toggleContainer:hover {
+    background-color: rgb(var(--background-rgb));
+    outline: 1px solid var(--foreground-100);
+}
+.toggleContainer:hover .toggle,
+.toggle:hover {
+    outline: 2px solid var(--primary-600);
 }
 .toggle::before {
     content: '';
@@ -168,8 +178,8 @@
     width: 20px;
     height: 20px;
     border-radius: 24px;
-    background-color: rgb(var(--background-accent-rgb));
-    transition: transform .3s ease;
+    background-color: var(--foreground-200);
+    transition: transform .3s ease, background-color .3s ease;
 }
 .toggleContainer input:checked ~ .toggle::before {
     background-color: var(--primary-600);

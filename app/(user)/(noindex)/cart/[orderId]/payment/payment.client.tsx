@@ -1,66 +1,95 @@
 "use client"
 
 import styles from './payment.module.css'
-import { OrderWithPaymentAndAddress } from '../checkout.interface'
-import { FormCreatButton, Input, Select } from '@/components/user/form/form.client'
-import { FooterBar } from '../checkout.client'
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
-import { useFormState } from 'react-dom'
-import { onPayment } from '../checkout.actions'
-import { CustomerType } from '@/libs/prisma/definations'
-import { usePayment } from './paymnet.utils'
+import { CustomerPaymentWithPayment } from '../checkout.interface'
+import clsx from 'clsx'
+import { mapRange } from '@/libs/utils'
+import Link from 'next/link'
+import { PlusCircleIcon } from '@heroicons/react/24/solid'
+import { CheckIcon, PencilSquareIcon, PlusIcon } from '@heroicons/react/24/outline'
 
-export function PaymentForm({ order, customer }: { order: OrderWithPaymentAndAddress; customer: CustomerType }) {
-    const [ state, onAction ] = useFormState(onPayment, { message: '' })
-    const { years, monthes } = usePayment()
+export function PaymentSlide({ orderId, customerId, payments }: { orderId: number; customerId: number, payments: CustomerPaymentWithPayment[] }) {
+
+    const handleScroll = (event: React.MouseEvent<HTMLDivElement>) => {
+        const target = event.target as HTMLDivElement
+        const scrollX = target.scrollLeft
+        Array.from(target.children).forEach((child, index) => {
+            if (index) {
+                const clientRect = child.getBoundingClientRect()
+                const calcEmulation = (window.innerWidth - clientRect.width) / 2
+                const posValue = Math.abs(clientRect.left - calcEmulation)
+                const value = mapRange(posValue, 0, 400, 1, .7)
+                console.log(index, posValue, value, scrollX)
+                child.setAttribute('style', `--data-scale: ${value}`)
+            }
+        })
+    }
 
     return (
-        <form action={onAction} className={styles.form}>
-            <div className={styles.formContainer}>
-                <div className={styles.paymentForm}>
-                    <input type="hidden" name="orderId" defaultValue={order.id} />
-                    <input type="hidden" name="customerId" defaultValue={customer.id} />
-                    <Select
-                        name="paymentId"
-                        list={[]}
-                    >Payment</Select>
-                    <Input
-                        name="holderName"
-                        defaultValue={''}
-                        error={state?.holderName}
-                    >Holder Name</Input>
-                    <Input
-                        name="cardNumber"
-                        defaultValue={''}
-                        error={state?.cardNumber}
-                    >Card Number</Input>
-                    <div className={styles.gridContainer}>
-                        <div className={styles.expSelect}>
-                            <Select
-                                name="paymentId"
-                                list={years}
-                                placeholder='YYYY'
-                            >YYYY</Select>
-                            <Select
-                                name="paymentId"
-                                list={monthes}
-                                placeholder='MM'
-                            >MM</Select>
+        <div className={styles.payments}>
+            <div className={styles.paymentContainer} onScroll={handleScroll}>
+                <div className={clsx(styles.paymentCard, styles.addCard)}>
+                    <div className={styles.blankCard}>
+                        <Link className={styles.addPaymentCard} href={`/cart/${orderId}/payment/new`}>
+                            <PlusCircleIcon />
+                            Add Card
+                        </Link>
+                    </div>
+                </div>
+                {
+                    payments.map(payment => (
+                        <div className={styles.paymentCard} key={payment.id}>
+                            <div className={clsx(styles.card, styles.creditCard)}>
+                                <div className={styles.cardActions}>
+                                    <Link className={styles.cardEdit} href={`/cart/${orderId}/payment/${payment.id}`}>
+                                        <PencilSquareIcon />
+                                    </Link>
+                                    <label className={styles.checkBox}>
+                                        <input type="radio" name="payemnt" defaultValue={payment.id} />
+                                        <div className={styles.checkBoxIcon}>
+                                            <PlusIcon className={styles.plus} />
+                                            <CheckIcon className={styles.check} />
+                                        </div>
+                                    </label>
+                                </div>
+                                <div className={styles.logo}>
+                                    { payment.payment.name }
+                                </div>
+                                <div className={styles.cardNumber}>
+                                    <small>Card Number</small>
+                                    <div>{ payment.card.cardNumber }</div>
+                                </div>
+                                <div className={styles.name}>
+                                    <small>Name</small>
+                                    <div>{ payment.card.holderName }</div>
+                                </div>
+                                <div className={styles.expireDate}>
+                                    <small>Expiration</small>
+                                    <div>{ payment.card.expMonth } / { payment.card.expYear }</div>
+                                </div>
+                                <div className={styles.cvc}>
+                                    <small>CVC</small>
+                                    <div>{ payment.card.cvc }</div>
+                                </div>
+                            </div>
                         </div>
-                        <Input
-                            name="cvc"
-                            defaultValue={''}
-                            error={state?.cvc}
-                        >CVC</Input>
+                    ))
+                }
+                <div className={styles.paymentCard}>
+                    <div className={styles.card}>
+                        <div className={styles.cardActions}>
+                            <label className={styles.checkBox}>
+                                <input type="radio" name="payemnt" defaultValue={'cash'} />
+                                <div className={styles.checkBoxIcon}>
+                                    <PlusIcon className={styles.plus} />
+                                    <CheckIcon className={styles.check} />
+                                </div>
+                            </label>
+                        </div>
+                        Cash on delivery
                     </div>
                 </div>
             </div>
-            <FooterBar>
-                <FormCreatButton icon={<CheckCircleIcon />}>
-                    Review
-                </FormCreatButton>
-            </FooterBar>
-        </form>
+        </div>
     )
 }
-

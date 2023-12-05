@@ -5,6 +5,7 @@ export const PaymentSchema = z.object({
     name: z.string().min(4),
     logo: z.string().optional(),
     image: z.string().optional(),
+    isCredit: z.coerce.boolean(),
     isDisabled: z.coerce.boolean(),
 })
 

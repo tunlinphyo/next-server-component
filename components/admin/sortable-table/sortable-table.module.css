@@ -1,0 +1,42 @@
+.sortableList {
+    background-color: rgb(var(--background-accent-rgb));
+    border-radius: var(--space-2);
+    padding: var(--space-4);
+}
+.listItem {
+    width: 100%;
+    min-height: 46px;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    background-color: rgb(var(--background-rgb));
+    margin-top: 2px;
+    align-items: center;
+    padding-right: var(--space-3);
+}
+.listItemMenu {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.listItemMenu svg {
+    width: 1.2rem;
+    color: var(--foreground-500);
+}
+
+.listItem:first-child {
+    border-top-left-radius: var(--space-2);
+    border-top-right-radius: var(--space-2);
+}
+.listItem:last-child {
+    border-bottom-left-radius: var(--space-2);
+    border-bottom-right-radius: var(--space-2);
+}
+.footer {
+    margin-top: var(--space-4);
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: var(--space-3);
+}

@@ -32,12 +32,19 @@ export function PaymentEditForm({ payment }: { payment: Payment }) {
                 error={state?.name}
                 defaultValue={payment.name}
             >Name</Input>
+            <div />
             <Toggle
                 name="isDisabled"
                 message="Enable Payment Method"
-                error={state?.order}
+                error={state?.isDisabled}
                 defaultValue={!payment.isDisabled}
             >Enable/Disabled</Toggle>
+            <Toggle
+                name="isCredit"
+                message="Credit Card"
+                error={state?.isCredit}
+                defaultValue={payment.isCredit}
+            >Credit Card?</Toggle>
             <AvatarUpload
                 name="logo"
                 defaultValue={String(payment.logo || '')}

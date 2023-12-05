@@ -1,38 +1,152 @@
-.form {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    gap: var(--space-4);
-}
-.formContainer {
-    padding: 0 var(--space-3);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    gap: var(--space-3);
-}
-.paymentForm {
+.payments {
     width: 100%;
+}
+.paymentContainer {
+    width: 100%;
+    padding: 0;
+
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+
+    scroll-snap-type: x mandatory;
+    scroll-snap-stop: always;
+    --data-scale: .8;
+}
+.paymentCard {
+    min-width: 100%;
+    padding: 0 var(--space-3);
+
+    scroll-snap-align: center;
+}
+.addCard {
+    min-width: 50%;
+}
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 3 / 2;
     background-color: rgb(var(--background-accent-rgb));
     border-radius: var(--space-4);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    padding: var(--space-4);
-    gap: var(--space-4);
+    transform: scale(var(--data-scale));
+    position: relative;
 }
-.gridContainer {
+.blankCard {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.addPaymentCard {
+    padding: var(--space-4);
+    padding-left: calc(var(--space-4) + var(--space-3));
+    /* background-color: rgb(var(--background-accent-rgb)); */
+    border-radius: var(--space-2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: .9rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.addPaymentCard svg {
+    width: 42px;
+    color: var(--primary-600);
+}
+
+.creditCard {
+    padding: var(--space-4);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, .6fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.logo,
+.cardNumber {
+    grid-column: span 4;
+}
+.logo {
+    font-weight: bolder;
+}
+.name {
+    grid-column: span 2;
+}
+.creditCard small {
+    font-size: .6rem;
+    font-weight: bold;
+    color: var(--foreground-400);
+}
+.cardNumber div {
+    font-size: 1.1em;
+    letter-spacing: 5px;
+}
+.cvc {
+    justify-self: flex-end;
+}
+
+.cardActions {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
     gap: var(--space-3);
 }
-.expSelect {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, .8fr);
-    gap: 2px;
+.cardEdit {
+    width: 34px;
+    height: 34px;
+    border-radius: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-600);
+    border: 1px solid var(--foreground-200);
+}
+.cardEdit:hover {
+    border-color: var(--primary-600);
+    outline: 1px solid var(--primary-600);
+}
+.cardEdit svg {
+    width: 1.2rem;
+}
+
+.checkBox input {
+    display: none;
+}
+.checkBox svg {
+    width: 1.2rem;
+}
+.checkBoxIcon {
+    width: 34px;
+    height: 34px;
+    border-radius: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--goreground-400);
+    border: 1px solid var(--foreground-200);
+}
+.check {
+    display: none;
+}
+.checkBox input:checked ~ .checkBoxIcon .plus {
+    display: none;
+}
+.checkBox input:checked ~ .checkBoxIcon .check {
+    display: block;
+    color: var(--success);
+}
+.checkBox input:checked ~ .checkBoxIcon {
+    border-color: var(--success);
+}
+.checkBoxIcon:hover {
+    border-color: var(--primary-600);
+    outline: 1px solid var(--primary-600);
+}
+.checkBox input:checked ~ .checkBoxIcon:hover {
+    border-color: var(--success);
+    outline: 1px solid var(--success);
 }

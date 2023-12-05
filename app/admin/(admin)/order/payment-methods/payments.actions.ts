@@ -73,6 +73,8 @@ export async function onPaymentEdit(prevState: any, formData: FormData): Promise
         await deleteImage(img)
     }
 
+    console.log('RESULT', result.data)
+
     try {
         await prisma.payment.update({
             where: { id: result.data.id },
@@ -87,4 +89,33 @@ export async function onPaymentEdit(prevState: any, formData: FormData): Promise
     }
     revalidatePath('/admin/order/payment-methods')
     return { back: 'go-back', message: 'Success' }
+}
+
+export async function onSorting(prevState: any, formData: FormData) {
+    const ids = formData.getAll('id')
+    const orders = formData.getAll('order')
+
+    const tResult = await prisma.$transaction(async (prisma) => {
+        let index = 0
+        const results:any[] = []
+        for await(const order of orders) {
+            const id = Number(ids[index])
+            const result = await prisma.payment.update({
+                where: { id },
+                data: {
+                    order: Number(order)
+                }
+            })
+            index += 1
+            results.push(result)
+        }
+
+        return results
+    })
+
+    console.log('RESULT__', tResult)
+
+    if (tResult) revalidatePath('/admin/order/payment-methods')
+
+    return { message: '' }
 }

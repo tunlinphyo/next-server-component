@@ -115,7 +115,41 @@ export function getRandomElements<T>(arr: T[], count: number): T[] {
     if (count >= arr.length) {
         return arr.slice()
     }
-  
+
     const shuffledArray = arr.sort(() => Math.random() - 0.5);
     return shuffledArray.slice(0, count);
+}
+
+export function mapRange(number: number, startRange1: number, endRange1: number, startRange2: number, endRange2: number) {
+    if (number < startRange1) {
+      number = startRange1;
+    } else if (number > endRange1) {
+      number = endRange1;
+    }
+
+    const range1 = endRange1 - startRange1;
+    const range2 = endRange2 - startRange2;
+
+    const mappedValue =
+      ((number - startRange1) * range2) / range1 + startRange2;
+
+    return mappedValue;
+}
+
+export function maskNumber(inputString: string, asteriskCount: number): string {
+    const hideCount = inputString.length - asteriskCount
+
+    const maskedPart = '*'.repeat(Math.max(hideCount, asteriskCount))
+    if (hideCount <= 0) {
+      return maskedPart
+    }
+    const lastPart = inputString.slice(-hideCount)
+
+    return maskedPart + lastPart
+}
+
+export function addSpaceEveryFourCharacters(input: string): string {
+    const spacedString = input.replace(/(.{4})/g, '$1 ');
+
+    return spacedString.trim();
 }

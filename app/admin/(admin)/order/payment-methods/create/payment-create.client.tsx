@@ -32,12 +32,19 @@ export function PaymentCreateForm() {
                 name="name"
                 error={state?.name}
             >Name</Input>
+            <div />
             <Toggle
                 name="isDisabled"
                 message="Enable Payment Method"
                 defaultValue={true}
-                error={state?.order}
+                error={state?.isDisabled}
             >Enable/Disabled</Toggle>
+            <Toggle
+                name="isCredit"
+                message="Credit Card"
+                defaultValue={false}
+                error={state?.isCredit}
+            >Credit Card?</Toggle>
             <AvatarUpload
                 name="logo"
             >

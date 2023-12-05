@@ -2,33 +2,31 @@
 
 import { ChildrenProp } from '@/libs/definations'
 import styles from './sortable-table.module.css'
-import { useEffect, useRef } from 'react'
-import Sortable from 'sortablejs'
+import { Bars2Icon } from '@heroicons/react/24/outline'
 
-export function SortableTable({ children }: ChildrenProp) {
-    const ulRef = useRef<HTMLUListElement | null>(null)
-
-    useEffect(() => {
-        if (ulRef.current) {
-            const sortable = Sortable.create(ulRef.current, {
-                onChange: function(evt) {
-                    console.log('ON_CHANGE___', evt.newIndex)
-                }
-            })
-        }
-    }, [])
-
+export function SortableContainer({ children }: { children: React.ReactNode }) {
     return (
         <div className={styles.sortableList}>
-            <ul ref={ulRef} className={styles.listContainer}>
-                { children }
-            </ul>
+            { children }
         </div>
     )
 }
 
 export function SortableItem({ children }: ChildrenProp) {
     return (
-        <li>{ children }</li>
+        <li className={styles.listItem}>
+            <div className={styles.listItemMenu}>
+                <Bars2Icon />
+            </div>
+            { children }
+        </li>
+    )
+}
+
+export function SortableFooter({ children }: ChildrenProp) {
+    return (
+        <footer className={styles.footer}>
+            { children }
+        </footer>
     )
 }

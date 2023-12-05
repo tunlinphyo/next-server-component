@@ -1,18 +1,19 @@
 'use server'
 
 import prisma from "@/libs/prisma"
-import { getZodErrors, isObjectEmpty, wait } from "@/libs/utils"
+import { addSpaceEveryFourCharacters, getZodErrors, isObjectEmpty, maskNumber, wait } from "@/libs/utils"
 import { ShippingSchema } from "./checkout.schema"
 import { redirect } from "next/navigation"
-import { GenericObject } from "@/libs/definations"
-import { OrderWithPaymentAndAddress } from "./checkout.interface"
+import { FormArrayType, GenericObject } from "@/libs/definations"
+import { CreditCard, CustomerPaymentWithPayment, OrderWithPaymentAndAddress } from "./checkout.interface"
+import { decryptCookieValue } from "@/auth"
 
 export async function getOrder(orderId: number, customerId: number) {
     const order = await prisma.order.findUnique({
         where: { id: orderId, customerId },
         include: {
             address: true,
-            orderPayment: true,
+            customerPayment: true,
         }
     }) as OrderWithPaymentAndAddress
 
@@ -23,6 +24,51 @@ export async function getAllCustomerAddress(customerId: number) {
     return await prisma.customerAddress.findMany({
         where: { customerId }
     })
+}
+
+export async function getCreditCardPayemnts() {
+    return await prisma.payment.findMany({
+        where: { isDisabled: false, isCredit: true }
+    })
+}
+
+export async function getCustomerPayemnts(customerId: number) {
+    const customerPayments = await prisma.customerPayment.findMany({
+        where: {
+            customerId,
+            payment: {
+                isCredit: true,
+            }
+        },
+        include: {
+            payment: true
+        }
+    }) as CustomerPaymentWithPayment[]
+    for (const customerPayment of customerPayments) {
+        if (customerPayment.cardData) {
+            const cardData: CreditCard = JSON.parse(decryptCookieValue(customerPayment.cardData))
+            const card: CreditCard = {
+                ...cardData,
+                cardNumber: addSpaceEveryFourCharacters(maskNumber(cardData.cardNumber, 12)),
+                cvc: maskNumber(cardData.cvc, 4)
+            }
+            customerPayment.card = card
+        }
+    }
+    return customerPayments
+}
+
+export async function getCustomerPayment(id: number) {
+    const customerPayment = await prisma.customerPayment.findUnique({
+        where: { id },
+        include: { payment: true }
+    }) as CustomerPaymentWithPayment
+    if (customerPayment.cardData) {
+        const cardData: CreditCard = JSON.parse(decryptCookieValue(customerPayment.cardData))
+        customerPayment.card = cardData
+    }
+
+    return customerPayment
 }
 
 export async function onShipping(prevState: any, formData: FormData): Promise<Record<string, string>> {

@@ -27,7 +27,7 @@ function getMonths() {
     for (let i = 1; i <= 12; i++) {
         const month = i < 10 ? '0'.concat(String(i)) : String(i)
         monthes.push({
-            id: i,
+            id: month,
             name: month
         })
     }

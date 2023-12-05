@@ -120,6 +120,7 @@ model Customer {
     favourites      CustomerFavourite[]
     cart            Cart?
     orders          Order[]
+    payments        CustomerPayment[]
 }
 
 model CustomerAddress {
@@ -199,8 +200,8 @@ model Order {
     countrycode     String?         @db.VarChar(255)
     phone           String?         @db.VarChar(255)
     note            String?         @db.Text
-    orderPayment    OrderPayment?   @relation(fields: [orderPaymentId], references: [id])
-    orderPaymentId  Int?
+    customerPayment CustomerPayment?@relation(fields: [customerPaymentId], references: [id])
+    customerPaymentId  Int?
     orderStatus     OrderStatus     @relation(fields: [orderStatusId], references: [id])
     orderStatusId   Int
     createDate      DateTime        @default(now())
@@ -210,14 +211,16 @@ model Order {
     orderItems      OrderItem[]
 }
 
-model OrderPayment {
+model CustomerPayment {
     id              Int             @id @default(autoincrement())
+    customer        Customer        @relation(fields: [customerId], references: [id])
+    customerId      Int             @unique
     payment         Payment         @relation(fields: [paymentId], references: [id])
     paymentId       Int
     cardData        String?         @db.Text
     createDate      DateTime        @default(now())
     updateDate      DateTime?       @updatedAt
-    orders          Order[]
+    order           Order[]
 }
 
 model Payment {
@@ -226,8 +229,9 @@ model Payment {
     logo            String?         @db.VarChar(255)
     image           String?         @db.VarChar(255)
     order           Int
+    isCredit        Boolean         @default(false)
     isDisabled      Boolean         @default(false)
-    payments        OrderPayment[]
+    payments        CustomerPayment[]
 }
 
 model Status {
