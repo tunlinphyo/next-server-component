@@ -3,7 +3,7 @@
 import { getUser } from "@/app/(user)/user.actions"
 import { redirect } from "next/navigation"
 import { getOrder, getCustomerPayemnts } from "../checkout.actions"
-import { PaymentSlide } from "./payment.client"
+import { PaymentForm, PaymentSlide } from "./payment.client"
 
 export async function Payment({ orderId }: { orderId: number }) {
     const user = await getUser()
@@ -12,8 +12,7 @@ export async function Payment({ orderId }: { orderId: number }) {
     if (!order) redirect('cart')
     const payments = await getCustomerPayemnts(user.id)
 
-    console.log(payments)
     return (
-        <PaymentSlide orderId={orderId} customerId={user.id} payments={payments} />
+        <PaymentForm order={order} payments={payments} customerId={user.id} />
     )
 }

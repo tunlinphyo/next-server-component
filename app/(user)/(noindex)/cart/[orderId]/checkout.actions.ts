@@ -28,7 +28,7 @@ export async function getAllCustomerAddress(customerId: number) {
 
 export async function getCreditCardPayemnts() {
     return await prisma.payment.findMany({
-        where: { isDisabled: false, isCredit: true }
+        where: { isDisabled: false, isCredit: true },
     })
 }
 
@@ -42,7 +42,8 @@ export async function getCustomerPayemnts(customerId: number) {
         },
         include: {
             payment: true
-        }
+        },
+        orderBy: { createDate: "desc" }
     }) as CustomerPaymentWithPayment[]
     for (const customerPayment of customerPayments) {
         if (customerPayment.cardData) {
