@@ -5,6 +5,7 @@ import styles from "./checkout.module.css"
 import { CheckCircleIcon } from "@heroicons/react/24/solid"
 import { ArrowLeftIcon } from "@heroicons/react/24/outline"
 import { useRouter } from "next/navigation"
+import { ChildrenProp } from "@/libs/definations"
 
 export function ProgressBar({ step }: { step: number }) {
     return (
@@ -31,10 +32,38 @@ export function FooterBar({ children }: { children: React.ReactNode }) {
     const router = useRouter()
     return (
         <footer className={styles.checkoutFooter}>
-            <button className={styles.backButton} onClick={() => router.back()}>
+            <button type="button" className={styles.backButton} onClick={() => router.back()}>
                 <ArrowLeftIcon />
             </button>
             { children }
         </footer>
+    )
+}
+
+export function OrderSummary({ children }: ChildrenProp) {
+    return (
+        <div className={styles.orderSummary}>
+            <div className={styles.orderSummaryContainer}>
+                { children }
+            </div>
+        </div>
+    )
+}
+
+export function SummaryData({ label, children }: { label: string; children: React.ReactNode; }) {
+    return (
+        <div className={clsx(styles.summaryData)}>
+            <div className={styles.summaryDataLabel}>{ label }</div>
+            <div className={styles.summaryDataValue}>{ children }</div>
+        </div>
+    )
+}
+
+export function SummaryRow({ label, value, large }: { label: string; value: string; large?: boolean; }) {
+    return (
+        <div className={clsx(styles.summaryFlex, large && styles.large)}>
+            <div className={styles.summaryLabel}>{ label }</div>
+            <div className={styles.summaryValue}>{ value }</div>
+        </div>
     )
 }

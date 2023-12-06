@@ -206,6 +206,7 @@ model Order {
     orderStatusId   Int
     createDate      DateTime        @default(now())
     orderDate       DateTime?       @db.Date
+    paymentDate     DateTime?       @db.Date
     deliveryDate    DateTime?       @db.Date
     updateDate      DateTime?       @updatedAt
     orderItems      OrderItem[]
@@ -214,7 +215,7 @@ model Order {
 model CustomerPayment {
     id              Int             @id @default(autoincrement())
     customer        Customer        @relation(fields: [customerId], references: [id])
-    customerId      Int             
+    customerId      Int
     payment         Payment         @relation(fields: [paymentId], references: [id])
     paymentId       Int
     cardData        String?         @db.Text

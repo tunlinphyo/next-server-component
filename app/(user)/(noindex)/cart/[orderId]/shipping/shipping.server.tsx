@@ -12,7 +12,7 @@ export async function ServerShipping({ orderId }: { orderId: number }) {
     const user = await getUser()
     if (!user) redirect('/')
     const order = await getOrder(orderId, user?.id)
-    if (!order) redirect('cart')
+    if (!order) redirect('/cart')
 
     return (
         <ShippingForm order={order} customer={user}>

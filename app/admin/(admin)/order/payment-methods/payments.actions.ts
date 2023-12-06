@@ -14,13 +14,13 @@ export async function getPaymentsPageLength() {
     return Math.ceil(count / PER_PAGE)
 }
 
-export async function getPayemnts() {
+export async function getPayments() {
     return await prisma.payment.findMany({
         orderBy: { order: "asc" }
     })
 }
 
-export async function getPayemnt(id: number) {
+export async function getPayment(id: number) {
     return await prisma.payment.findUnique({
         where: { id }
     })

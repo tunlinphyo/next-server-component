@@ -8,7 +8,7 @@ import { getCookieCartItems, setCookieCartItems } from "../../user/cookie.server
 import prisma from "@/libs/prisma"
 import { CartWithItems, CookieCartItem } from "../../user/cart.interface"
 import { redirect } from "next/navigation"
-import { ORDER_STATUS_PENDING } from "@/libs/const"
+import { DELIVERY_AMOUNT, ORDER_STATUS_PENDING } from "@/libs/const"
 
 export async function getCartData(): Promise<CartWithItems | { cartItems: CookieCartItem[] }> {
     const user = await getUser()
@@ -199,7 +199,6 @@ export async function onCheckout(cartId: number) {
 }
 
 async function createOrder(cartId: number, subtotal: number) {
-    const deliveryAmount = 20
     const cart = await prisma.cart.findUnique({
         where: { id: cartId }
     })
@@ -215,8 +214,8 @@ async function createOrder(cartId: number, subtotal: number) {
             data: {
                 customerId: cart.customerId,
                 subTotal: subtotal,
-                deliveryAmount,
-                totalAmount: subtotal + deliveryAmount,
+                deliveryAmount: DELIVERY_AMOUNT,
+                totalAmount: subtotal + DELIVERY_AMOUNT,
                 orderStatusId: ORDER_STATUS_PENDING
             }
         })

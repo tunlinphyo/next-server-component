@@ -9,10 +9,18 @@ export const ShippingSchema = z.object({
 })
 
 export const PaymentSchema = z.object({
-    paymentId: z.coerce.number(),
-    holderName: z.string().min(6),
-    cardNumber: z.string().email(),
-    expYear: z.string().min(4).max(4),
-    expMonth: z.string().min(2).max(2),
-    cvc: z.string().min(3).max(4),
+    orderId: z.coerce.number().min(1, { message: 'Order ID is required' }),
+    customerId: z.coerce.number().min(1, { message: 'Customer ID is required' }),
+    customerPaymentId: z.coerce.number().min(1, { message: 'Payment is required' }),
+    paymentId: z.coerce.number().min(1),
+})
+
+export const CheckoutSchema = ShippingSchema.extend({
+    subTotal: z.coerce.number().min(1),
+    deliveryAmount: z.coerce.number().min(1),
+    totalAmount: z.coerce.number().min(1),
+    paymentAmount: z.coerce.number().min(1),
+    customerId: z.coerce.number().min(1),
+    customerPaymentId: z.coerce.number().min(1),
+
 })

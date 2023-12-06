@@ -2,9 +2,8 @@
 import { PageContainer, PageTitle } from '@/components/user/utils/utils.client'
 import { Suspense } from 'react'
 import { Metadata } from 'next'
-import { FooterBar, ProgressBar } from '../checkout.client';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+import { ProgressBar } from '../checkout.client'
+import { Review } from './review.server'
 
 export const metadata: Metadata = {
     title: 'Checkout',
@@ -20,15 +19,9 @@ export default async function Home({ params }: {
         <PageContainer>
             <PageTitle title='Review' />
             <ProgressBar step={3} />
-            <div style={{
-                height: '1000px'
-            }} />
-            <FooterBar>
-                <Link href="/cart/checkout/1/success" className="button">
-                    Checkout 
-                    <CheckCircleIcon />
-                </Link>
-            </FooterBar>
+            <Suspense fallback={<div>LOADING...</div>}>
+                <Review orderId={orderId} />
+            </Suspense>
         </PageContainer>
     )
 }

@@ -55,7 +55,7 @@ export function ShippingForm({ order, customer, children }: { order: Order; cust
                         countryCode={order.countrycode || ''}
                         defaultValue={order.phone || ''}
                         error={state?.phone}
-                    >Tel Phone</PhoneInput>
+                    >Phone</PhoneInput>
                 </div>
                 <div className={styles.shippingForm}>
                     <StateContext.Provider value={state}>
@@ -84,7 +84,7 @@ export function AddressInput({ customerId, addrList, addressId }: {
     addrList: CustomerAddress[];
     addressId?: number | null;
 }) {
-    const state = useContext(StateContext);
+    const state = useContext(StateContext)
     const list = addrList.map(item => ({
         id: item.id,
         name: formatAddress(item)

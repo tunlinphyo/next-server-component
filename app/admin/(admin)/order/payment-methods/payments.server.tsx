@@ -1,10 +1,10 @@
 'use server'
 
-import { getPayemnts } from "./payments.actions"
+import { getPayments } from "./payments.actions"
 import { PayemntTable } from "./payments.client"
 
 export async function PayemntList() {
-    const payments = await getPayemnts()
+    const payments = await getPayments()
     return (
         <PayemntTable payments={payments} />
     )

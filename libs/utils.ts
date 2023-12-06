@@ -81,7 +81,8 @@ export function getFormDataBy(formData: FormData, index: number) {
 }
 
 export function formatPrice(price: number | undefined, currencySymbol: string = '$'): string {
-    if (!price) return 'Invalit price'
+    if (Number.isNaN(price)) return 'Invalit price'
+    // @ts-ignore
     const formattedPrice = price.toFixed(0)
 
     // Add thousands separator
