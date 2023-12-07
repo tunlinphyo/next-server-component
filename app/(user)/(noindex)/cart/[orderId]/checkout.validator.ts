@@ -3,11 +3,11 @@
 import { Order } from "@prisma/client"
 import { ShippingSchema } from "./checkout.schema";
 import { getZodErrors } from "@/libs/utils";
-import { CustomerPaymentWithPayment, OrderItemWidthDetail } from "./checkout.interface";
 import prisma from "@/libs/prisma";
 import { DELIVERY_AMOUNT } from "@/libs/const";
+import { OrderItemWidthDetail } from "./checkout.interface";
 
-export interface ProcessorReturn<T> {
+export interface ValidatorReturnInterface<T> {
     errors: string[];
     success: boolean;
     data?: T;
@@ -22,7 +22,7 @@ export interface ShippingInterface {
     note?: string;
 }
 
-export function shippingProcessor(order: Order): ProcessorReturn<ShippingInterface> {
+export function shippingValidator(order: Order): ValidatorReturnInterface<ShippingInterface> {
     const errors: string[] = []
 
     const result = ShippingSchema.safeParse(order)
@@ -48,7 +48,7 @@ export function shippingProcessor(order: Order): ProcessorReturn<ShippingInterfa
     }
 }
 
-export async function stockProcessor(orderItems: OrderItemWidthDetail[]): Promise<ProcessorReturn<number>> {
+export async function stockValidator(orderItems: OrderItemWidthDetail[]): Promise<ValidatorReturnInterface<number>> {
     const errors: string[] = []
 
     let subtotal: number = 0
@@ -79,10 +79,4 @@ export async function stockProcessor(orderItems: OrderItemWidthDetail[]): Promis
         errors,
         data: subtotal
     }
-}
-
-export async function paymentProcessor(orderId: number, customerPaymentId: number) {
-    
-
-    // await prisma.
 }

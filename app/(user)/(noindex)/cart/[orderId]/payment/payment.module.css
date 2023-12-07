@@ -63,6 +63,10 @@
 .addPaymentCard svg {
     width: 42px;
     color: var(--primary-600);
+    transition: transform .3s ease;
+}
+.addPaymentCard:hover svg {
+    transform: scale(1.1);
 }
 
 .creditCard {

@@ -48,7 +48,7 @@ export function ReviewForm({ order, children, card }: {
             { children }
             <OrderSummary>
                 <SummaryRow label="Subtotal" value={formatPrice(order.subTotal)} />
-                <SummaryRow label="Estimated shipping" value={formatPrice(order.deliveryAmount)} />
+                <SummaryRow label="Shipping" value={formatPrice(order.deliveryAmount)} />
                 <SummaryRow label="Total" value={formatPrice(order.totalAmount)} />
                 { card }
                 <SummaryRow label="Pay" value={ formatPrice(order.totalAmount) } large />

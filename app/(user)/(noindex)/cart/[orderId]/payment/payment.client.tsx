@@ -119,7 +119,6 @@ export function PaymentSlide({ orderId, payments, defaultValue, onChange }: {
         const checkedInput = elem.querySelector('input:checked')
         if (checkedInput) {
             const card = checkedInput.closest(`.${styles.card}`)
-            console.log(card)
             card?.scrollIntoView({
                 behavior: 'auto',
                 block: 'nearest',

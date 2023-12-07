@@ -58,6 +58,17 @@ export async function getCreditCardPayments() {
 }
 
 export async function getCustomerPayemnts(customerId: number) {
+    const codPayment = await prisma.customerPayment.findFirst({
+        where: { customerId, paymentId: COD_PAYMENT_ID }
+    })
+    if (!codPayment) {
+        await prisma.customerPayment.create({
+            data: {
+                customerId,
+                paymentId: COD_PAYMENT_ID
+            }
+        })
+    }
     const customerPayments = await prisma.customerPayment.findMany({
         where: { customerId },
         include: {

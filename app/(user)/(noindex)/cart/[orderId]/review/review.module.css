@@ -25,7 +25,7 @@
     padding: var(--space-3);
     border-radius: var(--space-4);
 }
-.cartItem:hover:not(:has(button:hover)) {
+.orderItem:hover {
     outline: 2px solid var(--primary-600);
 }
 
