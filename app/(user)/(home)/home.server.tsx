@@ -27,7 +27,7 @@ export async function ServerLatestProducts() {
                 {
                     products.map(item => (
                         <div className={styles.slideItem} key={item.id}>
-                            <Product product={item}>
+                            <Product product={item} observeable>
                                 <Suspense fallback={<FavouriteSkeleton />}>
                                     <ServerFavourite customerId={user?.id} productId={item.id} />
                                 </Suspense>

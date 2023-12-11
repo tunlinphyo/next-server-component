@@ -11,6 +11,8 @@ import { useToast } from '@/components/user/toast/toast.index'
 import { ProductWithPriceAndStock } from '@/app/admin/(admin)/product/products/products.interface'
 import { Category } from '@prisma/client'
 import { useXScroll } from './home.utils'
+import { useEffect } from 'react'
+import { useIntersectionObserver } from '@/libs/intersection-observer'
 
 export function SearchBar() {
     const { showToast } = useToast()
@@ -46,6 +48,18 @@ export function Categories({ categories }: { categories: Category[] }) {
 
 export function ProductSlide({ children }: { children: React.ReactNode }) {
     const { elemRef, handleScroll } = useXScroll()
+
+    useEffect(() => {
+        const { observe, unobserve } = useIntersectionObserver(elemRef?.current, entry => {
+            entry.target.classList.toggle("observer-inview", entry.isIntersecting)
+        }, .25)
+        observe()
+
+        return () => {
+            unobserve()
+        }
+    }, [])
+
     return (
         <div className={styles.latestProducts}>
             <div ref={elemRef} className={styles.slideContainer} onScroll={handleScroll}>
@@ -102,8 +116,8 @@ export function ProductSlideSkeleton() {
                         </div>
                     </div>
                 </div>
-                <div className={styles.slideItem}></div>
-                <div className={styles.slideItem}></div>
+                <div className={clsx(styles.slideItem, styles.itemSkeleton)}></div>
+                <div className={clsx(styles.slideItem, styles.itemSkeleton)}></div>
                 <div className={clsx(styles.slideItem, styles.slideItemEnd)}>
                     <Link href="/products" className={styles.goButton}>
                         <ArrowRightIcon />

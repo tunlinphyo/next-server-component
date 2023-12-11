@@ -27,6 +27,12 @@
     border-radius: 15px;
     background-color: rgb(var(--background-rgb));
     overflow: hidden;
+
+    transform: scale(.9);
+    transition: transform .5s ease;
+}
+.cardInview .image {
+    transform: none;
 }
 .image img {
     width: 100%;

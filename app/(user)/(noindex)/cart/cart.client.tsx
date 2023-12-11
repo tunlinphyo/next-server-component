@@ -5,7 +5,7 @@ import styles from './cart.module.css'
 import Image from 'next/image'
 import { ArrowLongRightIcon, ArrowPathIcon, ArrowRightOnRectangleIcon, MinusIcon, PhotoIcon, PlusIcon, ShoppingCartIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { formatPrice } from '@/libs/utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { decreaseQuantity, deleteCartItem, increaseQuantity, onCheckout } from './cart.actions'
 import { EmptyCard, TextSkeleton } from '@/components/user/utils/utils.client'
@@ -16,6 +16,7 @@ import { useToast } from '@/components/user/toast/toast.index'
 import { CartItemWithDetail, CartWithItems, CookieCartItem, CookieCartWithItems } from '../../user/cart.interface'
 import { useCartTotal } from './cart.utils'
 import { FormCreatButton } from '@/components/user/form/form.client'
+import { useIntersectionObserver } from '@/libs/intersection-observer'
 
 export function CartForm({ isLogined, cart }: { isLogined: boolean, cart: CartWithItems }) {
     const pathname = usePathname()
@@ -54,7 +55,7 @@ function CheckoutForm({ cart }: { cart: CartWithItems }) {
             <div className={styles.cartTotal}>
                 <div className={styles.cartTotalFlex}>
                     <div className={styles.cartTotalLabel}>
-                        Subtotal 
+                        Subtotal
                     </div>
                     <div className={styles.cartTotalValue}>
                         { formatPrice(subtotal) }
@@ -62,7 +63,7 @@ function CheckoutForm({ cart }: { cart: CartWithItems }) {
                 </div>
                 <div className={styles.cartTotalFlex}>
                     <div className={styles.cartTotalLabel}>
-                        Estimated shipping 
+                        Estimated shipping
                     </div>
                     <div className={styles.cartTotalValue}>
                         { formatPrice(shipping) }
@@ -90,6 +91,7 @@ function CheckoutForm({ cart }: { cart: CartWithItems }) {
 }
 
 export function CartList({ cart }: { cart: CartWithItems | CookieCartWithItems }) {
+    const ulRef = useRef<HTMLUListElement | null>(null)
 
     if (!cart.cartItems.length) return (
         <EmptyCard image={EmptyImage} text="Empty Cart">
@@ -99,8 +101,19 @@ export function CartList({ cart }: { cart: CartWithItems | CookieCartWithItems }
         </EmptyCard>
     )
 
+    useEffect(() => {
+        const { observe, unobserve } = useIntersectionObserver(ulRef?.current, entry => {
+            entry.target.classList.toggle('observer-inview', entry.isIntersecting)
+        })
+        observe()
+
+        return () => {
+            unobserve()
+        }
+    }, [])
+
     return (
-        <ul className={styles.cartList}>
+        <ul ref={ulRef} className={styles.cartList}>
             {
                 cart.cartItems.map(item => (
                     <li key={item.id}>
@@ -116,7 +129,7 @@ export function CartItem({ item }: { item: CartItemWithDetail | CookieCartItem }
     const product = item.product
     const productClass = item.productClass
     return (
-        <div className={styles.cartItem}>
+        <div className={clsx(styles.cartItem, 'observer-scale')}>
             <Link href={`/products/${product.id}`} className={styles.productImage}>
                 {
                     (product.images && product.images.length)

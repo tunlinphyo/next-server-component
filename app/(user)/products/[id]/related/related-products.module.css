@@ -17,8 +17,8 @@
 .slideItem {
     min-width: 180px;
     max-width: 190px;
-    background-color: rgb(var(--background-accent-rgb));
-    border-radius: var(--space-4);
+    /* background-color: rgb(var(--background-accent-rgb));
+    border-radius: var(--space-4); */
 
     scroll-snap-align: center;
 }

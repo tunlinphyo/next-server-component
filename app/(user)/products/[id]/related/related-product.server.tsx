@@ -17,7 +17,7 @@ export async function ServerRelatedProduct({ id }: { id: number }) {
                 {
                     products.map((item) => (
                         <SlideItem key={item.id}>
-                            <Product product={item}>
+                            <Product product={item} observeable>
                                 <Suspense fallback={<FavouriteSkeleton />}>
                                     <ServerFavourite customerId={user?.id} productId={item.id} />
                                 </Suspense>

@@ -3,6 +3,8 @@
 import styles from './related-products.module.css'
 import { ProductSkeleton } from '../../products.client'
 import { useXScroll } from './related-product.utils'
+import { useEffect } from 'react';
+import { useIntersectionObserver } from '@/libs/intersection-observer';
 
 export function RelatedProducts({ id, children, more }: { 
     id: number;
@@ -10,6 +12,18 @@ export function RelatedProducts({ id, children, more }: {
     more?: React.ReactNode;
 }) {
     const { elemRef, handleScroll } = useXScroll(id)
+
+    useEffect(() => {
+        const { observe, unobserve } = useIntersectionObserver(elemRef?.current, entry => {
+            entry.target.classList.toggle("observer-inview", entry.isIntersecting)
+        }, .25)
+        observe()
+
+        return () => {
+            unobserve()
+        }
+    }, [])
+
     return (
         <div className={styles.relatedProducts}>
             <div ref={elemRef} className={styles.slideContainer} onScroll={handleScroll}>

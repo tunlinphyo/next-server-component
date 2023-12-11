@@ -9,7 +9,6 @@ import EmptyImage from '@/app/assets/icons/empty.svg'
 import Link from 'next/link'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import prisma from '@/libs/prisma'
-import { wait } from "@/libs/utils"
 
 export async function ServerProducts({ page, query, categoryId }: { page: number; query: string; categoryId?: number }) {
     const user = await getUser()
@@ -28,7 +27,7 @@ export async function ServerProducts({ page, query, categoryId }: { page: number
             {
                 products.map(product => (
                     <ProductLi key={product.id}>
-                        <Product product={product}>
+                        <Product product={product} observeable>
                             <Suspense fallback={<FavouriteSkeleton />}>
                                 <ServerFavourite customerId={user?.id} productId={product.id} />
                             </Suspense>

@@ -4,9 +4,9 @@ import styles from './products.module.css'
 import Image from 'next/image'
 import { ArrowPathIcon, HeartIcon, ListBulletIcon, NoSymbolIcon, PhotoIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
 import { formatPrice } from '@/libs/utils'
-import { EmptyCard, TextSkeleton } from '@/components/user/utils/utils.client'
+import { TextSkeleton } from '@/components/user/utils/utils.client'
 import Link from 'next/link'
-import { createPortal, useFormState, useFormStatus } from 'react-dom'
+import { useFormState, useFormStatus } from 'react-dom'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { addToCart, setFabourite } from './products.action'
 import clsx from 'clsx'
@@ -14,17 +14,30 @@ import { BottomSheetContainer, Modal } from '@/components/user/modals/modals.cli
 import { usePathname } from 'next/navigation'
 import { useToast } from '@/components/user/toast/toast.index'
 import { ProductClassWithVariants, ProductWithPriceAndStock } from './product.interface'
-import EmptyImage from '@/app/assets/icons/empty.svg'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/20/solid'
+import { useIntersectionObserver } from '@/libs/intersection-observer'
 
 type AddToCartFormProps = {
     productClass: ProductClassWithVariants[];
 }
 
 export function Products({ children }: { children: React.ReactNode }) {
-    const childrenCount = React.Children.count(children);
+    const childrenCount = React.Children.count(children)
+    const ulRef = useRef<HTMLUListElement | null>(null)
+
+    useEffect(() => {
+        const { observe, unobserve } = useIntersectionObserver(ulRef?.current, entry => {
+            entry.target.classList.toggle("observer-inview", entry.isIntersecting)
+        })
+        observe()
+
+        return () => {
+            unobserve()
+        }
+    }, [])
+
     return (
-        <ul className={styles.products}>
+        <ul ref={ulRef} className={styles.products}>
             { children }
             { childrenCount === 1 && <div /> }
         </ul>
@@ -35,9 +48,10 @@ export function ProductLi({ children }: { children: React.ReactNode }) {
     return <li>{ children }</li>
 }
 
-export function Product({ product, children }: { product: ProductWithPriceAndStock, children?: React.ReactNode }) {
+export function Product({ product, observeable, children }: { product: ProductWithPriceAndStock, observeable?: boolean, children?: React.ReactNode }) {
+
     return (
-        <div className={styles.product}>
+        <div className={clsx(styles.product, observeable && 'observer-scale')}>
             <Link href={`/products/${product.id}`} className={styles.productImage}>
                 {
                     (product.images && product.images.length)
