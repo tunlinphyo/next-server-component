@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation"
 import clsx from "clsx"
 import styles from './navigation.module.css'
 import { handleSignOut } from "@/app/admin/auth.actions"
-import { ArrowRightOnRectangleIcon, CubeIcon, HomeIcon, ShoppingCartIcon, UserGroupIcon, UsersIcon } from "@heroicons/react/24/outline"
+import { ArrowPathIcon, ArrowRightOnRectangleIcon, CubeIcon, HomeIcon, ShoppingCartIcon, UserGroupIcon, UsersIcon } from "@heroicons/react/24/outline"
+import { useFormStatus } from "react-dom"
 
 export function Nav({ nav }: { nav: Navigation }) {
     const pathname = usePathname()
@@ -46,11 +47,19 @@ export function Logout() {
     return (
         <li>
             <form action={handleSignOut}>
-                <button className={clsx(styles.logout, styles.overwrite)}>
-                    <ArrowRightOnRectangleIcon />
-                    Logout
-                </button>
+                <SignoutButton />
             </form>
         </li>
+    )
+}
+
+export function SignoutButton() {
+    const { pending } = useFormStatus()
+    return (
+        <button className={clsx(styles.logout, styles.overwrite)}>
+            { pending ? <ArrowPathIcon className="icon-loading" /> : <ArrowRightOnRectangleIcon /> }
+
+            Logout
+        </button>
     )
 }

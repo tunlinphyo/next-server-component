@@ -124,7 +124,7 @@
     text-align: left;
     align-items: center;
     gap: var(--space-3);
-    padding: 0 var(--space-3);
+    padding: 0 var(--space-2);
     font-size: 1em;
     border-radius: var(--space-3);
     cursor: pointer;

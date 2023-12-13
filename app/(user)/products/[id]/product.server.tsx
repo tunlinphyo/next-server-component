@@ -6,10 +6,8 @@ import { ImageGallery } from "./gallery/gallery.client"
 import { redirect } from "next/navigation"
 import { ProductActions, ProductClassTable, ProductDetail, ProductTitle } from "./product.client"
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
-import { RelatedProdcutSkeleton, RelatedProducts } from './related/related-products.client'
+import { RelatedProdcutSkeleton } from './related/related-products.client'
 import { Suspense } from 'react'
-import { ServerFavourite } from '../products.server'
-import { getUser } from '../../user.actions'
 import { ServerRelatedProduct } from './related/related-product.server'
 
 export async function ServerProduct({ id }: { id: number }) {
@@ -30,8 +28,12 @@ export async function ServerProduct({ id }: { id: number }) {
                 )
             }
             <ProductActions productClass={product.productClasses} stock={stockTotal} />
-            <PageSubTitle title="Related Ptoducts" />
-            <Suspense fallback={<RelatedProdcutSkeleton />}>
+            <Suspense fallback={
+                <>
+                    <PageSubTitle title="Related Ptoducts" />
+                    <RelatedProdcutSkeleton />
+                </>
+            }>
                 <ServerRelatedProduct id={id} />
             </Suspense>
         </>

@@ -10,6 +10,9 @@ import { CustomerType } from '@/libs/prisma/definations'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { SlideItem, SlideSkeleton } from '@/components/user/slide/slide.client'
+import { ProductSkeleton } from '../../products/products.client'
+import { OrderWithPayemntAndStatus } from './account.interface'
 
 export function UserDetail({ user, children }: { user: CustomerType, children: React.ReactNode }) {
     return (
@@ -56,10 +59,26 @@ export function LogoutForm() {
     )
 }
 
-export function MoreButton({ id }: { id: number }) {
+export function OrderItem({ children }: { children: React.ReactNode }) {
+    return (
+        <div className={styles.orderItem}>
+            { children }
+        </div>
+    )
+}
+
+export function OrderItemDetail({ order }: { order: OrderWithPayemntAndStatus }) {
+    return (
+        <div className={styles.orderItem}>
+            { order.id } | { order.orderStatus.name }
+        </div>
+    )
+}
+
+export function MoreButton({ id, name }: { id: number, name: string; }) {
     return (
         <div className={clsx(styles.slideItem, styles.slideItemEnd)}>
-            <Link href={`/account/${id}/favourites`} className={styles.goButton}>
+            <Link href={`/account/${id}/${name}`} className={styles.goButton}>
                 <ArrowRightIcon />
             </Link>
         </div>
@@ -92,6 +111,19 @@ export function UserDetailSkeleton() {
                 <div className={clsx(styles.editButton, "button skeleton")} />
             </div>
         </div>
+    )
+}
+
+export function FavouriteSkeleton() {
+    return (
+        <SlideSkeleton>
+            <SlideItem>
+                <ProductSkeleton />
+            </SlideItem>
+            <SlideItem>
+                <ProductSkeleton />
+            </SlideItem>
+        </SlideSkeleton>
     )
 }
 
