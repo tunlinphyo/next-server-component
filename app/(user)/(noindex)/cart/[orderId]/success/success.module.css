@@ -1,0 +1,14 @@
+.success {
+    padding: 0 var(--space-3);
+}
+.successContainer {
+    background-color: rgb(var(--background-accent-rgb));
+    border-radius: var(--space-4);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-4);
+}

@@ -137,7 +137,8 @@ export function mapRange(number: number, startRange1: number, endRange1: number,
     return mappedValue;
 }
 
-export function maskNumber(inputString: string, asteriskCount: number): string {
+export function maskNumber(inputString: string, asteriskCount?: number): string {
+    if (!asteriskCount) asteriskCount = inputString.length
     const hideCount = inputString.length - asteriskCount
 
     const maskedPart = '*'.repeat(Math.max(hideCount, asteriskCount))

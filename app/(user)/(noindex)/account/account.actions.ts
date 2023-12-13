@@ -64,3 +64,31 @@ export async function getFavouriteProducts(customerId: number, page: number = 1)
     }
     return products
 }
+
+export async function getOrdersPageLength(customerId: number) {
+    const count = await prisma.order.count({
+        where: { customerId }
+    })
+    return Math.ceil(count / PER_PAGE)
+}
+
+export async function getOrders(customerId: number, page: number = 1) {
+    const index = page - 1
+    const start = index ? index * PER_PAGE : 0
+    const orders = await prisma.order.findMany({
+        where: { customerId },
+        include: {
+            customerPayment: {
+                include: {
+                    payment: true
+                }
+            },
+            orderStatus: true,
+        },
+        skip: start,
+        take: PER_PAGE,
+        orderBy: { createDate: "desc" }
+    })
+
+    return orders
+}

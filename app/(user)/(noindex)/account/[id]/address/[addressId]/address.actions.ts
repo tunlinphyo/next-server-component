@@ -15,6 +15,8 @@ export async function onAddressEdit(prevState: any, formData: FormData): Promise
 
     let id = Number(formData.get('id'))
 
+    console.log('____ID____', id)
+
     if (id) {
         const address = await prisma.customerAddress.update({
             where: { id },

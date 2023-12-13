@@ -3,6 +3,7 @@ import { PageContainer, PageSubTitle, PageTitle } from '@/components/user/utils/
 import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { ProgressBar } from '../checkout.client'
+import { Success } from './success.client'
 
 export const metadata: Metadata = {
     title: 'Checkout',
@@ -18,7 +19,8 @@ export default async function Page({ params }: {
         <PageContainer>
             <PageTitle title='Order Success' />
             <ProgressBar step={4} />
-            <PageSubTitle title="Order success!!" />
+            {/* <PageSubTitle title="Order success!!" /> */}
+            <Success orderId={orderId} />
         </PageContainer>
     )
 }

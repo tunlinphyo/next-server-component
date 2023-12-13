@@ -19,7 +19,7 @@ export const CheckoutSchema = ShippingSchema.extend({
     subTotal: z.coerce.number().min(1),
     deliveryAmount: z.coerce.number().min(1),
     totalAmount: z.coerce.number().min(1),
-    paymentAmount: z.coerce.number().min(1),
+    paymentAmount: z.coerce.number(),
     customerId: z.coerce.number().min(1),
     customerPaymentId: z.coerce.number().min(1),
 

@@ -8,6 +8,7 @@ import { CreditCard, CustomerPaymentWithPayment, OrderWithPaymentAndAddress, Ord
 import { decryptCookieValue } from "@/auth"
 import { Order } from "@prisma/client"
 import { COD_PAYMENT_ID, DELIVERY_AMOUNT, ORDER_STATUS_NEW, ORDER_STATUS_PAID } from "@/libs/const"
+import { shippingValidator } from "./checkout.validator"
 
 export async function getOrder(orderId: number, customerId: number) {
     return await prisma.order.findUnique({
@@ -82,7 +83,7 @@ export async function getCustomerPayemnts(customerId: number) {
             const card: CreditCard = {
                 ...cardData,
                 cardNumber: addSpaceEveryFourCharacters(maskNumber(cardData.cardNumber, 12)),
-                cvc: maskNumber(cardData.cvc, 4)
+                cvc: maskNumber(cardData.cvc)
             }
             customerPayment.card = card
         }
@@ -101,7 +102,7 @@ export async function getCustomerPayment(id: number, hidden: boolean = false) {
             const card: CreditCard = {
                 ...cardData,
                 cardNumber: addSpaceEveryFourCharacters(maskNumber(cardData.cardNumber, 12)),
-                cvc: maskNumber(cardData.cvc, 4)
+                cvc: maskNumber(cardData.cvc)
             }
             customerPayment.card = card
         } else {
@@ -170,6 +171,7 @@ export async function onPayment(prevState: any, formData: FormData): Promise<Rec
                 totalAmount: subtotal + DELIVERY_AMOUNT,
             }
         })
+        // const {} = shippingValidator(order)
     } catch (error: any) {
         return { message: error.message }
     }
