@@ -41,18 +41,18 @@
 
 .bottom-sheet-container {
     align-items: flex-end;
-    padding: var(--space-3);
+    padding: 0;
 }
 .bottom-sheet-view {
     width: 100%;
     background-color: rgb(var(--background-rgb));
-    border-radius: 20px 20px 35px 35px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: stretch;
     overflow: hidden;
-    padding: var(--space-3);
+    padding: var(--space-4);
 
     will-change: transform;
     animation: SheetEnter .4s cubic-bezier(.05, .1, .2, 1);
@@ -61,7 +61,11 @@
     animation: SheetLeave .4s cubic-bezier(.05, .1, .2, 1) forwards;
 }
 
-
+@media (prefers-color-scheme: dark) {
+    .custom-modal-container {
+        background-color: rgba(50, 50, 50, .6);
+    }
+}
 
 @keyframes BackdropEnter {
     from {

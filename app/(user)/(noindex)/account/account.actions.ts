@@ -7,6 +7,7 @@ import prisma from "@/libs/prisma"
 import { getStockAndPrices } from "@/app/admin/(admin)/product/products/products.utils"
 import { ProductWithPriceAndStock } from "../../products/product.interface"
 import { PER_PAGE } from "@/libs/const"
+import { OrderWithPayemntAndStatus } from "./account.interface"
 
 
 export async function onLogout(prevProp: any, formData: FormData) {
@@ -88,7 +89,7 @@ export async function getOrders(customerId: number, page: number = 1) {
         skip: start,
         take: PER_PAGE,
         orderBy: { createDate: "desc" }
-    })
+    }) as OrderWithPayemntAndStatus[]
 
     return orders
 }

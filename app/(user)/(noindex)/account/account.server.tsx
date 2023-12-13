@@ -2,18 +2,16 @@
 
 import { redirect } from "next/navigation"
 import { getUser } from "../../user.actions"
-import { LogoutForm, MoreButton, UserDetail } from "./account.client"
+import { FavouriteSkeleton, LogoutForm, MoreButton, OrderItem, OrderItemDetail, UserDetail } from "./account.client"
 import { PageSubTitle, PageTitle, TextSkeleton } from "@/components/user/utils/utils.client"
-import { wait } from "@/libs/utils"
-import { getCustomerAddress, getFavouriteProducts } from "./account.actions"
+import { getCustomerAddress, getFavouriteProducts, getOrders } from "./account.actions"
 import { Suspense } from "react"
-import { RelatedProdcutSkeleton, RelatedProducts, SlideItem } from "../../products/[id]/related/related-products.client"
 import { RemoveFavouriteForm } from "./[id]/favourites/favourites.client"
 import { formatAddress } from "../../user/user.utils"
-import { FavouriteSkeleton, Product } from "../../products/products.client"
+import { Product } from "../../products/products.client"
+import { Slide, SlideItem } from "@/components/user/slide/slide.client"
 
 export async function ServerLogoutForm() {
-    // await wait(3000)
     const user = await getUser()
     if (!user) redirect('/')
 
@@ -28,10 +26,18 @@ export async function ServerLogoutForm() {
             <Suspense fallback={
                 <>
                     <PageSubTitle title="Favourites" />
-                    <RelatedProdcutSkeleton />
+                    <FavouriteSkeleton />
                 </>
             }>
                 <ServerFavourites customerId={user.id} />
+            </Suspense>
+            <Suspense fallback={
+                <>
+                    <PageSubTitle title="Orders" />
+                    <FavouriteSkeleton />
+                </>
+            }>
+                <ServerOrders customerId={user.id} />
             </Suspense>
             <LogoutForm />
         </>
@@ -53,7 +59,7 @@ export async function ServerFavourites({ customerId }: { customerId: number }) {
     return (
         <>
             <PageSubTitle title="Favourites" />
-            <RelatedProducts id={customerId} more={<MoreButton id={customerId} />}>
+            <Slide id="favourites" end={<MoreButton id={customerId} name="favourites" />}>
                 {
                     products.map((item) => (
                         <SlideItem key={item.id}>
@@ -65,7 +71,27 @@ export async function ServerFavourites({ customerId }: { customerId: number }) {
                         </SlideItem>
                     ))
                 }
-            </RelatedProducts>
+            </Slide>
+        </>
+    )
+}
+
+export async function ServerOrders({ customerId }: { customerId: number }) {
+    const orders = await getOrders(customerId)
+    if (!orders.length) return <></>
+    console.log('ORDERS', orders)
+    return (
+        <>
+            <PageSubTitle title="Orders" />
+            <Slide id="orders" end={<MoreButton id={customerId} name="orders" />}>
+                {
+                    orders.map(order => (
+                        <OrderItem key={order.id}>
+                            <OrderItemDetail order={order} />
+                        </OrderItem>
+                    ))
+                }
+            </Slide>
         </>
     )
 }

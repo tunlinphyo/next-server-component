@@ -29,7 +29,7 @@
 .closeButton {
     width: 100%;
     height: 38px;
-    border-radius: var(--space-4);
+    border-radius: var(--space-3);
     border: none;
     background-color: rgb(var(--background-accent-rgb));
     text-transform: uppercase;

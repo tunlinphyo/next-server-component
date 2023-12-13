@@ -1,18 +1,18 @@
 'use client'
 
 import clsx from 'clsx'
-import { Product } from '../products/products.client'
+import { ProductSkeleton } from '../products/products.client'
 import styles from './home.module.css'
 import Link from 'next/link'
 import { ArrowRightIcon, TicketIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import IntroImg from '@/app/assets/icons/welcome.svg'
 import { useToast } from '@/components/user/toast/toast.index'
-import { ProductWithPriceAndStock } from '@/app/admin/(admin)/product/products/products.interface'
 import { Category } from '@prisma/client'
 import { useXScroll } from './home.utils'
 import { useEffect } from 'react'
 import { useIntersectionObserver } from '@/libs/intersection-observer'
+import { Slide, SlideItem, SlideSkeleton } from '@/components/user/slide/slide.client'
 
 export function SearchBar() {
     const { showToast } = useToast()
@@ -61,8 +61,9 @@ export function ProductSlide({ children }: { children: React.ReactNode }) {
     }, [])
 
     return (
-        <div className={styles.latestProducts}>
-            <div ref={elemRef} className={styles.slideContainer} onScroll={handleScroll}>
+        <Slide
+            id="home"
+            start={
                 <div className={clsx(styles.slideItem, styles.slideItemStart)}>
                     <div className={styles.introCard}>
                         <div className={styles.introMedia}>
@@ -72,15 +73,18 @@ export function ProductSlide({ children }: { children: React.ReactNode }) {
                             <span>Discover Joy </span>in Every Cart – Your One-Stop Shop for Style, Savings, and Smiles!
                         </div>
                     </div>
-                </div>
-                { children }
+               </div>
+            }
+            end={
                 <div className={clsx(styles.slideItem, styles.slideItemEnd)}>
                     <Link href="/products?order=latest" className={styles.goButton}>
                         <ArrowRightIcon />
                     </Link>
                 </div>
-            </div>
-        </div>
+            }
+        >
+            { children }
+        </Slide>
     )
 }
 
@@ -104,26 +108,28 @@ export function CategorySkeleton() {
 
 export function ProductSlideSkeleton() {
     return (
-        <div className={clsx(styles.latestProducts, "skeleton")}>
-            <div className={styles.slideContainer}>
-                <div className={clsx(styles.slideItem, styles.slideItemStart)}>
-                    <div className={styles.introCard}>
-                        <div className={styles.introMedia}>
-                            <Image src={IntroImg} width={200} height={150} alt='intro' />
-                        </div>
-                        <div className={styles.introMessage}>
-                            <span>Discover Joy </span>in Every Cart – Your One-Stop Shop for Style, Savings, and Smiles!
-                        </div>
+        <SlideSkeleton>
+            <div className={clsx(styles.slideItem, styles.slideItemStart)}>
+                <div className={styles.introCard}>
+                    <div className={styles.introMedia}>
+                        <Image src={IntroImg} width={200} height={150} alt='intro' />
+                    </div>
+                    <div className={styles.introMessage}>
+                        <span>Discover Joy </span>in Every Cart – Your One-Stop Shop for Style, Savings, and Smiles!
                     </div>
                 </div>
-                <div className={clsx(styles.slideItem, styles.itemSkeleton)}></div>
-                <div className={clsx(styles.slideItem, styles.itemSkeleton)}></div>
-                <div className={clsx(styles.slideItem, styles.slideItemEnd)}>
-                    <Link href="/products" className={styles.goButton}>
-                        <ArrowRightIcon />
-                    </Link>
-                </div>
             </div>
-        </div>
+            <SlideItem>
+                <ProductSkeleton />
+            </SlideItem>
+            <SlideItem>
+                <ProductSkeleton />
+            </SlideItem>
+            <div className={clsx(styles.slideItem, styles.slideItemEnd)}>
+                <Link href="/products" className={styles.goButton}>
+                    <ArrowRightIcon />
+                </Link>
+            </div>
+        </SlideSkeleton>
     )
 }

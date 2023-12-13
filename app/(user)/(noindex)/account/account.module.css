@@ -43,6 +43,9 @@
     margin-top: var(--space-3);
 }
 
+.orderItem {
+    min-width: 80%;
+}
 
 .slideItemEnd {
     min-width: calc(36px + var(--space-5));
