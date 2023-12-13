@@ -20,13 +20,13 @@ export function generateClasses(classes: ProductClassEdit[], variant1: FormArray
         let index = 0
         for (const item1 of variant1) {
             for (const item2 of variant2) {
-                const oldClass = _getClass(classes, item1.id, item2.id)
+                const oldClass = _getClass(classes, Number(item1.id), Number(item2.id))
                 index ++
                 const formData: FormProductClassType = {
                     id: oldClass ? String(oldClass.id) : '',
-                    variant1: item1.id,
+                    variant1: Number(item1.id),
                     name1: item1.name,
-                    variant2: item2.id,
+                    variant2: Number(item2.id),
                     name2: item2.name,
                     price: oldClass ? String(oldClass.price) : '',
                     quantity: oldClass ? String(oldClass.quantity) : '',
@@ -37,10 +37,10 @@ export function generateClasses(classes: ProductClassEdit[], variant1: FormArray
         return combinations
     }
     return variant1.map(item => {
-        const oldClass = _getClass(classes, item.id)
+        const oldClass = _getClass(classes, Number(item.id))
         const formData: FormProductClassType = {
             id: oldClass ? String(oldClass.id) : '',
-            variant1: item.id,
+            variant1: Number(item.id),
             name1: item.name,
             price: oldClass ? String(oldClass.price) : '',
             quantity: oldClass ? String(oldClass.quantity) : '',

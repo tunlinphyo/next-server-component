@@ -7,7 +7,7 @@ import { getCartItemCount, getUser, isLogined } from "./user.actions"
 export async function ServerCartIcon() {
     const cartItemCount = await getCartItemCount()
     return (
-        <CartIcon count={cartItemCount} />
+        <CartIcon count={cartItemCount || 0} />
     )
 }
 
