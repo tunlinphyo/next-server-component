@@ -26,7 +26,7 @@ export async function ServerFavouriteProducts({ id, page }: { id: number, page: 
             {
                 products.map(product => (
                     <ProductLi key={product.id}>
-                        <Product product={product}>
+                        <Product product={product} observeable>
                             <RemoveFavouriteForm customerId={id} productId={product.id} />
                         </Product>
                     </ProductLi>

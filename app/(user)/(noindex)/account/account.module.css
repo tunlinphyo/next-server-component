@@ -75,3 +75,90 @@
 .goButton:hover {
     outline: 2px solid var(--primary-600);
 }
+
+.orderItem {
+    width: 100%;
+    height: 100%;
+    /* min-height: 220px; */
+    border-radius: var(--space-4);
+    background-color: rgb(var(--background-accent-rgb));
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    position: relative;
+}
+.orderMedia {
+    aspect-ratio: 1 / 1;
+    padding: var(--space-3);
+    position: relative;
+    border-radius: var(--space-3);
+    /* background-color: rgb(var(--background-rgb)); */
+    background-color: currentColor;
+    overflow: hidden;
+}
+.orderStatusName {
+    position: absolute;
+    left: var(--space-2);
+    bottom: var(--space-2);
+}
+.status {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 600;
+    padding: .2em .6em;
+    border-radius: 3em;
+    background-color: #fff;
+    color: currentColor;
+    min-width: 40px;
+    text-align: center;
+}
+.statusIcon {
+    position: absolute;
+    top: 0;
+    width: 60%;
+    top: 40%;
+    left: 50%;
+    opacity: .2;
+}
+.statusIcon svg {
+    width: 100%;
+    color: rgb(var(--background-rgb));
+}
+.orderDetail {
+    padding: var(--space-2);
+}
+.timeAgo {
+    font-size: .7rem;
+    color: var(--foreground-400);
+}
+.orderId {
+    font-size: .9rem;
+    margin-bottom: var(--space-3);
+    color: var(--foreground-900);
+}
+
+.orderLink {
+    width: 100%;
+    height: 36px;
+    background-color: var(--primary-100);
+    border-radius: 15px;
+    border: none;
+    color: var(--primary-600);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0;
+    font-size: .8rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    pointer-events: auto;
+}
+.orderLink svg {
+    width: 1.4em;
+}
+.orderLink:hover {
+    outline: 2px solid var(--primary-600);
+}

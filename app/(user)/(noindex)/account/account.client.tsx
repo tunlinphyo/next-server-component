@@ -13,6 +13,13 @@ import { useRouter } from 'next/navigation'
 import { SlideItem, SlideSkeleton } from '@/components/user/slide/slide.client'
 import { ProductSkeleton } from '../../products/products.client'
 import { OrderWithPayemntAndStatus } from './account.interface'
+import { ProductWithPriceAndStock } from '../../products/product.interface'
+import { maskNumber, withPadStart } from '@/libs/utils'
+import { OrderStatusIcon, ProgressRing } from './[id]/orders/orders.client'
+import { getStatusName, getStatusStep } from './[id]/orders/orders.utils'
+import { timeAgo } from '@/libs/relative-time'
+import { Budge } from '@/components/user/utils/utils.client'
+import { ORDER_STATUS_PENDING } from '@/libs/const'
 
 export function UserDetail({ user, children }: { user: CustomerType, children: React.ReactNode }) {
     return (
@@ -59,19 +66,49 @@ export function LogoutForm() {
     )
 }
 
-export function OrderItem({ children }: { children: React.ReactNode }) {
+export function OrderItem({ order }: { order: OrderWithPayemntAndStatus }) {
+    const statusId = order.orderStatusId
+    const name = getStatusName(statusId)
+    const step = getStatusStep(statusId)
     return (
-        <div className={styles.orderItem}>
-            { children }
+        <div className={clsx(styles.orderItem, 'observer-scale')}
+            style={{ color: `var(--order-status-${name})` }}
+        >
+            <div className={styles.orderMedia}>
+                <div className={styles.orderStatus}>
+                    <ProgressRing statusId={statusId} step={step}  />
+                </div>
+                <div className={styles.statusIcon}>
+                    <OrderStatusIcon statusId={statusId} />
+                </div>
+                <div className={styles.orderStatusName}>
+                    <div className={styles.status}>
+                        { order.orderStatus.name }
+                    </div>
+                </div>
+            </div>
+            <div className={styles.orderDetail}>
+                <div className={styles.timeAgo}>
+                    { timeAgo(order.updateDate || order.createDate) }
+                </div>
+                <div className={styles.orderId}>#{
+                    order.orderStatusId == ORDER_STATUS_PENDING
+                        ? maskNumber(withPadStart(order.id), 6)
+                        : withPadStart(order.id)
+                }</div>
+            </div>
+            <OrderLink orderId={order.id} statusId={order.orderStatusId} userId={order.customerId} />
         </div>
     )
 }
 
-export function OrderItemDetail({ order }: { order: OrderWithPayemntAndStatus }) {
+export function OrderLink({ orderId, userId, statusId }: { orderId: number; userId: number; statusId: number }) {
+    const href = statusId == ORDER_STATUS_PENDING ? `/cart/${orderId}/shipping` : `/account/${userId}/orders/${orderId}`
     return (
-        <div className={styles.orderItem}>
-            { order.id } | { order.orderStatus.name }
-        </div>
+        <Link href={href} className={styles.orderLink}>
+            { statusId == ORDER_STATUS_PENDING ? 'continue' : 'View Detail' }
+            <ArrowRightIcon />
+        </Link>
     )
 }
 

@@ -188,7 +188,7 @@ model OrderItem {
 model Order {
     id              Int             @id @default(autoincrement())
     customer        Customer        @relation(fields: [customerId], references: [id])
-    customerId      Int             @unique
+    customerId      Int
     subTotal        Int
     deliveryAmount  Int             @default(0)
     totalAmount     Int

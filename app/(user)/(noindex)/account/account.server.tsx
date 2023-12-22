@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation"
 import { getUser } from "../../user.actions"
-import { FavouriteSkeleton, LogoutForm, MoreButton, OrderItem, OrderItemDetail, UserDetail } from "./account.client"
+import { FavouriteSkeleton, LogoutForm, MoreButton, OrderItem, UserDetail } from "./account.client"
 import { PageSubTitle, PageTitle, TextSkeleton } from "@/components/user/utils/utils.client"
 import { getCustomerAddress, getFavouriteProducts, getOrders } from "./account.actions"
 import { Suspense } from "react"
@@ -63,7 +63,7 @@ export async function ServerFavourites({ customerId }: { customerId: number }) {
                 {
                     products.map((item) => (
                         <SlideItem key={item.id}>
-                            <Product product={item}>
+                            <Product product={item} observeable>
                                 <Suspense fallback={<FavouriteSkeleton />}>
                                     <RemoveFavouriteForm customerId={customerId} productId={item.id} />
                                 </Suspense>
@@ -86,9 +86,9 @@ export async function ServerOrders({ customerId }: { customerId: number }) {
             <Slide id="orders" end={<MoreButton id={customerId} name="orders" />}>
                 {
                     orders.map(order => (
-                        <OrderItem key={order.id}>
-                            <OrderItemDetail order={order} />
-                        </OrderItem>
+                        <SlideItem key={order.id}>
+                            <OrderItem order={order} />
+                        </SlideItem>
                     ))
                 }
             </Slide>

@@ -1,0 +1,23 @@
+.progressRing {
+    border-radius: 50%;
+}
+
+.percentage {
+    font-size: 1rem;
+    font-weight: 600;
+    fill: #fff;
+}
+
+.bgCircle {
+    stroke: #fff2;
+}
+
+.progressCircle {
+    transform: rotate(-90deg);
+    transform-origin: center;
+    stroke: #fff;
+}
+
+.bgCircle, .progressCircle {
+    stroke-linecap: round;
+}

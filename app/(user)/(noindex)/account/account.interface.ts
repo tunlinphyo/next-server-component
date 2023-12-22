@@ -10,4 +10,7 @@ export interface CustomerEdit extends Customer {
 export interface OrderWithPayemntAndStatus extends Order {
     customerPayment: CustomerPaymentWithPayment;
     orderStatus: OrderStatus;
+    _count: {
+        orderItems: number;
+    }
 }

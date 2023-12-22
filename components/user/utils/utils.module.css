@@ -241,6 +241,7 @@
 }
 
 .budge {
+    display: inline-block;
     font-size: .7rem;
     font-weight: 600;
     padding: .2em .6em;

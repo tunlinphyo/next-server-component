@@ -155,3 +155,9 @@ export function addSpaceEveryFourCharacters(input: string): string {
 
     return spacedString.trim();
 }
+
+export function withPadStart(num: number, len: number = 6, placeholder: string = '0') {
+    const formattedNum: string = num.toString().padStart(len, placeholder)
+
+    return formattedNum
+}

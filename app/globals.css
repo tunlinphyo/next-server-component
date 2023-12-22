@@ -22,6 +22,7 @@
   --border-rgb: 220, 220, 220;
   --danger: hsl(6, 79%, 57%);
   --danger-100: hsla(6, 79%, 57%, .1);
+  --danger-200: hsla(6, 79%, 57%, .2);
 
   --success: hsl(145, 63%, 49%);
   --success-100: hsla(145, 63%, 49%, .1);
@@ -59,6 +60,17 @@
   --space-6: 80px;
   --space-7: 160px;
   --space-8: 320px;
+
+  --order-status-pending: #95a5a6cc;
+  --order-status-new: #9b59b6cc;
+  --order-status-paid: #2ecc71cc;
+  --order-status-delivered: #3498dbcc;
+  --order-status-return: #f1c40fcc;
+  --order-status-cancel: #e74c3ccc;
+
+
+  /* scrollbar-color: rgb(210,210,210) rgb(46,54,69) !important;
+  scrollbar-width: thin !important; */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -77,7 +89,8 @@
 
     --border-rgb: 60, 60, 60;
     --danger: hsl(6, 59%, 77%);
-    --danger-100: hsla(6, 59%, 77%, .1);
+    --danger-100: hsla(6, 80%, 58%, .1);
+    --danger-200: hsla(6, 80%, 58%, .2);
 
     --primary-100: hsl(var(--primary-hue), 25%, 25%);
 
@@ -89,6 +102,12 @@
     --white-rgb: 220, 220, 220;
     --black-rgb: 0, 0, 0;
 
+    /* --order-status-pending: #95a5a644;
+    --order-status-new: #9b59b644;
+    --order-status-paid: #2ecc7144;
+    --order-status-delivered: #3498db44;
+    --order-status-return: #f1c40f44;
+    --order-status-cancel: #e74c3c44; */
   }
 }
 
@@ -101,6 +120,9 @@
 *::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+* {
+  scrollbar-width: none !important;
 }
 
 html,

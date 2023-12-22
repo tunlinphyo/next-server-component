@@ -85,6 +85,11 @@ export async function getOrders(customerId: number, page: number = 1) {
                 }
             },
             orderStatus: true,
+            _count: {
+                select: {
+                    orderItems: true,
+                }
+            }
         },
         skip: start,
         take: PER_PAGE,
