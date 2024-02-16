@@ -3,7 +3,7 @@
 import styles from './orders.module.css'
 import { ORDER_STATUS_CANCEL, ORDER_STATUS_DELIVERED, ORDER_STATUS_NEW, ORDER_STATUS_PAID, ORDER_STATUS_PENDING, ORDER_STATUS_RETURN } from "@/libs/const";
 import { ArrowPathRoundedSquareIcon, ClockIcon, CreditCardIcon, NoSymbolIcon, TicketIcon, TruckIcon } from "@heroicons/react/24/outline";
-import { getStatusName, useRing } from './orders.utils';
+import { getStatusName, getStatusStep, useRing } from './orders.utils';
 import { OrderWithPayemntAndStatus } from '../../account.interface';
 
 export function OrderStatusIcon({ statusId }: { statusId: number }) {
@@ -37,11 +37,11 @@ export function ProgressRing({ statusId, step, ringSize, maxStep }: { statusId: 
 
 export function Orders({ orders, customerId }: { orders: OrderWithPayemntAndStatus[]; customerId: number }) {
     return (
-        <ul>
+        <ul className={styles.orderList}>
             {
                 orders.map(order => (
                     <li key={order.id}>
-                        { order.id }
+                        <OrderCard order={order} />
                     </li>
                 ))
             }
@@ -50,8 +50,24 @@ export function Orders({ orders, customerId }: { orders: OrderWithPayemntAndStat
 }
 
 export function OrderCard({ order }: { order: OrderWithPayemntAndStatus }) {
+    const statusId = order.orderStatusId
+    const name = getStatusName(statusId)
+    const step = getStatusStep(statusId)
     return (
-        <div className={styles.orderCard}>
+        <div className={styles.orderCard} style={{ color: `var(--order-status-${name})` }}>
+            <div className={styles.orderMedia}>
+                <div className={styles.orderStatus}>
+                    <ProgressRing statusId={statusId} step={step}  />
+                </div>
+                <div className={styles.statusIcon}>
+                    <OrderStatusIcon statusId={statusId} />
+                </div>
+                <div className={styles.orderStatusName}>
+                    <div className={styles.status}>
+                        { order.orderStatus.name }
+                    </div>
+                </div>
+            </div>
 
         </div>
     )

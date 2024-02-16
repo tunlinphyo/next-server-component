@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 import { getUser } from "../../user.actions"
 import { FavouriteSkeleton, LogoutForm, MoreButton, OrderItem, UserDetail } from "./account.client"
-import { PageSubTitle, PageTitle, TextSkeleton } from "@/components/user/utils/utils.client"
+import { PageSubTitle, PageSubTitleWithAction, PageTitle, TextSkeleton } from "@/components/user/utils/utils.client"
 import { getCustomerAddress, getFavouriteProducts, getOrders } from "./account.actions"
 import { Suspense } from "react"
 import { RemoveFavouriteForm } from "./[id]/favourites/favourites.client"
@@ -25,19 +25,19 @@ export async function ServerLogoutForm() {
             </UserDetail>
             <Suspense fallback={
                 <>
-                    <PageSubTitle title="Favourites" />
-                    <FavouriteSkeleton />
-                </>
-            }>
-                <ServerFavourites customerId={user.id} />
-            </Suspense>
-            <Suspense fallback={
-                <>
                     <PageSubTitle title="Orders" />
                     <FavouriteSkeleton />
                 </>
             }>
                 <ServerOrders customerId={user.id} />
+            </Suspense>
+            <Suspense fallback={
+                <>
+                    <PageSubTitle title="Favourites" />
+                    <FavouriteSkeleton />
+                </>
+            }>
+                <ServerFavourites customerId={user.id} />
             </Suspense>
             <LogoutForm />
         </>
@@ -58,7 +58,7 @@ export async function ServerFavourites({ customerId }: { customerId: number }) {
     if (!products.length) return <></>
     return (
         <>
-            <PageSubTitle title="Favourites" />
+            <PageSubTitleWithAction title="Favourites" url={`/account/${customerId}/favourites`} />
             <Slide id="favourites" end={<MoreButton id={customerId} name="favourites" />}>
                 {
                     products.map((item) => (
@@ -82,7 +82,7 @@ export async function ServerOrders({ customerId }: { customerId: number }) {
     console.log('ORDERS', orders)
     return (
         <>
-            <PageSubTitle title="Orders" />
+            <PageSubTitleWithAction title="Orders" url={`/account/${customerId}/orders`} />
             <Slide id="orders" end={<MoreButton id={customerId} name="orders" />}>
                 {
                     orders.map(order => (

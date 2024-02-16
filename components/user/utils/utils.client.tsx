@@ -2,7 +2,7 @@
 
 import { ChildrenProp, UserNavType } from '@/libs/definations'
 import styles from './utils.module.css'
-import { ArrowLeftOnRectangleIcon, Bars3BottomLeftIcon, ShoppingBagIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftOnRectangleIcon, ArrowRightIcon, Bars3BottomLeftIcon, ShoppingBagIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
@@ -71,6 +71,17 @@ export function PageTitle({ title }: { title: string }) {
 export function PageSubTitle({ title }: { title: string }) {
     return (
         <h2 className={styles.pageSubTitle}>{ title }</h2>
+    )
+}
+
+export function PageSubTitleWithAction({ title, url }: { title: string; url: string }) {
+    return (
+        <div className={styles.pageSubTitleWithAction}>
+            <h2>{ title }</h2>
+            <Link href={url}>
+                view all
+            </Link>
+        </div>
     )
 }
 

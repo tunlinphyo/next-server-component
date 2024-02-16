@@ -40,6 +40,22 @@
     padding: var(--space-2) var(--space-4) 0;
     color: var(--foreground-900);
 }
+.pageSubTitleWithAction {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: var(--space-4) var(--space-4) 0;
+}
+.pageSubTitleWithAction > h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--foreground-900);
+}
+.pageSubTitleWithAction > a {
+    font-size: .8rem;
+    text-transform: uppercase;
+    color: var(--primary-600);
+}
 
 .pageFooter {
     display: flex;
